@@ -19,7 +19,7 @@ class RootController extends GetxController {
     const LoyaltyView(),
     const DealsView(),
     const PurchasesView(),
-    const ProfileView()
+    ProfileView()
   ];
 
   Widget get currentPage => pages[currentIndex.value];
@@ -69,7 +69,7 @@ class RootController extends GetxController {
         }
       case 2:
         {
-          await Get.find<DealsController>().refreshMessages();
+          await Get.find<DealsController>().refreshDeals();
           break;
         }
       case 3:

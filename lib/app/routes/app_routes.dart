@@ -20,4 +20,6 @@ class Routes {
   static const TERMCONDITION = '/term';
   static const PRIVACYPOLICY = '/privacypolicy';
   static const ABOUTUS = '/aboutus';
+
+  static const DEALSDETAILS = '/deals_details';
 }

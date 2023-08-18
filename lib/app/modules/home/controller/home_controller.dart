@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:paybox/app/models/deals_model.dart';
+import 'package:paybox/app/repositories/home_repositories.dart';
 // import 'package:paybox/app/models/category_model.dart' as cat;
 // import 'package:paybox/app/models/category_model.dart';
 // import 'package:paybox/app/repositories/home_repositories.dart';
@@ -6,13 +8,25 @@ import 'package:get/get.dart';
 import '../../../../commonWidget/ui.dart';
 
 class HomeController extends GetxController {
-  // HomeRepository? _homeRepository;
+  HomeRepository? _homeRepository;
+
+  final trendingDeals = <TrendingDealsModel>[].obs;
 
   // RxList<cat.Data> data = <cat.Data>[].obs;
 
-  // HomeController() {
-  //   _homeRepository = HomeRepository();
-  // }
+  HomeController() {
+    _homeRepository = HomeRepository();
+  }
+
+  Future getTrendingDeals() async {
+    if (_homeRepository == null) Get.log('_homeRepository is null');
+    try {
+      trendingDeals.assignAll(await _homeRepository!.getTrendingDeals());
+      // print(deals[0].name);
+    } catch (e) {
+      Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+    }
+  }
 
   // void getDeals() async {
   //   print(_homeRepository);
@@ -64,37 +78,9 @@ class HomeController extends GetxController {
   //   // }
   // }
 
-  // Future getCategories() async {
-  //   // Get.focusScope!.unfocus();
-  //   // if (registerFormKey!.currentState!.validate()) {
-  //   //   registerFormKey!.currentState!.save();
-  //   //   loading.value = true;
-  //   // print("register here please");
-  //   print('ready to fetch Categories apis');
-  //   try {
-  //     await _homeRepository!.getCategories();
-  //     print('before data');
-  //     List<cat.Data> data = await _homeRepository!.getCategories();
-  //     print('After data');
-
-  //     // print(fetchedCategories);
-  //     // print('111..FC');
-  //     // data.assignAll(fetchedCategories);
-  //     print(data);
-  //     print('222.. FC');
-  //     // loading.value = false;
-  //     // print('before going to home page');
-  //     // Get.toNamed(Routes.LOGIN);
-  //     // print('After went to home page');
-  //   } catch (e) {
-  //     print(e.toString());
-  //     Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
-  //     print('snaaaaaaaaak bar');
-  //   } finally {
-  //     // loading.value = false;
-  //   }
-  //   // }
-  // }
+  Future getCategories() async {
+    // }
+  }
 
   // void getStores() async {
   //   // Get.focusScope!.unfocus();
@@ -121,7 +107,7 @@ class HomeController extends GetxController {
 
   Future refreshHome({bool showMessage = false}) async {
     // await getSlider();
-    // await getCategories();
+    await getTrendingDeals();
     // await getFeatured();
     // await getRecommendedSalons();
     // Get.find<RootController>().getNotificationsCount();

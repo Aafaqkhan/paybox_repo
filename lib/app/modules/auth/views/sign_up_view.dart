@@ -224,20 +224,24 @@ class SignUpView extends GetView<AuthController> {
                               SizedBox(
                                 height: 20,
                               ),
-                              BlockButtonWidget(
-                                onPressed: () {
-                                  controller.register();
-                                },
-                                color: AppColors.maincolor,
-                                text: Text(
-                                  "Continue".tr,
-                                  style: Get.textTheme.titleMedium!.merge(
-                                      const TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: "Montserrat",
-                                          fontWeight: FontWeight.w600)),
-                                ),
-                              ).paddingSymmetric(vertical: 5.0),
+                              Obx(() {
+                                return controller.loading == false
+                                    ? BlockButtonWidget(
+                                        onPressed: () {
+                                          controller.register();
+                                        },
+                                        color: AppColors.maincolor,
+                                        text: Text(
+                                          "Continue".tr,
+                                          style: Get.textTheme.titleMedium!
+                                              .merge(const TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: "Montserrat",
+                                                  fontWeight: FontWeight.w600)),
+                                        ),
+                                      ).paddingSymmetric(vertical: 5.0)
+                                    : CircularProgressIndicator();
+                              }),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [

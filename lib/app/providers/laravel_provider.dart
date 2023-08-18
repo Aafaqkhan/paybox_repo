@@ -3,17 +3,22 @@ import 'dart:convert';
 import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:paybox/app/models/category_model.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:paybox/app/models/category_model.dart' as categoryydata;
+import 'package:paybox/app/models/deals_model.dart';
 import 'package:paybox/app/modules/auth/controllers/auth_controller.dart';
 import 'package:paybox/app/providers/api_provider.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:paybox/app/services/auth_service.dart';
+import 'package:paybox/app/services/global_trending_deals_card.dart';
 
 import '../models/user_model.dart';
 import 'dio_client.dart';
 
 class LaravelApiClient extends GetxService with ApiClient {
+  GetStorage? _box;
+
   DioClient? _httpClient;
   dio.Options? _optionsNetwork;
   dio.Options? _optionsCache;
@@ -21,6 +26,7 @@ class LaravelApiClient extends GetxService with ApiClient {
   LaravelApiClient() {
     baseUrl = globalService.baseUrl;
     _httpClient = DioClient(baseUrl, dio.Dio());
+    _box = GetStorage();
   }
 
   Future<LaravelApiClient> init() async {
@@ -72,6 +78,16 @@ class LaravelApiClient extends GetxService with ApiClient {
     var token = responsedata["token"];
     print('toooooooooken: $token');
 
+    var name = responsedata["data"]['name'];
+    print('name: $name');
+
+    var email = responsedata["data"]['email'];
+    print('email: $email');
+
+    _box!.write('token', token);
+    _box!.write('name', name);
+    _box!.write('email', email);
+
     if (responsedata['success'] == true) {
       // response.data['data']['auth'] = true;
       print(responsedata['success']);
@@ -101,6 +117,16 @@ class LaravelApiClient extends GetxService with ApiClient {
 
     var token = responsedata["token"];
     print('toooooooooken: $token');
+
+    var name = responsedata["data"]['name'];
+    print('name: $name');
+
+    var email = responsedata["data"]['email'];
+    print('email: $email');
+
+    _box!.write('token', token);
+    _box!.write('name', name);
+    _box!.write('email', email);
 
     if (responsedata['success'] == true) {
       // response.data['data']['auth'] = true;
@@ -204,47 +230,98 @@ class LaravelApiClient extends GetxService with ApiClient {
     }
   }
 
-  Future<List<Data>> getCategories() async {
-    print('1111');
+  Future<List<categoryydata.Data>> getCategories() async {
+    // const _queryParameters = {
+    //   'parent': 'true',
+    //   'orderBy': 'order',
+    //   'sortBy': 'asc',
+    // };
     Uri _uri = getDealsApiBaseUri("categories");
-
+    // .replace(queryParameters: _queryParameters);
     Get.log(_uri.toString());
-    var response = await _httpClient!.getUri(
-      _uri,
-      // data: json.encode(user.toJson()),
-      options: _optionsNetwork,
-    );
-    print(response.data);
+    var response = await _httpClient!.getUri(_uri, options: _optionsCache);
+    Get.log('responseeeeee ready');
+
     var responsedata = json.decode(response.data);
-
-    print(responsedata["success"]);
-    print('new resss');
-
-    // var token = responsedata["token"];
-    // print('toooooooooken: $token');
+    print(responsedata);
 
     if (responsedata['success'] == true) {
-      // response.data['data']['auth'] = true;
-      print(responsedata['success']);
-      print(responsedata["data"].toString());
-      print('2222 .. Categories APi done');
-      print(responsedata["data"][0]['name'].toString());
-
-      // return Category.fromJson(responsedata);
-
-      var categories = responsedata["data"];
-
-      print('Categorieeeeeeeeeeeeees');
-
-      print(categories);
-      // print('First category name: ${categories[0].data}');
-
-      return categories;
+      Get.log('responseeeeee success');
+      return responsedata['data']
+          .map<categoryydata.Data>((obj) => categoryydata.Data.fromJson(obj))
+          .toList();
     } else {
-      print('not 2222');
-      throw Exception(responsedata['error']);
+      throw Exception(response.data['message']);
     }
   }
+
+  Future<List<TrendingDealsModel>> getTrendingDeals() async {
+    // const _queryParameters = {
+    //   'parent': 'true',
+    //   'orderBy': 'order',
+    //   'sortBy': 'asc',
+    // };
+
+    Uri _uri = getDealsApiBaseUri("deals");
+    // .replace(queryParameters: _queryParameters);
+    Get.log(_uri.toString());
+    var response = await _httpClient!.getUri(_uri, options: _optionsCache);
+    Get.log('responseeeeee ready');
+
+    var responsedata = json.decode(response.data);
+    print(responsedata);
+
+    if (responsedata['success'] == true) {
+      Get.log('responseeeeee success');
+      return responsedata['data']['trendingDeals']
+          .map<TrendingDealsModel>((obj) => TrendingDealsModel.fromJson(obj))
+          .toList();
+    } else {
+      throw Exception(response.data['message']);
+    }
+  }
+
+  // Future<List<Data>> getCategories() async {
+  //   print('1111');
+  //   Uri _uri = getDealsApiBaseUri("categories");
+
+  //   Get.log(_uri.toString());
+  //   var response = await _httpClient!.getUri(
+  //     _uri,
+  //     // data: json.encode(user.toJson()),
+  //     options: _optionsNetwork,
+  //   );
+  //   print(response.data);
+  //   var responsedata = json.decode(response.data);
+
+  //   print(responsedata["success"]);
+  //   print('new resss');
+
+  // var token = responsedata["token"];
+  // print('toooooooooken: $token');
+
+  //   if (responsedata['success'] == true) {
+  //     // response.data['data']['auth'] = true;
+  //     print(responsedata['success']);
+  //     print(responsedata["data"].toString());
+  //     print('2222 .. Categories APi done');
+  //     print(responsedata["data"][0]['name'].toString());
+
+  //     // return Category.fromJson(responsedata);
+
+  //     var categories = responsedata["data"];
+
+  //     print('Categorieeeeeeeeeeeeees');
+
+  //     print(categories);
+  //     // print('First category name: ${categories[0].data}');
+
+  //     return categories;
+  //   } else {
+  //     print('not 2222');
+  //     throw Exception(responsedata['error']);
+  //   }
+  // }
 
   Future<User> getStores() async {
     print('1111');

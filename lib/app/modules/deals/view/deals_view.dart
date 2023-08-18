@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:paybox/app/modules/deals/controller/deals_controller.dart';
 import 'package:paybox/app/services/global_deals_details.dart';
@@ -10,6 +11,8 @@ class DealsView extends GetView<DealsController> {
 
   @override
   Widget build(BuildContext context) {
+    print('get categories in deals view ');
+    controller.getCategories();
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(
@@ -56,66 +59,80 @@ class DealsView extends GetView<DealsController> {
         centerTitle: true,
         automaticallyImplyLeading: false,
       ),
-      body: const SingleChildScrollView(
+      body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(children: [
           Padding(
-            padding: EdgeInsets.only(top: 16, left: 15),
+            padding: const EdgeInsets.only(top: 16, left: 15),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: SizedBox(
-                child: Row(
-                  children: [
-                    MyDealsOffer(
-                        avatarpath: "assets/images/abc (1).png",
-                        title: "Near Me"),
-                    MyDealsOffer(
-                        avatarpath: "assets/images/Activities.png",
-                        title: "Activities"),
-                    MyDealsOffer(
-                        avatarpath: "assets/images/coffee.png",
-                        title: "Coffee"),
-                    MyDealsOffer(
-                        avatarpath: "assets/images/Take away.png",
-                        title: "Take away"),
-                    MyDealsOffer(
-                        avatarpath: "assets/images/beauty.png",
-                        title: "Beauty"),
-                    MyDealsOffer(
-                        avatarpath: "assets/images/abc.png", title: "Barbers"),
-                    MyDealsOffer(
-                        avatarpath: "assets/images/abc (5).png", title: "Hair"),
-                    MyDealsOffer(
-                        avatarpath: "assets/images/abc (3).png",
-                        title: "Asthetics"),
-                    MyDealsOffer(
-                        avatarpath: "assets/images/abc (2).png",
-                        title: "Children"),
-                    MyDealsOffer(
-                        avatarpath: "assets/images/abc (6).png",
-                        title: "Health/Fitness"),
-                    MyDealsOffer(
-                        avatarpath: "assets/images/abc (7).png",
-                        title: "Food/Drinks"),
-                    MyDealsOffer(
-                        avatarpath: "assets/images/beauty (7).png",
-                        title: "Desserts"),
-                    MyDealsOffer(
-                        avatarpath: "assets/images/beauty (8).png",
-                        title: "Retail"),
-                    MyDealsOffer(
-                        avatarpath: "assets/images/abc (8).png", title: "Spas"),
-                  ],
-                ),
+                height: 100,
+                child: Obx(() {
+                  if (controller.categories.isEmpty) {
+                    // Return a loading indicator or any other placeholder
+                    return const CircularProgressIndicator(); // Replace with your loading widget
+                  } else {
+                    return Row(
+                      children: controller.categories
+                          .map((e) =>
+                              MyDealsOffer(avatarpath: e.image, title: e.name))
+                          .toList(),
+                      // children: [
+                      //   const MyDealsOffer(
+                      //       avatarpath: "assets/images/abc (1).png",
+                      //       title: "Near Me"),
+                      //   const MyDealsOffer(
+                      //     avatarpath: "assets/images/Activities.png",
+                      //     title: controller.categories[0].name,
+                      //   ),
+                      //   //  title: controller.categories.length.toString()),
+                      //   const MyDealsOffer(
+                      //       avatarpath: "assets/images/coffee.png",
+                      //       title: "Coffee"),
+                      //   const MyDealsOffer(
+                      //       avatarpath: "assets/images/Take away.png",
+                      //       title: "Take away"),
+                      //   const MyDealsOffer(
+                      //       avatarpath: "assets/images/beauty.png",
+                      //       title: "Beauty"),
+                      //   const MyDealsOffer(
+                      //       avatarpath: "assets/images/abc.png", title: "Barbers"),
+                      //   const MyDealsOffer(
+                      //       avatarpath: "assets/images/abc (5).png", title: "Hair"),
+                      //   const MyDealsOffer(
+                      //       avatarpath: "assets/images/abc (3).png",
+                      //       title: "Asthetics"),
+                      //   const MyDealsOffer(
+                      //       avatarpath: "assets/images/abc (2).png",
+                      //       title: "Children"),
+                      //   const MyDealsOffer(
+                      //       avatarpath: "assets/images/abc (6).png",
+                      //       title: "Health/Fitness"),
+                      //   const MyDealsOffer(
+                      //       avatarpath: "assets/images/abc (7).png",
+                      //       title: "Food/Drinks"),
+                      //   const MyDealsOffer(
+                      //       avatarpath: "assets/images/beauty (7).png",
+                      //       title: "Desserts"),
+                      //   const MyDealsOffer(
+                      //       avatarpath: "assets/images/beauty (8).png",
+                      //       title: "Retail"),
+                      //   const MyDealsOffer(
+                      //       avatarpath: "assets/images/abc (8).png", title: "Spas"),
+                      // ],
+                    );
+                  }
+                }),
               ),
             ),
           ),
-          MyGlobalDealTitles(
+          const MyGlobalDealTitles(
             title: "Range Desserts",
             subtitle: "66c Beech Rd, Chorlton-cum-Hardy, Manchester M21 EG",
             avatarpath: "assets/images/Range Dessert.png",
           ),
-          SingleChildScrollView(
+          const SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Padding(
               padding: EdgeInsets.only(
@@ -160,12 +177,12 @@ class DealsView extends GetView<DealsController> {
               ),
             ),
           ),
-          MyGlobalDealTitles(
+          const MyGlobalDealTitles(
             title: "SCOOP ANCOATS",
             subtitle: "58 Oldham Rd, Ancats, Manchester M4 5EE",
             avatarpath: "assets/images/Scoop.png",
           ),
-          SingleChildScrollView(
+          const SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Padding(
               padding: EdgeInsets.only(
@@ -210,12 +227,12 @@ class DealsView extends GetView<DealsController> {
               ),
             ),
           ),
-          MyGlobalDealTitles(
+          const MyGlobalDealTitles(
             title: "YAFFA KNAFEH",
             subtitle: "442 Coventry Rd, Small Heath, Birmingham B10 OUG, UK",
             avatarpath: "assets/images/Vector (8).png",
           ),
-          SingleChildScrollView(
+          const SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Padding(
               padding: EdgeInsets.only(top: 16, left: 16, bottom: 26),

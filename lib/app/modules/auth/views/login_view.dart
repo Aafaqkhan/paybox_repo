@@ -147,21 +147,25 @@ class LoginView extends GetView<AuthController> {
                             //     ),
                             //   ],
                             // ),
-                            BlockButtonWidget(
-                              onPressed: () {
-                                controller.login();
-                              },
-                              color: AppColors.maincolor,
-                              text: Text(
-                                "Continue".tr,
-                                style: Get.textTheme.titleMedium!
-                                    .merge(const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.normal,
-                                  fontFamily: "Montserrat",
-                                )),
-                              ),
-                            ).paddingSymmetric(vertical: 5.0),
+                            Obx(() {
+                              return controller.loading == false
+                                  ? BlockButtonWidget(
+                                      onPressed: () {
+                                        controller.login();
+                                      },
+                                      color: AppColors.maincolor,
+                                      text: Text(
+                                        "Continue".tr,
+                                        style: Get.textTheme.titleMedium!
+                                            .merge(const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.normal,
+                                          fontFamily: "Montserrat",
+                                        )),
+                                      ),
+                                    ).paddingSymmetric(vertical: 5.0)
+                                  : CircularProgressIndicator();
+                            }),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [

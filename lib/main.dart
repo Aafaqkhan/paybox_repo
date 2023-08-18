@@ -30,6 +30,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initServices();
 
+  // GetStorage? _box;
+  // late final String? token;
+
+  // Theme1AppPages() {
+  //   _box = GetStorage();
+  //   token = _box!.read('token');
+  // }
+
   runApp(
     GetMaterialApp(
       title: "GetX",

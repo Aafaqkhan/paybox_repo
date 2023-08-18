@@ -28,8 +28,8 @@ class _MyDealsOfferState extends State<MyDealsOffer> {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 color: const Color(0xffE5E8EF)),
-            child: Image.asset(
-              widget.avatarpath!,
+            child: Image.network(
+              "https://paybox.jzmaxx.com/" + widget.avatarpath!,
               fit: BoxFit.scaleDown,
             )),
         SizedBox(

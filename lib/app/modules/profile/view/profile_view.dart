@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:paybox/app/modules/profile/controller/profile_controller.dart';
 import 'package:paybox/app/modules/profile/view/Loyalty_points.dart';
 import 'package:paybox/app/modules/profile/view/change_password.dart';
@@ -66,11 +67,16 @@ class ProfileView extends GetView<ProfileController> {
     );
   }
 
-  const ProfileView({super.key});
+  ProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    controller.updateUser();
+    final _box = GetStorage();
+
+    final name = _box.read('name');
+    final email = _box.read('email');
+
+    // controller.updateUser();
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -109,15 +115,15 @@ class ProfileView extends GetView<ProfileController> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const TextWidget(
-                                text: 'Salma David',
+                            TextWidget(
+                                text: name,
                                 textStyle: TextStyle(
                                     fontSize: 16,
                                     fontFamily: "Montserrat",
                                     fontWeight: FontWeight.w700,
                                     color: Color(0xff000000))),
-                            const TextWidget(
-                                text: 'salmadavid@gmail.com',
+                            TextWidget(
+                                text: email,
                                 textStyle: TextStyle(
                                     fontSize: 12,
                                     fontFamily: "Montserrat",

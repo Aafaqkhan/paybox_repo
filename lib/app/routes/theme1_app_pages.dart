@@ -1,6 +1,9 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:paybox/app/modules/auth/bindings/auth_binding.dart';
 import 'package:paybox/app/modules/auth/views/login_view.dart';
+import 'package:paybox/app/modules/deals/view/deals_details.dart';
+import 'package:paybox/app/modules/home/bindings/home_binding.dart';
 import 'package:paybox/app/services/onboarding_screen.dart';
 
 import '../modules/auth/views/sign_up_view.dart';
@@ -13,7 +16,21 @@ import '../modules/root/view/root_view.dart';
 import 'app_routes.dart';
 
 class Theme1AppPages {
-  static const INITIAL = Routes.HOMEPAGE;
+  GetStorage? _box;
+  late final String? token;
+
+  Theme1AppPages() {
+    _box = GetStorage();
+    token = _box!.read('token');
+  }
+
+  // static Future<String> getInitialRoute() async {
+  //   final _box = GetStorage();
+  //   final token = await _box.read('token');
+  //   return token == null ? Routes.ONBORDING : Routes.LOGIN;
+  // }
+
+  static const INITIAL = Routes.ONBORDING;
   static final routes = [
     GetPage(name: Routes.ONBORDING, page: () => const OnboardingScreen()),
     GetPage(
@@ -45,6 +62,11 @@ class Theme1AppPages {
       name: Routes.ABOUTUS,
       page: () => const AboutUsPage(),
       binding: ProfileBinding(),
+    ),
+    GetPage(
+      name: Routes.DEALSDETAILS,
+      page: () => DealsDetails(),
+      binding: HomeBinding(),
     ),
   ];
 }
