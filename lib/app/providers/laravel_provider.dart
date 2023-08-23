@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 
 import 'package:dio_http_cache/dio_http_cache.dart';
@@ -5,6 +7,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:paybox/app/models/category_model.dart' as categoryydata;
+import 'package:paybox/app/models/allDeals_model.dart' as alldealsdata;
+
 import 'package:paybox/app/models/deals_model.dart';
 import 'package:paybox/app/modules/auth/controllers/auth_controller.dart';
 import 'package:paybox/app/providers/api_provider.dart';
@@ -61,7 +65,7 @@ class LaravelApiClient extends GetxService with ApiClient {
   }
 
   Future<User> register(User user) async {
-    print('1111');
+    Get.log('In Laravel Provider');
     Uri _uri = getApiBaseUri("register");
 
     Get.log(_uri.toString());
@@ -74,19 +78,25 @@ class LaravelApiClient extends GetxService with ApiClient {
     var responsedata = json.decode(response.data);
     print(responsedata["success"]);
     print('new resss');
+    var data = responsedata["data"];
+    if (data != null) {
+      var token = responsedata["token"];
+      print('toooooooooken: $token');
 
-    var token = responsedata["token"];
-    print('toooooooooken: $token');
+      var id = responsedata["id"];
+      print('id: $id');
 
-    var name = responsedata["data"]['name'];
-    print('name: $name');
+      var name = responsedata["data"]['name'];
+      print('name: $name');
 
-    var email = responsedata["data"]['email'];
-    print('email: $email');
+      var email = responsedata["data"]['email'];
+      print('email: $email');
 
-    _box!.write('token', token);
-    _box!.write('name', name);
-    _box!.write('email', email);
+      _box!.write('token', token);
+      _box!.write('name', name);
+      _box!.write('email', email);
+      _box!.write('id', id);
+    }
 
     if (responsedata['success'] == true) {
       // response.data['data']['auth'] = true;
@@ -112,21 +122,24 @@ class LaravelApiClient extends GetxService with ApiClient {
     );
     print(response.data);
     var responsedata = json.decode(response.data);
-    print(responsedata["success"]);
-    print('new resss');
+    var data = responsedata['data'];
+    if (data != null) {
+      print(responsedata["success"]);
+      print('new resss');
 
-    var token = responsedata["token"];
-    print('toooooooooken: $token');
+      var token = responsedata["token"];
+      print('toooooooooken: $token');
 
-    var name = responsedata["data"]['name'];
-    print('name: $name');
+      var name = responsedata["data"]['name'];
+      print('name: $name');
 
-    var email = responsedata["data"]['email'];
-    print('email: $email');
+      var email = responsedata["data"]['email'];
+      print('email: $email');
 
-    _box!.write('token', token);
-    _box!.write('name', name);
-    _box!.write('email', email);
+      _box!.write('token', token);
+      _box!.write('name', name);
+      _box!.write('email', email);
+    }
 
     if (responsedata['success'] == true) {
       // response.data['data']['auth'] = true;
@@ -134,6 +147,40 @@ class LaravelApiClient extends GetxService with ApiClient {
       print('2222');
 
       return User.fromJson(responsedata);
+    } else {
+      print('not 2222');
+      throw Exception(responsedata['error']);
+    }
+  }
+
+  Future<void> getFcmToken(
+    String userId,
+    String fcmId,
+    String platform,
+  ) async {
+    print('1111');
+    Uri _uri = getDealsApiBaseUri("store/fcmtoken");
+
+    Get.log(_uri.toString());
+
+    Map<String, dynamic> requestData = {
+      "user_id": userId,
+      "fcm_id": fcmId,
+      "platform": platform,
+    };
+
+    var response = await _httpClient!.postUri(
+      _uri,
+      data: json.encode(requestData),
+      options: _optionsNetwork,
+    );
+    var responsedata = json.decode(response.data);
+
+    if (responsedata['success'] == true) {
+      // response.data['data']['auth'] = true;
+      print(responsedata['message']);
+
+      // return User.fromJson(responsedata);
     } else {
       print('not 2222');
       throw Exception(responsedata['error']);
@@ -255,29 +302,71 @@ class LaravelApiClient extends GetxService with ApiClient {
     }
   }
 
-  Future<List<TrendingDealsModel>> getTrendingDeals() async {
-    // const _queryParameters = {
-    //   'parent': 'true',
-    //   'orderBy': 'order',
-    //   'sortBy': 'asc',
-    // };
+  // Future<List<alldealsdata.Data>> getAllDeals() async {
+  //   // const _queryParameters = {
+  //   //   'parent': 'true',
+  //   //   'orderBy': 'order',
+  //   //   'sortBy': 'asc',
+  //   // };
+  //   Uri _uri = getDealsApiBaseUri("all/deals");
+  //   // .replace(queryParameters: _queryParameters);
+  //   Get.log(_uri.toString());
+  //   var response = await _httpClient!.getUri(_uri, options: _optionsCache);
+  //   Get.log('responseeeeee ready');
 
-    Uri _uri = getDealsApiBaseUri("deals");
-    // .replace(queryParameters: _queryParameters);
-    Get.log(_uri.toString());
+  //   var responsedata = json.decode(response.data);
+  //   print(responsedata);
+
+  //   if (responsedata['success'] == true) {
+  //     Get.log('responseeeeee success');
+  //     return responsedata['data']
+  //         .map<alldealsdata.Data>((obj) => alldealsdata.Data.fromJson(obj))
+  //         .toList();
+  //   } else {
+  //     throw Exception(response.data['message']);
+  //   }
+  // }
+
+  Future<List<alldealsdata.Data>> getAllDeals() async {
+    Uri _uri = getDealsApiBaseUri("all/deals");
     var response = await _httpClient!.getUri(_uri, options: _optionsCache);
-    Get.log('responseeeeee ready');
 
     var responsedata = json.decode(response.data);
-    print(responsedata);
 
     if (responsedata['success'] == true) {
-      Get.log('responseeeeee success');
-      return responsedata['data']['trendingDeals']
-          .map<TrendingDealsModel>((obj) => TrendingDealsModel.fromJson(obj))
-          .toList();
+      List<alldealsdata.Data> businessesWithDeals = [];
+      for (var businessData in responsedata['data']) {
+        List<alldealsdata.Deals> deals =
+            (businessData['deals'] as List<dynamic>?)
+                    ?.map<alldealsdata.Deals>((deal) => alldealsdata.Deals(
+                          id: deal['id'],
+                          businessName: deal['business_name'],
+                          businessLogo: deal['business_logo'],
+                          address: deal['address'],
+                          dealPrice: deal['deal_price'],
+                          startPrice: deal['start_price'],
+                          endDate: deal['end_date'],
+                          description: deal['description'],
+                          about: deal['about'],
+
+                          // salevalue: deal[''],
+                        ))
+                    .toList() ??
+                [];
+
+        alldealsdata.Data businessWithDeals = alldealsdata.Data(
+          businessTitle: businessData['business_title'],
+          logo: businessData['logo'],
+          address: businessData['address'],
+          deals: deals, // Assign the deals list to the businessWithDeals
+        );
+
+        businessesWithDeals.add(businessWithDeals);
+      }
+
+      return businessesWithDeals;
     } else {
-      throw Exception(response.data['message']);
+      throw Exception(responsedata['message']);
     }
   }
 
@@ -443,33 +532,56 @@ class LaravelApiClient extends GetxService with ApiClient {
     }
   }
 
-  Future<User> deleteUser() async {
-    print('1111');
-    Uri _uri = deleteUserApiBaseUri("user/1");
-
+  Future getDeleteUser() async {
+    // const _queryParameters = {
+    //   'parent': 'true',
+    //   'orderBy': 'order',
+    //   'sortBy': 'asc',
+    // };
+    print('5');
+    var id = _box!.read('id');
+    Uri _uri = getDealsApiBaseUri("delete/user/$id");
+    // .replace(queryParameters: _queryParameters);
     Get.log(_uri.toString());
-    var response = await _httpClient!.getUri(
-      _uri,
-      // data: json.encode(user.toJson()),
-      options: _optionsNetwork,
-    );
-    print(response.data);
-    var responsedata = json.decode(response.data);
-    print(responsedata["success"]);
-    print('new resss');
+    var response = await _httpClient!.getUri(_uri, options: _optionsCache);
+    Get.log('responseeeeee ready');
 
-    // var token = responsedata["token"];
-    // print('toooooooooken: $token');
+    var responsedata = json.decode(response.data);
+    print(responsedata);
 
     if (responsedata['success'] == true) {
-      // response.data['data']['auth'] = true;
-      print(responsedata['success']);
-      print('2222 .. deleteUser APi done');
-
-      return User.fromJson(responsedata);
+      Get.log('responseeeeee success');
+      // return responsedata['data']['trendingDeals']
+      //     .map<TrendingDealsModel>((obj) => TrendingDealsModel.fromJson(obj))
+      //     .toList();
     } else {
-      print('not 2222');
-      throw Exception(responsedata['error']);
+      throw Exception(response.data['message']);
+    }
+  }
+
+  Future<List<TrendingDealsModel>> getTrendingDeals() async {
+    // const _queryParameters = {
+    //   'parent': 'true',
+    //   'orderBy': 'order',
+    //   'sortBy': 'asc',
+    // };
+
+    Uri _uri = getDealsApiBaseUri("deals");
+    // .replace(queryParameters: _queryParameters);
+    Get.log(_uri.toString());
+    var response = await _httpClient!.getUri(_uri, options: _optionsCache);
+    Get.log('responseeeeee ready');
+
+    var responsedata = json.decode(response.data);
+    print(responsedata);
+
+    if (responsedata['success'] == true) {
+      Get.log('responseeeeee success');
+      return responsedata['data']['trendingDeals']
+          .map<TrendingDealsModel>((obj) => TrendingDealsModel.fromJson(obj))
+          .toList();
+    } else {
+      throw Exception(response.data['message']);
     }
   }
 
@@ -503,9 +615,9 @@ class LaravelApiClient extends GetxService with ApiClient {
     }
   }
 
-  Future<User> updateProfile() async {
+  Future<User> updateProfilePicture() async {
     print('1111');
-    Uri _uri = getDealsApiBaseUri("/update/profile/pictire/1");
+    Uri _uri = getDealsApiBaseUri("/update/profile/image/1");
 
     Get.log(_uri.toString());
     var response = await _httpClient!.postUri(
@@ -534,19 +646,23 @@ class LaravelApiClient extends GetxService with ApiClient {
   }
 
   Future<User> updateUser() async {
-    print('1111');
-    Uri _uri = getDealsApiBaseUri("/update/user/1");
+    int id = _box!.read('id') ?? 2;
+    Get.log(id.toString());
+    Uri _uri = getDealsApiBaseUri("/update/user/$id");
 
     Get.log(_uri.toString());
+    Map updatedUser = {
+      "name": "afaq",
+      "telephone": "1234",
+    };
+
     var response = await _httpClient!.postUri(
       _uri,
-      // data: json.encode(),
+      data: json.encode(updatedUser),
       options: _optionsNetwork,
     );
-    print(response.data);
+
     var responsedata = json.decode(response.data);
-    print(responsedata["success"]);
-    print('new resss');
 
     // var token = responsedata["token"];
     // print('toooooooooken: $token');
@@ -554,7 +670,6 @@ class LaravelApiClient extends GetxService with ApiClient {
     if (responsedata['success'] == true) {
       // response.data['data']['auth'] = true;
       print(responsedata['success']);
-      print('2222  for updateUser');
 
       return User.fromJson(responsedata);
     } else {

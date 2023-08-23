@@ -31,13 +31,13 @@ class _MyPurchasesState extends State<MyPurchases> {
   Widget build(BuildContext context) {
     return Card(
       child: SizedBox(
-          width: 370,
+          width: double.infinity,
           height: 93,
           child: Row(
             children: [
               SizedBox(
                   height: 93,
-                  width: 185,
+                  width: 220,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -56,7 +56,7 @@ class _MyPurchasesState extends State<MyPurchases> {
                             children: [
                               SizedBox(
                                 // height: 30,
-                                width: 100,
+                                width: 130,
                                 child: TextWidget(
                                     text: widget.title!,
                                     textStyle: const TextStyle(
@@ -66,7 +66,7 @@ class _MyPurchasesState extends State<MyPurchases> {
                               ),
                               SizedBox(
                                 height: 30,
-                                width: 105,
+                                width: 130,
                                 child: TextWidget(
                                     text: widget.subtitle!,
                                     textStyle: const TextStyle(
@@ -85,7 +85,7 @@ class _MyPurchasesState extends State<MyPurchases> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SizedBox(
-                              width: 88,
+                              width: 120,
                               child: TextWidget(
                                   text: widget.openingtime!,
                                   textStyle: const TextStyle(
@@ -96,7 +96,7 @@ class _MyPurchasesState extends State<MyPurchases> {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(
-                                left: 29,
+                                left: 20,
                               ),
                               child: TextWidget(
                                   text: widget.oldprize!,
@@ -121,12 +121,12 @@ class _MyPurchasesState extends State<MyPurchases> {
                   )),
               SizedBox(
                 height: 93,
-                width: 185,
+                width: 150,
                 child: Stack(
                   children: [
                     Image.asset(widget.mainpctrpath!),
                     Padding(
-                      padding: const EdgeInsets.only(left: 80.5, top: 16),
+                      padding: const EdgeInsets.only(left: 70.5, top: 16),
                       child: Container(
                         height: 18,
                         width: 70,

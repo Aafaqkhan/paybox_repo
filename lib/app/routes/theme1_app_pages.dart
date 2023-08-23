@@ -17,7 +17,7 @@ import 'app_routes.dart';
 
 class Theme1AppPages {
   GetStorage? _box;
-  late final String? token;
+  late String? token;
 
   Theme1AppPages() {
     _box = GetStorage();
@@ -32,7 +32,7 @@ class Theme1AppPages {
 
   static const INITIAL = Routes.ONBORDING;
   static final routes = [
-    GetPage(name: Routes.ONBORDING, page: () => const OnboardingScreen()),
+    GetPage(name: Routes.ONBORDING, page: () => OnboardingScreen()),
     GetPage(
       name: Routes.LOGIN,
       page: () => const LoginView(),
@@ -62,6 +62,11 @@ class Theme1AppPages {
       name: Routes.ABOUTUS,
       page: () => const AboutUsPage(),
       binding: ProfileBinding(),
+    ),
+    GetPage(
+      name: Routes.DEALSDETAILS,
+      page: () => DealsDetails(),
+      binding: HomeBinding(),
     ),
     GetPage(
       name: Routes.DEALSDETAILS,

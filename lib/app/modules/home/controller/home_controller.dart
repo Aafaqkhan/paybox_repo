@@ -12,10 +12,14 @@ class HomeController extends GetxController {
 
   final trendingDeals = <TrendingDealsModel>[].obs;
 
-  // RxList<cat.Data> data = <cat.Data>[].obs;
-
   HomeController() {
     _homeRepository = HomeRepository();
+  }
+
+  @override
+  Future onInit() async {
+    super.onInit();
+    getTrendingDeals();
   }
 
   Future getTrendingDeals() async {
@@ -78,9 +82,9 @@ class HomeController extends GetxController {
   //   // }
   // }
 
-  Future getCategories() async {
-    // }
-  }
+  // Future getCategories() async {
+  //   // }
+  // }
 
   // void getStores() async {
   //   // Get.focusScope!.unfocus();

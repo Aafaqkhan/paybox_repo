@@ -12,6 +12,7 @@ class LoginView extends GetView<AuthController> {
 
   @override
   Widget build(BuildContext context) {
+    // controller.getFcmToken();
     controller.loginFormKey = GlobalKey<FormState>();
 
     return Scaffold(
@@ -99,8 +100,8 @@ class LoginView extends GetView<AuthController> {
                                     controller.currentUser!.value.password,
                                 onSaved: (input) => controller
                                     .currentUser!.value.password = input!,
-                                validator: (input) => input!.length < 3
-                                    ? "Should be more than 3 characters".tr
+                                validator: (input) => input!.length < 6
+                                    ? "Should be more than 6 characters".tr
                                     : null,
                                 iconData: Icons.alternate_email,
                                 obscureText: controller.loginHidePassword.value,
@@ -148,7 +149,7 @@ class LoginView extends GetView<AuthController> {
                             //   ],
                             // ),
                             Obx(() {
-                              return controller.loading == false
+                              return controller.loginLoading == false
                                   ? BlockButtonWidget(
                                       onPressed: () {
                                         controller.login();

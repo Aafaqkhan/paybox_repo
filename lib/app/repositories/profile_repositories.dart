@@ -4,10 +4,8 @@ import 'package:paybox/app/providers/laravel_provider.dart';
 class ProfileRepository {
   LaravelApiClient? _laravelApiClient;
 
-  ProfileRepository();
-
-  asd() {
-    print('aaaaaaaaaaaaaa');
+  ProfileRepository() {
+    _laravelApiClient = LaravelApiClient();
   }
 
   Future<void> getUserProfile() {
@@ -22,10 +20,10 @@ class ProfileRepository {
     return _laravelApiClient!.getAllUsers();
   }
 
-  Future<void> deleteUser() {
-    _laravelApiClient = Get.find<LaravelApiClient>();
-    print('00000');
-    return _laravelApiClient!.deleteUser();
+  Future getDeleteUser() {
+    print('3');
+    if (_laravelApiClient == null) print('4');
+    return _laravelApiClient!.getDeleteUser();
   }
 
   Future<void> restoreUpdate() {
@@ -40,15 +38,15 @@ class ProfileRepository {
     return _laravelApiClient!.storeToken();
   }
 
-  Future<void> updateProfile() {
+  Future<void> updateProfilePicture() {
     _laravelApiClient = Get.find<LaravelApiClient>();
-    print('00000');
-    return _laravelApiClient!.updateProfile();
+
+    return _laravelApiClient!.updateProfilePicture();
   }
 
   Future<void> updateUser() {
     _laravelApiClient = Get.find<LaravelApiClient>();
-    print('00000');
+
     return _laravelApiClient!.updateUser();
   }
 }

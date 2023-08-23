@@ -27,15 +27,26 @@ class _MyGlobalDealTitlesState extends State<MyGlobalDealTitles> {
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 7),
-              child: SizedBox(
-                  width: 53,
-                  height: 60,
-                  child: Image.asset(widget.avatarpath!)),
+              child: CircleAvatar(
+                radius: 30,
+                backgroundColor:
+                    Colors.transparent, // Set a transparent background color
+                child: ClipOval(
+                  child: Image.network(
+                    "https://paybox.jzmaxx.com/" + widget.avatarpath!,
+                    fit: BoxFit.cover, // Make sure the image covers the circle
+                    width:
+                        60, // Double the radius to ensure the image covers the circle
+                    height:
+                        60, // Double the radius to ensure the image covers the circle
+                  ),
+                ),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 27),
               child: SizedBox(
-                height: 60,
+                height: 75,
                 width: 203,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,

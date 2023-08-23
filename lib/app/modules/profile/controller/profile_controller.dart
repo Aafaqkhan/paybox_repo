@@ -10,6 +10,12 @@ class ProfileController extends GetxController {
     _profileRepository = ProfileRepository();
   }
 
+  @override
+  void onInit() {
+    super.onInit();
+    getDeleteUser();
+  }
+
   void getUserProfile() async {
     print('$_profileRepository');
     // Get.focusScope!.unfocus();
@@ -35,29 +41,15 @@ class ProfileController extends GetxController {
     // }
   }
 
-  void deleteUser() async {
-    print('$_profileRepository');
-    // Get.focusScope!.unfocus();
-    // if (registerFormKey!.currentState!.validate()) {
-    //   registerFormKey!.currentState!.save();
-    //   loading.value = true;
-    // print("register here please");
-    print('ready to fetch deleteUser api');
+  Future getDeleteUser() async {
+    if (_profileRepository == null) Get.log('_profileRepository is null');
     try {
-      if (_profileRepository == null) print('_profileRepository is null');
-      await _profileRepository!.deleteUser();
-      // loading.value = false;
-      // print('before going to home page');
-      // Get.toNamed(Routes.LOGIN);
-      // print('After went to home page');
+      print('2');
+      await _profileRepository!.getDeleteUser();
+      // print(deals[0].name);
     } catch (e) {
-      print(e.toString());
       Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
-      print('snaaaaaaaaak bar');
-    } finally {
-      // loading.value = false;
     }
-    // }
   }
 
   void restoreUpdate() async {
@@ -116,9 +108,6 @@ class ProfileController extends GetxController {
         // loading.value == false
         // loginFormKey!.currentState!.validate()
         ) {
-      // loginFormKey!.currentState!.save();
-      // loading.value = true;
-      // print("login here please");
       print('ready to call storeTOken API');
       try {
         // final token = await _userRepository!.login(currentUser!.value);
@@ -138,7 +127,7 @@ class ProfileController extends GetxController {
     }
   }
 
-  void updateProfile() async {
+  void updateProfilePicture() async {
     Get.focusScope!.unfocus();
     if (1 == 1
         // loading.value == false
@@ -151,7 +140,7 @@ class ProfileController extends GetxController {
       try {
         // final token = await _userRepository!.login(currentUser!.value);
         // saveToken(token); // Save the token
-        await _profileRepository!.updateProfile();
+        await _profileRepository!.updateProfilePicture();
         // loading.value = false;
         // print('before going to home page');
         // Get.toNamed(Routes.HOMEPAGE);
@@ -167,7 +156,7 @@ class ProfileController extends GetxController {
   }
 
   void updateUser() async {
-    Get.focusScope!.unfocus();
+    // Get.focusScope!.unfocus();
     if (1 == 1
         // loading.value == false
         // loginFormKey!.currentState!.validate()

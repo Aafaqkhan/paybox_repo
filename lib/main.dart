@@ -4,6 +4,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:paybox/app/modules/auth/controllers/auth_controller.dart';
+import 'package:paybox/app/modules/home/controller/home_controller.dart';
 
 import 'app/providers/laravel_provider.dart';
 import 'app/routes/theme1_app_pages.dart';
@@ -23,6 +25,8 @@ initServices() async {
   // await Get.putAsync(() => FirebaseProvider().init());
   await Get.putAsync(() => SettingsService().init());
   // await Get.putAsync(() => TranslationService().init());R
+  // await AuthController().onInit();
+  // await HomeController().onInit();
   Get.log('All services started...');
 }
 

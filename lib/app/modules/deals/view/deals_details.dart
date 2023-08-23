@@ -78,7 +78,7 @@ class DealsDetails extends StatelessWidget {
                                   topLeft: Radius.circular(12),
                                   bottomLeft: Radius.circular(12))),
                           child: TextWidget(
-                              text: saleValue ?? "",
+                              text: '$saleValue off',
                               textStyle: TextStyle(
                                   fontSize: 12,
                                   fontFamily: "Montserrat",
@@ -229,7 +229,7 @@ class DealsDetails extends StatelessWidget {
                     const SizedBox(
                       height: 32,
                     ),
-                    const Text('About Range Desserts',
+                    Text('About $buisnessName',
                         style: TextStyle(
                             fontSize: 14,
                             fontFamily: "Montserrat",

@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:paybox/app/modules/profile/view/profile_view.dart';
 import 'package:paybox/app/services/colors/custom_colors.dart';
 
-class DeleteAccount extends StatefulWidget {
-  const DeleteAccount({super.key});
+class DeleteAccount extends StatelessWidget {
+    final VoidCallback? onPressed;
 
-  @override
-  State<DeleteAccount> createState() => _DeleteAccountState();
-}
+  const DeleteAccount({super.key, required this.onPressed});
 
-class _DeleteAccountState extends State<DeleteAccount> {
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -56,7 +54,7 @@ class _DeleteAccountState extends State<DeleteAccount> {
                   height: 40,
                   width: 233,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: onPressed,
                     child: TextWidget(
                         text: 'Delete',
                         textStyle: TextStyle(

@@ -9,7 +9,7 @@ class UserRepository {
   UserRepository();
   Future<User> register(User user) {
     _laravelApiClient = Get.find<LaravelApiClient>();
-    print('00000');
+    Get.log('00000');
     return _laravelApiClient!.register(user);
   }
 
@@ -17,6 +17,16 @@ class UserRepository {
     _laravelApiClient = Get.find<LaravelApiClient>();
     print('00000');
     return _laravelApiClient!.login(user);
+  }
+
+  Future<void> getFcmToken(
+    String userId,
+    String fcmId,
+    String platform,
+  ) {
+    _laravelApiClient = Get.find<LaravelApiClient>();
+    print('00000');
+    return _laravelApiClient!.getFcmToken(userId, fcmId, platform);
   }
 
   Future<User> forgotPassword() {

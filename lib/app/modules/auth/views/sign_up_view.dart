@@ -12,7 +12,7 @@ class SignUpView extends GetView<AuthController> {
 
   @override
   Widget build(BuildContext context) {
-    controller.forgotPassword();
+    // controller.forgotPassword();
     controller.registerFormKey = GlobalKey<FormState>();
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -79,155 +79,153 @@ class SignUpView extends GetView<AuthController> {
                                 height: 15,
                               ),
                               Obx(() {
-                                if (controller.loading.isTrue) {
-                                  return const CircularProgressIndicator();
-                                } else {
-                                  // ignore: prefer_const_constructors
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      TextFieldWidget(
-                                        hintText: "Adward James",
-                                        labelText: "Name",
-                                        initialValue:
-                                            controller.currentUser!.value.name,
-                                        onSaved: (input) => controller
-                                            .currentUser!.value.name = input!,
-                                        validator: (input) => input!.length < 3
-                                            ? "Should be more than 3 characters"
-                                                .tr
-                                            : null,
-                                        isFirst: true,
-                                        isLast: false,
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      TextFieldWidget(
-                                        hintText: "johndoe@gmail.com",
-                                        labelText: "Email Address",
-                                        initialValue:
-                                            controller.currentUser!.value.email,
-                                        onSaved: (input) => controller
-                                            .currentUser!.value.email = input!,
-                                        validator: (input) =>
-                                            !input!.contains('@')
-                                                ? "Should be a valid email".tr
-                                                : null,
-                                        iconData: Icons.alternate_email,
-                                        isFirst: false,
-                                        isLast: false,
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      TextFieldWidget(
-                                        hintText: "09876543987",
-                                        labelText: "Phone Number",
+                                // if (controller.signupLoading.isTrue) {
+                                //   return const CircularProgressIndicator();
+                                // } else {
+                                // ignore: prefer_const_constructors
+                                return Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    TextFieldWidget(
+                                      hintText: "Adward James",
+                                      labelText: "Name",
+                                      initialValue:
+                                          controller.currentUser?.value.name ??
+                                              'Guest',
+                                      onSaved: (input) => controller
+                                          .currentUser!.value.name = input!,
+                                      validator: (input) => input!.length < 3
+                                          ? "Should be more than 3 characters"
+                                              .tr
+                                          : null,
+                                      isFirst: true,
+                                      isLast: false,
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    TextFieldWidget(
+                                      hintText: "johndoe@gmail.com",
+                                      labelText: "Email Address",
+                                      initialValue:
+                                          controller.currentUser!.value.email,
+                                      onSaved: (input) => controller
+                                          .currentUser!.value.email = input!,
+                                      validator: (input) =>
+                                          !input!.contains('@')
+                                              ? "Should be a valid email".tr
+                                              : null,
+                                      iconData: Icons.alternate_email,
+                                      isFirst: false,
+                                      isLast: false,
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    TextFieldWidget(
+                                      hintText: "09876543987",
+                                      labelText: "Phone Number",
+                                      initialValue: controller
+                                          .currentUser!.value.telephone,
+                                      onSaved: (input) => controller
+                                          .currentUser!
+                                          .value
+                                          .telephone = input!,
+                                      isFirst: false,
+                                      isLast: false,
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Obx(() {
+                                      return TextFieldWidget(
+                                        labelText: "Password".tr,
+                                        hintText: "••••••••••••".tr,
                                         initialValue: controller
-                                            .currentUser!.value.telephone,
+                                            .currentUser!.value.password,
                                         onSaved: (input) => controller
                                             .currentUser!
                                             .value
-                                            .telephone = input!,
+                                            .password = input!,
+                                        validator: (input) => input!.length < 6
+                                            ? "Should be more than 6 characters"
+                                                .tr
+                                            : null,
+                                        obscureText:
+                                            controller.hidePassword.value,
+                                        iconData: Icons.lock_outline,
+                                        keyboardType:
+                                            TextInputType.visiblePassword,
+                                        isLast: true,
                                         isFirst: false,
-                                        isLast: false,
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Obx(() {
-                                        return TextFieldWidget(
-                                          labelText: "Password".tr,
-                                          hintText: "••••••••••••".tr,
-                                          initialValue: controller
-                                              .currentUser!.value.password,
-                                          onSaved: (input) => controller
-                                              .currentUser!
-                                              .value
-                                              .password = input!,
-                                          validator: (input) => input!.length <
-                                                  3
-                                              ? "Should be more than 3 characters"
-                                                  .tr
-                                              : null,
-                                          obscureText:
-                                              controller.hidePassword.value,
-                                          iconData: Icons.lock_outline,
-                                          keyboardType:
-                                              TextInputType.visiblePassword,
-                                          isLast: true,
-                                          isFirst: false,
-                                          suffixIcon: IconButton(
-                                            onPressed: () {
-                                              controller.hidePassword.value =
-                                                  !controller
-                                                      .hidePassword.value;
-                                            },
-                                            color: Theme.of(context).focusColor,
-                                            icon: Icon(controller
-                                                    .hidePassword.value
-                                                ? Icons.visibility_outlined
-                                                : Icons
-                                                    .visibility_off_outlined),
-                                          ),
-                                        );
-                                      }),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Obx(() {
-                                        return TextFieldWidget(
-                                          // key: UniqueKey(),
-                                          hintText: "••••••••••",
-                                          labelText: "Re-Enter Password",
-                                          initialValue: controller
-                                              .currentUser!.value.password,
-                                          onSaved: (input) => controller
-                                              .currentUser!
-                                              .value
-                                              .password = input!,
-                                          validator: (input) => input!.length <
-                                                  3
-                                              ? "Should be more than 3 characters"
-                                                  .tr
-                                              : null,
-                                          obscureText: controller
-                                              .hideConfirmPassword.value,
-                                          iconData: Icons.lock_outline,
-                                          keyboardType:
-                                              TextInputType.visiblePassword,
-                                          isLast: true,
-                                          isFirst: false,
-                                          suffixIcon: IconButton(
-                                            onPressed: () {
-                                              controller.hideConfirmPassword
-                                                      .value =
-                                                  !controller
-                                                      .hideConfirmPassword
-                                                      .value;
-                                            },
-                                            color: Theme.of(context).focusColor,
-                                            icon: Icon(controller
-                                                    .hideConfirmPassword.value
-                                                ? Icons.visibility_outlined
-                                                : Icons
-                                                    .visibility_off_outlined),
-                                          ),
-                                        );
-                                      }),
-                                    ],
-                                  );
-                                }
-                              }),
+                                        suffixIcon: IconButton(
+                                          onPressed: () {
+                                            controller.hidePassword.value =
+                                                !controller.hidePassword.value;
+                                          },
+                                          color: Theme.of(context).focusColor,
+                                          icon: Icon(controller
+                                                  .hidePassword.value
+                                              ? Icons.visibility_outlined
+                                              : Icons.visibility_off_outlined),
+                                        ),
+                                      );
+                                    }),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Obx(() {
+                                      return TextFieldWidget(
+                                        // key: UniqueKey(),
+                                        hintText: "••••••••••",
+                                        labelText: "Re-Enter Password",
+                                        initialValue: controller
+                                            .currentUser!.value.password,
+                                        onSaved: (input) => controller
+                                            .currentUser!
+                                            .value
+                                            .password = input!,
+                                        validator: (input) => input!.length < 6
+                                            ? "Should be more than 6 characters"
+                                                .tr
+                                            : null,
+                                        obscureText: controller
+                                            .hideConfirmPassword.value,
+                                        iconData: Icons.lock_outline,
+                                        keyboardType:
+                                            TextInputType.visiblePassword,
+                                        isLast: true,
+                                        isFirst: false,
+                                        suffixIcon: IconButton(
+                                          onPressed: () {
+                                            controller
+                                                    .hideConfirmPassword.value =
+                                                !controller
+                                                    .hideConfirmPassword.value;
+                                          },
+                                          color: Theme.of(context).focusColor,
+                                          icon: Icon(controller
+                                                  .hideConfirmPassword.value
+                                              ? Icons.visibility_outlined
+                                              : Icons.visibility_off_outlined),
+                                        ),
+                                      );
+                                    }),
+                                  ],
+                                );
+                              }
+                                  // }
+                                  ),
                               SizedBox(
                                 height: 20,
                               ),
                               Obx(() {
-                                return controller.loading == false
+                                return controller.signupLoading == false
                                     ? BlockButtonWidget(
                                         onPressed: () {
+                                          print('1');
+                                          Get.log('11');
                                           controller.register();
                                         },
                                         color: AppColors.maincolor,

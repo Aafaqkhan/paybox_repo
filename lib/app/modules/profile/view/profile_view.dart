@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:paybox/app/modules/auth/controllers/auth_controller.dart';
 import 'package:paybox/app/modules/profile/controller/profile_controller.dart';
 import 'package:paybox/app/modules/profile/view/Loyalty_points.dart';
 import 'package:paybox/app/modules/profile/view/change_password.dart';
@@ -12,11 +13,16 @@ import 'package:paybox/app/services/global_profile.dart';
 import '../../../services/colors/custom_colors.dart';
 
 class ProfileView extends GetView<ProfileController> {
+  final AuthController authController =
+      Get.put(AuthController()); // Initialize AuthController
+
+  final _box = GetStorage();
+
   void _showChangePasswordDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
+        return const AlertDialog(
           content: ChangePassword(),
         );
       },
@@ -27,7 +33,7 @@ class ProfileView extends GetView<ProfileController> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
+        return const AlertDialog(
           content: MyCustomerSupport(),
         );
       },
@@ -38,7 +44,7 @@ class ProfileView extends GetView<ProfileController> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
+        return const AlertDialog(
           content: LoyaltyPoints(),
         );
       },
@@ -50,7 +56,16 @@ class ProfileView extends GetView<ProfileController> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          content: DeleteAccount(),
+          content: DeleteAccount(
+            onPressed: () async {
+              // final authController = Get.find<AuthController>();
+              authController.loginLoading = false.obs;
+              authController.signupLoading = false.obs;
+              await controller.getDeleteUser();
+              await _box.erase();
+              Navigator.of(context).pushReplacementNamed('/login');
+            },
+          ),
         );
       },
     );
@@ -60,8 +75,44 @@ class ProfileView extends GetView<ProfileController> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
+        return const AlertDialog(
           content: EditProf(),
+        );
+      },
+    );
+  }
+
+  void showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Logout'),
+          content: const Text('Are you sure you want to logout?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('No'),
+            ),
+            TextButton(
+              onPressed: () async {
+                // Perform logout logic here
+                // For example, clear user session and navigate to login screen
+                // logoutUser();
+                final authController = Get.find<AuthController>();
+                authController.loginLoading = false.obs;
+                authController.signupLoading = false.obs;
+
+                await _box.erase();
+                Navigator.of(context).pop();
+                Get.toNamed(Routes.LOGIN);
+                // Close the dialog
+              },
+              child: const Text('Yes'),
+            ),
+          ],
         );
       },
     );
@@ -76,7 +127,7 @@ class ProfileView extends GetView<ProfileController> {
     final name = _box.read('name');
     final email = _box.read('email');
 
-    // controller.updateUser();
+    controller.updateUser();
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -116,15 +167,15 @@ class ProfileView extends GetView<ProfileController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             TextWidget(
-                                text: name,
-                                textStyle: TextStyle(
+                                text: name ?? 'Guest',
+                                textStyle: const TextStyle(
                                     fontSize: 16,
                                     fontFamily: "Montserrat",
                                     fontWeight: FontWeight.w700,
                                     color: Color(0xff000000))),
                             TextWidget(
-                                text: email,
-                                textStyle: TextStyle(
+                                text: email ?? "Guest@guest.com",
+                                textStyle: const TextStyle(
                                     fontSize: 12,
                                     fontFamily: "Montserrat",
                                     fontWeight: FontWeight.w400,
@@ -184,8 +235,8 @@ class ProfileView extends GetView<ProfileController> {
                           onPressed: () {
                             _showLoyaltyPointsDialog(context);
                           },
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10),
+                          child: const Padding(
+                            padding: EdgeInsets.only(left: 10),
                             child: TextWidget(
                               text: "Loyalty Points",
                               textStyle: TextStyle(
@@ -197,8 +248,8 @@ class ProfileView extends GetView<ProfileController> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 20, top: 7),
+                        const Padding(
+                          padding: EdgeInsets.only(right: 20, top: 7),
                           child: TextWidget(
                               text: "100+",
                               textStyle: TextStyle(
@@ -215,7 +266,7 @@ class ProfileView extends GetView<ProfileController> {
                     onPressed: () {
                       _showChangePasswordDialog(context);
                     },
-                    child: MyGlobalProfile(
+                    child: const MyGlobalProfile(
                       title: "Change Password ",
                     ),
                   ),
@@ -223,7 +274,7 @@ class ProfileView extends GetView<ProfileController> {
                     onPressed: () {
                       _showCustomerSupportDialog(context);
                     },
-                    child: MyGlobalProfile(
+                    child: const MyGlobalProfile(
                       title: "Customer Support ",
                     ),
                   ),
@@ -231,7 +282,7 @@ class ProfileView extends GetView<ProfileController> {
                     onTap: () {
                       Get.toNamed(Routes.PRIVACYPOLICY);
                     },
-                    child: MyGlobalProfile(
+                    child: const MyGlobalProfile(
                       title: "Privacy & Policy ",
                     ),
                   ),
@@ -239,7 +290,7 @@ class ProfileView extends GetView<ProfileController> {
                     onTap: () {
                       Get.toNamed(Routes.TERMCONDITION);
                     },
-                    child: MyGlobalProfile(
+                    child: const MyGlobalProfile(
                       title: "Terms & Conditions ",
                     ),
                   ),
@@ -247,7 +298,7 @@ class ProfileView extends GetView<ProfileController> {
                     onTap: () {
                       Get.toNamed(Routes.ABOUTUS);
                     },
-                    child: MyGlobalProfile(
+                    child: const MyGlobalProfile(
                       title: "About Us ",
                     ),
                   ),
@@ -255,7 +306,7 @@ class ProfileView extends GetView<ProfileController> {
                     onPressed: () {
                       _showDeleteAccountDialog(context);
                     },
-                    child: MyGlobalProfile(
+                    child: const MyGlobalProfile(
                       title: "Delete Account ",
                     ),
                   ),
@@ -264,7 +315,7 @@ class ProfileView extends GetView<ProfileController> {
                       showLogoutDialog(context);
                       // Get.toNamed(Routes.LOGIN);
                     },
-                    child: MyGlobalProfile(
+                    child: const MyGlobalProfile(
                       title: "Logout ",
                     ),
                   ),
@@ -276,35 +327,4 @@ class ProfileView extends GetView<ProfileController> {
       ),
     );
   }
-}
-
-void showLogoutDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('Logout'),
-        content: Text('Are you sure you want to logout?'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(); // Close the dialog
-            },
-            child: Text('No'),
-          ),
-          TextButton(
-            onPressed: () {
-              // Perform logout logic here
-              // For example, clear user session and navigate to login screen
-              // logoutUser();
-              Navigator.of(context).pop();
-              Get.toNamed(Routes.LOGIN);
-              // Close the dialog
-            },
-            child: Text('Yes'),
-          ),
-        ],
-      );
-    },
-  );
 }

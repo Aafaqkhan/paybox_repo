@@ -7,6 +7,8 @@ import 'package:paybox/app/routes/app_routes.dart';
 import 'package:paybox/app/services/global_card.dart';
 import 'package:paybox/app/services/global_feature%20card_images.dart';
 import 'package:paybox/app/services/global_loyality_card.dart';
+import 'package:paybox/app/services/global_shimmer_card.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../services/colors/custom_colors.dart';
 import '../../../services/global_trending.dart';
@@ -18,7 +20,7 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     Get.log('home view');
     // controller.getCategories();
-    controller.getTrendingDeals();
+    // controller.getTrendingDeals();
     // controller.getCategories();
     // controller.getStores();
     return Scaffold(
@@ -130,13 +132,18 @@ class HomeView extends GetView<HomeController> {
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Padding(
-                    padding: EdgeInsets.only(left: 16, top: 22, right: 16),
+                    padding:
+                        const EdgeInsets.only(left: 16, top: 22, right: 16),
                     child: SizedBox(
                       height: 160,
                       child: Obx(() {
                         if (controller.trendingDeals.isEmpty) {
                           // Return a loading indicator or any other placeholder
-                          return const CircularProgressIndicator(); // Replace with your loading widget
+                          return const Row(
+                            children: [
+                              ShimmerList(),
+                            ],
+                          ); // Replace with your loading widget
                         } else {
                           return Row(
                             children: controller.trendingDeals
@@ -251,7 +258,7 @@ class HomeView extends GetView<HomeController> {
                           fontWeight: FontWeight.w400,
                           color: Color(0xff000000))),
                 ),
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(top: 19, left: 8),
                   child: Row(
                     children: [

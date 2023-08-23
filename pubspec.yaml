@@ -37,6 +37,7 @@ dependencies:
   # FONT
   google_fonts: 3.0.1
    #IMAGES, SLIDERS, LAYOUTS
+  introduction_screen: ^3.1.11
   cached_network_image: 3.2.2
   carousel_slider: 4.1.1
   flutter_svg: 1.1.5

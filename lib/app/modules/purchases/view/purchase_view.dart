@@ -34,9 +34,9 @@ class PurchasesView extends GetView<PurchasesController> {
               decoration: InputDecoration(
                   focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,
-                  hintText: 'Search text',
+                  hintText: 'Search by item, brand or location',
                   hintStyle: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       fontFamily: "Montserrat",
                       fontWeight: FontWeight.w400,
                       color: Color(0xff49454F)),
