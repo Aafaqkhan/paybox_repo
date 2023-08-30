@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:paybox/app/providers/laravel_provider.dart';
 
-import '../models/setting_model.dart';
 
 class SettingRepository {
   LaravelApiClient? _laravelApiClient;

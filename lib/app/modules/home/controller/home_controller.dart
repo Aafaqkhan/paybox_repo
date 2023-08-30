@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:paybox/app/models/deals_model.dart';
+import 'package:paybox/app/modules/loyalty/controller/loyalty_controller.dart';
 import 'package:paybox/app/repositories/home_repositories.dart';
 // import 'package:paybox/app/models/category_model.dart' as cat;
 // import 'package:paybox/app/models/category_model.dart';
@@ -12,21 +13,26 @@ class HomeController extends GetxController {
 
   final trendingDeals = <TrendingDealsModel>[].obs;
 
+  LoyaltyController loyaltyController = LoyaltyController();
+
   HomeController() {
     _homeRepository = HomeRepository();
+    loyaltyController = LoyaltyController();
   }
 
   @override
   Future onInit() async {
     super.onInit();
-    getTrendingDeals();
+    await getTrendingDeals();
+    await loyaltyController.getLoyalties();
   }
 
   Future getTrendingDeals() async {
     if (_homeRepository == null) Get.log('_homeRepository is null');
     try {
       trendingDeals.assignAll(await _homeRepository!.getTrendingDeals());
-      // print(deals[0].name);
+      Get.log('Treeeeeeeeeen');
+      Get.log(trendingDeals.length.toString());
     } catch (e) {
       Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
     }
@@ -111,6 +117,7 @@ class HomeController extends GetxController {
 
   Future refreshHome({bool showMessage = false}) async {
     // await getSlider();
+    await loyaltyController.getLoyalties();
     await getTrendingDeals();
     // await getFeatured();
     // await getRecommendedSalons();

@@ -349,7 +349,7 @@ class DioClient {
 
   bool isLoading({String? task, List<String>? tasks}) {
     if (tasks != null) {
-      return _progress.any((_task) => _progress.contains(_task));
+      return _progress.any((task) => _progress.contains(task));
     }
     return _progress.contains(task);
   }

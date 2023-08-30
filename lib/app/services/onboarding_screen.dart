@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:paybox/app/services/colors/custom_colors.dart';
 import '../routes/app_routes.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
@@ -9,7 +8,7 @@ class OnboardingScreen extends StatelessWidget {
   // String _status = 'Waiting...';
   final List<PageViewModel> pages = [
     PageViewModel(
-        titleWidget: SizedBox(),
+        titleWidget: const SizedBox(),
         bodyWidget: Image.asset('assets/images/Login.png')
         // decoration: const PageDecoration(
         //   pageColor: Colors.transparent,
@@ -19,7 +18,7 @@ class OnboardingScreen extends StatelessWidget {
         // next: Icon(Icons.arrow_forward), // Set the 'next' parameter
         ),
     PageViewModel(
-        titleWidget: SizedBox(),
+        titleWidget: const SizedBox(),
         bodyWidget: Image.asset('assets/images/Login-1.png')
         // decoration: const PageDecoration(
         //   pageColor: Colors.transparent,
@@ -29,7 +28,7 @@ class OnboardingScreen extends StatelessWidget {
         // next: Icon(Icons.arrow_forward), // Set the 'next' parameter
         ),
     PageViewModel(
-        titleWidget: SizedBox(),
+        titleWidget: const SizedBox(),
         bodyWidget: Image.asset('assets/images/Login-2.png')
         // decoration: const PageDecoration(
         //   pageColor: Colors.transparent,
@@ -39,7 +38,7 @@ class OnboardingScreen extends StatelessWidget {
         // next: Icon(Icons.arrow_forward), // Set the 'next' parameter
         ),
     PageViewModel(
-        titleWidget: SizedBox(),
+        titleWidget: const SizedBox(),
         bodyWidget: Image.asset('assets/images/Login-3.png')
         // decoration: const PageDecoration(
         //   pageColor: Colors.transparent,
@@ -60,12 +59,14 @@ class OnboardingScreen extends StatelessWidget {
     // Add more pages as needed
   ];
 
+  OnboardingScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return IntroductionScreen(
       // key: _introKey,
 
-      next: Icon(
+      next: const Icon(
         Icons.arrow_forward,
         color: Color(0xFF1025E4),
       ), // Set the 'next' parameter
@@ -120,7 +121,7 @@ class OnboardingScreen extends StatelessWidget {
       dotsDecorator: DotsDecorator(
         size: const Size.square(20.0),
         activeSize: const Size(20.0, 20.0),
-        activeColor: Color.fromRGBO(16, 37, 228, 1),
+        activeColor: const Color.fromRGBO(16, 37, 228, 1),
         color: Colors.black,
         spacing: const EdgeInsets.symmetric(horizontal: 3.0),
         activeShape:

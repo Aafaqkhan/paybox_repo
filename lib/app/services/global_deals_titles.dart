@@ -33,7 +33,7 @@ class _MyGlobalDealTitlesState extends State<MyGlobalDealTitles> {
                     Colors.transparent, // Set a transparent background color
                 child: ClipOval(
                   child: Image.network(
-                    "https://paybox.jzmaxx.com/" + widget.avatarpath!,
+                    "https://paybox.jzmaxx.com/${widget.avatarpath!}",
                     fit: BoxFit.cover, // Make sure the image covers the circle
                     width:
                         60, // Double the radius to ensure the image covers the circle

@@ -6,7 +6,6 @@ import 'package:paybox/app/models/setting_model.dart';
 
 import '../models/address_model.dart';
 import '../repositories/setting_repositorie.dart';
-import 'auth_service.dart';
 
 class SettingsService extends GetxService {
   final setting = Setting().obs;
@@ -400,16 +399,16 @@ class SettingsService extends GetxService {
   // }
 
   String? _getLocale() {
-    String? _locale = GetStorage().read<String>('language');
-    if (_locale == null || _locale.isEmpty) {
-      _locale = setting.value.mobileLanguage;
+    String? locale = GetStorage().read<String>('language');
+    if (locale == null || locale.isEmpty) {
+      locale = setting.value.mobileLanguage;
     }
-    return _locale;
+    return locale;
   }
 
   ThemeMode getThemeMode() {
-    String? _themeMode = GetStorage().read<String>('theme_mode');
-    switch (_themeMode) {
+    String? themeMode = GetStorage().read<String>('theme_mode');
+    switch (themeMode) {
       case 'ThemeMode.light':
         SystemChrome.setSystemUIOverlayStyle(
           SystemUiOverlayStyle.light

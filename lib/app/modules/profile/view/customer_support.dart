@@ -19,8 +19,8 @@ class _MyCustomerSupportState extends State<MyCustomerSupport> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 36,left:25 ),
+          const Padding(
+            padding: EdgeInsets.only(top: 36,left:25 ),
             child: TextWidget(
                 text: 'Customer Support',
                 textStyle: TextStyle(
@@ -29,8 +29,8 @@ class _MyCustomerSupportState extends State<MyCustomerSupport> {
                     color: Color(0xff1025E4),
                     fontFamily: "Montserrat")),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 12,left: 9),
+          const Padding(
+            padding: EdgeInsets.only(top: 12,left: 9),
             child: TextWidget(
                 text:
                     'We will reply to your message within 24hrs',
@@ -41,8 +41,8 @@ class _MyCustomerSupportState extends State<MyCustomerSupport> {
                   fontFamily: "Montserrat",
                 )),
           ),
-           Padding(
-            padding: const EdgeInsets.only(left: 20),
+           const Padding(
+            padding: EdgeInsets.only(left: 20),
             child: TextWidget(
                 text:
                     ' to the email address on your account ',
@@ -53,8 +53,8 @@ class _MyCustomerSupportState extends State<MyCustomerSupport> {
                   fontFamily: "Montserrat",
                 )),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 24,right: 119),
+          const Padding(
+            padding: EdgeInsets.only(top: 24,right: 119),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -73,8 +73,8 @@ class _MyCustomerSupportState extends State<MyCustomerSupport> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20,right: 75),
+          const Padding(
+            padding: EdgeInsets.only(top: 20,right: 75),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -94,8 +94,8 @@ class _MyCustomerSupportState extends State<MyCustomerSupport> {
             ),
             ),
           
-          Padding(
-            padding: const EdgeInsets.only(top: 24,left: 4),
+          const Padding(
+            padding: EdgeInsets.only(top: 24,left: 4),
             child: TextWidget(
                 text: ' Message',
                 textStyle: TextStyle(
@@ -112,26 +112,26 @@ class _MyCustomerSupportState extends State<MyCustomerSupport> {
               width: 252,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4),
-                border: Border.all(width: 1, color: Color(0xff000000)),
+                border: Border.all(width: 1, color: const Color(0xff000000)),
               ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 38,left: 7,),
-            child: Container(
+            child: SizedBox(
               height: 44,
               width: 252,
               child: ElevatedButton(
                 onPressed: () {},
-                child: TextWidget(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xff1025E4)),
+                child: const TextWidget(
                     text: 'Continue',
                     textStyle: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         fontFamily: "Montserrat",
                         color: Color(0xffFFFFFF))),
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xff1025E4)),
               ),
             ),
           )

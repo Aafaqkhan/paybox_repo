@@ -26,25 +26,34 @@ class _MyLoyalityCardState extends State<MyLoyalityCard> {
   Widget build(BuildContext context) {
     return Card(
       child: SizedBox(
-        height: 130,
-        width: 180,
+        height: 135,
+        width: 120,
         child: Stack(
           children: [
             Row(
               children: [
                 SizedBox(
                   height: 130,
-                  width: 90,
+                  width: 120,
                   child: Padding(
                     padding: const EdgeInsets.only(
                       left: 8,
                     ),
                     child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SizedBox(
-                            height: 35,
+                            height: 47,
+                            width: 120,
+                            // 'https://paybox.jzmaxx.com/${widget.avatarpath!}'
+                            child: Image.network(
+                              'https://paybox.jzmaxx.com/${widget.avatarpath!}',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          SizedBox(
+                            // height: 35,
                             //  width: 49,
                             child: TextWidget(
                                 text: widget.title!,
@@ -56,7 +65,7 @@ class _MyLoyalityCardState extends State<MyLoyalityCard> {
                           ),
                           SizedBox(
                             // height: 31,
-                            width: 49,
+                            // width: 49,
                             child: TextWidget(
                                 text: widget.subtitle!,
                                 textStyle: const TextStyle(
@@ -66,8 +75,7 @@ class _MyLoyalityCardState extends State<MyLoyalityCard> {
                                     color: Color(0xff000000))),
                           ),
                           Row(
-                            // mainAxisAlignment:
-                            //     // MainAxisAlignment.center,
+                            // mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Icon(
                                 Icons.location_on,
@@ -85,20 +93,17 @@ class _MyLoyalityCardState extends State<MyLoyalityCard> {
                         ]),
                   ),
                 ),
-                SizedBox(
-                  height: 130,
-                  width: 90,
-                  child: Image.asset(widget.avatarpath!),
-                ),
               ],
             ),
             Positioned(
-              right: 62,
-              bottom: 36,
-              child: SizedBox(
-                height: 56,
-                width: 56,
-                child: Image.asset(widget.mainpctrpath!),
+              right: 75,
+              bottom: 90,
+              child: CircleAvatar(
+                // height: 56,
+                // width: 56,
+                radius: 15,
+                backgroundImage: NetworkImage(
+                    'https://paybox.jzmaxx.com/${widget.mainpctrpath!}'),
               ),
             ),
           ],

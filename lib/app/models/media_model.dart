@@ -5,6 +5,7 @@ import 'package:paybox/app/models/parent/model.dart';
 import '../services/global_service.dart';
 
 class Media extends Model {
+  @override
   String? id;
   String? name;
   String? url;

@@ -37,7 +37,7 @@ class _MyGlobalDealsDetailsState extends State<MyGlobalDealsDetails> {
                   height: 150,
                   width: 263,
                   child: Image.network(
-                    "https://paybox.jzmaxx.com/" + widget.avatarpath!,
+                    "https://paybox.jzmaxx.com/${widget.avatarpath!}",
                     fit: BoxFit.cover,
                   )),
               Positioned(

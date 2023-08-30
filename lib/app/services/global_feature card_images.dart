@@ -5,7 +5,7 @@ class GlobalImageCard extends StatefulWidget {
   final double width;
   final double height;
 
-  const GlobalImageCard({
+  const GlobalImageCard({super.key, 
     required this.imagePath,
     required this.width,
     required this.height,

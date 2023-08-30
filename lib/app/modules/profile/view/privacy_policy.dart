@@ -24,15 +24,15 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
               color: Color(0xffFFFFFF)),
         ),
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 23,left:14),
+              padding: EdgeInsets.only(top: 23,left:14),
               
-                child: const TextWidget(
+                child: TextWidget(
                     text: 'Privacy Statement',
                     textStyle: TextStyle(
                         fontSize: 20,
@@ -42,9 +42,9 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
               ),
             
             Padding(
-              padding: const EdgeInsets.only(top: 16, left: 14),
+              padding: EdgeInsets.only(top: 16, left: 14),
             
-                child: const TextWidget(
+                child: TextWidget(
                     text:
                         'Lorem ipsum dolor sit amet consectetur. Egestas ornare at fermentum sed ac morbi egestas mi quisque. Pellentesque nunc lobortis augue urna. Orci ut in sed orci nunc viverra. Magna varius amet scelerisque nunc mattis. Velit et sapien erat sapien nulla. Consectetur mauris nisl mauris etiam eget consectetur pulvinar imperdiet id. Nullam vitae suspendisse aliquet elit scelerisque nulla quam cursus arcu.',
                     textStyle: TextStyle(
@@ -55,9 +55,9 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
               ),
             
             Padding(
-              padding: const EdgeInsets.only(top: 16, left: 14),
+              padding: EdgeInsets.only(top: 16, left: 14),
              
-                child: const TextWidget(
+                child: TextWidget(
                     text: 'Loremipsum',
                     textStyle: TextStyle(
                         fontSize: 14,
@@ -67,9 +67,9 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
               ),
             
             Padding(
-              padding: const EdgeInsets.only(top: 12, left: 14),
+              padding: EdgeInsets.only(top: 12, left: 14),
              
-                child: const TextWidget(
+                child: TextWidget(
                     text:
                         'Lorem ipsum dolor sit amet consectetur. Egestas ornare at fermentum sed ac morbi egestas mi quisque. Pellentesque nunc lobortis augue urna. Orci ut in sed orci nunc viverra. Magna varius amet scelerisque nunc mattis. Velit et sapien erat sapien nulla. Consectetur mauris nisl mauris etiam eget consectetur pulvinar imperdiet id. Nullam vitae suspendisse aliquet elit scelerisque nulla quam cursus arcu.',
                     textStyle: TextStyle(
@@ -80,9 +80,9 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
               ),
             
             Padding(
-              padding: const EdgeInsets.only(top: 10, left: 14),
+              padding: EdgeInsets.only(top: 10, left: 14),
               
-                child: const TextWidget(
+                child: TextWidget(
                     text:
                         'Lorem ipsum dolor sit amet consectetur. Egestas ornare at fermentum sed ac morbi egestas mi quisque. Pellentesque nunc lobortis augue urna. Orci ut in sed orci nunc viverra. Magna varius amet scelerisque nunc mattis. Velit et sapien erat sapien nulla. Consectetur mauris nisl mauris etiam eget consectetur pulvinar imperdiet id. Nullam vitae suspendisse aliquet elit scelerisque nulla quam cursus arcu.',
                     textStyle: TextStyle(
@@ -93,9 +93,9 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
               ),
             
             Padding(
-              padding: const EdgeInsets.only(top: 10, left: 14),
+              padding: EdgeInsets.only(top: 10, left: 14),
               
-                child: const TextWidget(
+                child: TextWidget(
                     text:
                         'Lorem ipsum dolor sit amet consectetur. Egestas ornare at fermentum sed ac morbi egestas mi quisque. Pellentesque nunc lobortis augue urna. Orci ut in sed orci nunc viverra. Magna varius amet scelerisque nunc mattis. ',
                     textStyle: TextStyle(
@@ -106,9 +106,9 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
               ),
             
             Padding(
-              padding: const EdgeInsets.only(top: 16, left: 14),
+              padding: EdgeInsets.only(top: 16, left: 14),
              
-                child: const TextWidget(
+                child: TextWidget(
                     text: 'Loremipsum',
                     textStyle: TextStyle(
                         fontSize: 14,
@@ -118,9 +118,9 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
               ),
             
             Padding(
-              padding: const EdgeInsets.only(top: 12, left: 14),
+              padding: EdgeInsets.only(top: 12, left: 14),
              
-                child: const TextWidget(
+                child: TextWidget(
                     text:
                         'Lorem ipsum dolor sit amet consectetur. Egestas ornare at fermentum sed ac morbi egestas mi quisque. Pellentesque nunc lobortis augue urna. Orci ut in sed orci nunc viverra. Magna varius amet scelerisque nunc mattis. Velit et sapien erat sapien nulla. Consectetur mauris nisl mauris etiam eget consectetur pulvinar imperdiet id. Nullam vitae suspendisse aliquet elit scelerisque nulla quam cursus arcu.',
                     textStyle: TextStyle(
@@ -131,9 +131,9 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
               ),
             
             Padding(
-              padding: const EdgeInsets.only(top: 10, left: 14),
+              padding: EdgeInsets.only(top: 10, left: 14),
               
-                child: const TextWidget(
+                child: TextWidget(
                     text:
                         'Lorem ipsum dolor sit amet consectetur. Egestas ornare at fermentum sed ac morbi egestas mi quisque. Pellentesque nunc lobortis augue urna. Orci ut in sed orci nunc viverra. Magna varius amet scelerisque nunc mattis. Velit et sapien erat sapien nulla. Consectetur mauris nisl mauris etiam eget consectetur pulvinar imperdiet id. Nullam vitae suspendisse aliquet elit scelerisque nulla quam cursus arcu.',
                     textStyle: TextStyle(
@@ -144,9 +144,9 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
               ),
             
             Padding(
-              padding: const EdgeInsets.only(top: 10, left: 14),
+              padding: EdgeInsets.only(top: 10, left: 14),
               
-                child: const TextWidget(
+                child: TextWidget(
                     text:
                         'Lorem ipsum dolor sit amet consectetur. Egestas ornare at fermentum sed ac morbi egestas mi quisque. Pellentesque nunc lobortis augue urna. Orci ut in sed orci nunc viverra. Magna varius amet scelerisque nunc mattis. ',
                     textStyle: TextStyle(

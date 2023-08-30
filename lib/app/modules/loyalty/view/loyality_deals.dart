@@ -275,16 +275,16 @@ class _LoyaltyDealsState extends State<LoyaltyDeals> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      TextWidget(
+                                      const TextWidget(
                                           text: 'BOXCO',
-                                          textStyle: const TextStyle(
+                                          textStyle: TextStyle(
                                               fontSize: 28,
                                               fontFamily: "Montserrat",
                                               fontWeight: FontWeight.w700,
                                               color: Color(0xff000000))),
-                                      TextWidget(
+                                      const TextWidget(
                                           text: 'SUBSCRIPTION',
-                                          textStyle: const TextStyle(
+                                          textStyle: TextStyle(
                                               fontSize: 24,
                                               fontFamily: "Montserrat",
                                               fontWeight: FontWeight.w700,
@@ -292,12 +292,12 @@ class _LoyaltyDealsState extends State<LoyaltyDeals> {
                                       Padding(
                                         padding: const EdgeInsets.only(top: 13),
                                         child: Container(
-                                            child: Row(
+                                            child: const Row(
                                           children: [
-                                            const Icon(Icons.check_circle),
+                                            Icon(Icons.check_circle),
                                             TextWidget(
                                                 text: 'ACTIVE',
-                                                textStyle: const TextStyle(
+                                                textStyle: TextStyle(
                                                     fontSize: 18,
                                                     fontFamily: "Montserrat",
                                                     fontWeight: FontWeight.w700,
@@ -305,19 +305,19 @@ class _LoyaltyDealsState extends State<LoyaltyDeals> {
                                           ],
                                         )),
                                       ),
-                                      TextWidget(
+                                      const TextWidget(
                                           text: '  Renews on 30/04/2023',
-                                          textStyle: const TextStyle(
+                                          textStyle: TextStyle(
                                               fontSize: 10,
                                               fontFamily: "Mukta",
                                               fontWeight: FontWeight.w400,
                                               color: Color(0xff000000))),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 21),
+                                      const Padding(
+                                        padding: EdgeInsets.only(top: 21),
                                         child: TextWidget(
                                             text:
                                                 '  Give your paybox pin to the merchant to claim your Subscription goods',
-                                            textStyle: const TextStyle(
+                                            textStyle: TextStyle(
                                                 fontSize: 8,
                                                 fontFamily: "Mukta",
                                                 fontWeight: FontWeight.w700,
@@ -330,7 +330,7 @@ class _LoyaltyDealsState extends State<LoyaltyDeals> {
                                   padding: const EdgeInsets.only(
                                     bottom: 21,
                                   ),
-                                  child: Container(
+                                  child: SizedBox(
                                     height: 122,
                                     width: 67,
                                     child:

@@ -3,7 +3,6 @@ import 'package:intl_phone_field/countries.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:paybox/app/models/parent/model.dart';
 
-import '../../commonWidget/uuid.dart';
 import '../services/setting_service.dart';
 import 'media_model.dart';
 
@@ -49,12 +48,14 @@ class User extends Model {
     apiToken = json['token'];
     name = json['data']['name'];
     email = json['data']['email'];
+    // avatar = json['data']['image'];
     // name = stringFromJson(json, 'name');
     // email = stringFromJson(json, 'email');
     // apiToken = stringFromJson(json, 'api_token');
     // deviceToken = stringFromJson(json, 'device_token');
     // phoneNumber = stringFromJson(json, 'phone_number');
     // verifiedPhone = boolFromJson(json, 'phone_verified_at');
+    avatar = mediaFromJson(json, 'avatar');
     // avatar = mediaFromJson(json, 'avatar');
     // auth = boolFromJson(json, 'auth');
     // try {

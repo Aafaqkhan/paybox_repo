@@ -1,10 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:paybox/app/modules/auth/controllers/auth_controller.dart';
 import 'package:paybox/app/modules/home/controller/home_controller.dart';
 
 import 'app/providers/laravel_provider.dart';
@@ -12,10 +8,11 @@ import 'app/routes/theme1_app_pages.dart';
 import 'app/services/auth_service.dart';
 import 'app/services/global_service.dart';
 import 'app/services/setting_service.dart';
-import 'app/services/translation_service.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 initServices() async {
   Get.log('starting services ...');
+  // HomeController().onInit();
   await GetStorage.init();
   await Get.putAsync(() => GlobalService().init());
   // await Firebase.initializeApp();
@@ -32,6 +29,7 @@ initServices() async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await initServices();
 
   // GetStorage? _box;

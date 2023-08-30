@@ -151,8 +151,8 @@ class LoginView extends GetView<AuthController> {
                             Obx(() {
                               return controller.loginLoading == false
                                   ? BlockButtonWidget(
-                                      onPressed: () {
-                                        controller.login();
+                                      onPressed: () async {
+                                        await controller.login();
                                       },
                                       color: AppColors.maincolor,
                                       text: Text(
@@ -165,7 +165,7 @@ class LoginView extends GetView<AuthController> {
                                         )),
                                       ),
                                     ).paddingSymmetric(vertical: 5.0)
-                                  : CircularProgressIndicator();
+                                  : const CircularProgressIndicator();
                             }),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,

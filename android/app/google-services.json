@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "842578804903",
+    "project_id": "paybox-54e8a",
+    "storage_bucket": "paybox-54e8a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:842578804903:android:37dfc7a5dc910c93cf1b82",
+        "android_client_info": {
+          "package_name": "com.example.paybox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "842578804903-a62sd0d81glhkuf5bv0le117bmsmlpmt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9GU7RWDm5kKi0iDEw-ZXjTDfX8T2ep7M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "842578804903-a62sd0d81glhkuf5bv0le117bmsmlpmt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

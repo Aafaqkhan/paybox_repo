@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:paybox/app/models/media_model.dart';
 import 'package:paybox/app/services/colors/custom_colors.dart';
+import 'package:paybox/app/services/global_payment_details.dart';
 import 'package:paybox/commonWidget/block_button_widget.dart';
 
 class DealsDetails extends StatelessWidget {
@@ -15,7 +15,7 @@ class DealsDetails extends StatelessWidget {
   final String? description;
   final String? about;
 
-  DealsDetails({
+  const DealsDetails({
     super.key,
     this.image,
     this.buisnessName,
@@ -28,6 +28,17 @@ class DealsDetails extends StatelessWidget {
     this.description,
     this.about,
   });
+
+  void _showPaymentDetailsDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: PaymentDetails(),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +67,7 @@ class DealsDetails extends StatelessWidget {
                         child: Opacity(
                           opacity: 0.5,
                           child: Image.network(
-                            "https://paybox.jzmaxx.com/" + image!,
+                            "https://paybox.jzmaxx.com/${image!}",
                             fit: BoxFit.cover,
                           ),
                           //               Image.network(
@@ -79,7 +90,7 @@ class DealsDetails extends StatelessWidget {
                                   bottomLeft: Radius.circular(12))),
                           child: TextWidget(
                               text: '$saleValue off',
-                              textStyle: TextStyle(
+                              textStyle: const TextStyle(
                                   fontSize: 12,
                                   fontFamily: "Montserrat",
                                   fontWeight: FontWeight.w900,
@@ -96,7 +107,7 @@ class DealsDetails extends StatelessWidget {
                             children: [
                               Text(
                                 buisnessName ?? "",
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 24,
                                     color: Colors.white,
                                     fontWeight: FontWeight.w700,
@@ -104,7 +115,7 @@ class DealsDetails extends StatelessWidget {
                               ),
                               Text(
                                 address ?? "",
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.white,
                                     // fontWeight: FontWeight.w700,
@@ -188,7 +199,7 @@ class DealsDetails extends StatelessWidget {
                         SizedBox(
                           width: 300,
                           child: Text(subHeading ?? "",
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 14,
                                   fontFamily: "Montserrat",
                                   fontWeight: FontWeight.w700)),
@@ -196,12 +207,12 @@ class DealsDetails extends StatelessWidget {
                         Column(
                           children: [
                             Text(startPrice ?? "",
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 13,
                                     decoration: TextDecoration.lineThrough)),
                             Text(
                               dealPrice ?? "",
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: Color(0xff3242F6),
                                   fontWeight: FontWeight.bold),
                             ),
@@ -210,7 +221,7 @@ class DealsDetails extends StatelessWidget {
                       ],
                     ),
                     Text('Ends on $endDate',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 12,
                           fontFamily: "Montserrat",
                         )),
@@ -230,7 +241,7 @@ class DealsDetails extends StatelessWidget {
                       height: 32,
                     ),
                     Text('About $buisnessName',
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 14,
                             fontFamily: "Montserrat",
                             fontWeight: FontWeight.w700)),
@@ -238,11 +249,11 @@ class DealsDetails extends StatelessWidget {
                       height: 16,
                     ),
                     Text(about ?? ""),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Center(
-                      child: Container(
+                      child: SizedBox(
                         width: 330,
                         height: 40,
                         child: BlockButtonWidget(
@@ -251,7 +262,9 @@ class DealsDetails extends StatelessWidget {
                             'Purchase',
                             style: TextStyle(color: Colors.white),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            _showPaymentDetailsDialog(context);
+                          },
                         ),
                       ),
                     )

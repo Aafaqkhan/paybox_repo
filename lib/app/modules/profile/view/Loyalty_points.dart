@@ -21,8 +21,8 @@ class _LoyaltyPointsState extends State<LoyaltyPoints> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 76),
+              const Padding(
+                padding: EdgeInsets.only(top: 76),
                 child: TextWidget(
                     text: 'Loyalty Points ',
                     textStyle: TextStyle(
@@ -31,8 +31,8 @@ class _LoyaltyPointsState extends State<LoyaltyPoints> {
                         color: Color(0xff191D23),
                         fontFamily: "Montserrat")),
               ),
-              Padding(
-                padding: const EdgeInsets.only(
+              const Padding(
+                padding: EdgeInsets.only(
                   top: 20,
                 ),
                 child: TextWidget(
@@ -50,15 +50,15 @@ class _LoyaltyPointsState extends State<LoyaltyPoints> {
                   width: 233,
                   child: ElevatedButton(
                     onPressed: () {},
-                    child: TextWidget(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xff1025E4)),
+                    child: const TextWidget(
                         text: 'Add Points',
                         textStyle: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             fontFamily: "Montserrat",
                             color: Color(0xffFFFFFF))),
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xff1025E4)),
                   ),
                 ),
               ),
@@ -71,9 +71,9 @@ class _LoyaltyPointsState extends State<LoyaltyPoints> {
           child: Container(
             width: 86,
             height: 86,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 color: Color(0xff1025E4), shape: BoxShape.circle),
-            child: Icon(
+            child: const Icon(
               Icons.handshake_outlined,
               color: Colors.white,
               size: 40,

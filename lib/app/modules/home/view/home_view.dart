@@ -1,7 +1,10 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paybox/app/modules/deals/view/deals_details.dart';
 import 'package:paybox/app/modules/home/controller/home_controller.dart';
+import 'package:paybox/app/modules/loyalty/controller/loyalty_controller.dart';
 import 'package:paybox/app/providers/laravel_provider.dart';
 import 'package:paybox/app/routes/app_routes.dart';
 import 'package:paybox/app/services/global_card.dart';
@@ -18,7 +21,11 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.log('home view');
+    final LoyaltyController loyaltyController = LoyaltyController();
+
+    loyaltyController.getLoyalties();
+
+    Get.log('home view ///');
     // controller.getCategories();
     // controller.getTrendingDeals();
     // controller.getCategories();
@@ -258,48 +265,75 @@ class HomeView extends GetView<HomeController> {
                           fontWeight: FontWeight.w400,
                           color: Color(0xff000000))),
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 19, left: 8),
-                  child: Row(
-                    children: [
-                      MyLoyalityCard(
-                        avatarpath: "assets/images/Burger & Co (5).png",
-                        title: "Bingo Balls",
-                        subtitle: "Adult Ball Pit Bar",
-                        location: "2km away",
-                        mainpctrpath: "assets/images/Ellipse 1.png",
-                      ),
-                      MyLoyalityCard(
-                        avatarpath: "assets/images/Burger & Co (1).png",
-                        title: "Burger & Co ",
-                        subtitle: "Fast Food",
-                        location: "6km away",
-                        mainpctrpath: "assets/images/Ellipse 2.png",
-                      ),
-                    ],
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 19, left: 8),
-                  child: Row(
-                    children: [
-                      MyLoyalityCard(
-                        avatarpath: "assets/images/Burger & Co (6).png",
-                        title: "Chicken Shack",
-                        subtitle: "Fast Food",
-                        location: "7km away",
-                        mainpctrpath: "assets/images/Group (1).png",
-                      ),
-                      MyLoyalityCard(
-                        avatarpath: "assets/images/Burger & Co (7).png",
-                        title: "Dunkin’ Burgers",
-                        subtitle: "Fast Food",
-                        location: "8km away",
-                        mainpctrpath: "assets/images/Group (2).png",
-                      ),
-                    ],
-                  ),
-                ),
+                Obx(() {
+                  return loyaltyController.loyalties.isEmpty
+                      ? SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: const Row(
+                            children: [
+                              ShimmerList(),
+                            ],
+                          ),
+                        )
+                      : SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: loyaltyController.loyalties
+                                .map((e) => MyLoyalityCard(
+                                      avatarpath:
+                                          "${e.banner!.path}/${e.banner!.name}",
+                                      title: e.name,
+                                      subtitle: e.shortInfo,
+                                      location: e.distance,
+                                      mainpctrpath:
+                                          "${e.logo!.path}/${e.logo!.name}",
+                                    ))
+                                .toList(),
+                          ),
+                        );
+                }),
+                // const Padding(
+                //   padding: EdgeInsets.only(top: 19, left: 8),
+                //   child: Row(
+                //     children: [
+                //       MyLoyalityCard(
+                //         avatarpath: "assets/images/Burger & Co (5).png",
+                //         title: "Bingo Balls",
+                //         subtitle: "Adult Ball Pit Bar",
+                //         location: "2km away",
+                //         mainpctrpath: "assets/images/Ellipse 1.png",
+                //       ),
+                //       MyLoyalityCard(
+                //         avatarpath: "assets/images/Burger & Co (1).png",
+                //         title: "Burger & Co ",
+                //         subtitle: "Fast Food",
+                //         location: "6km away",
+                //         mainpctrpath: "assets/images/Ellipse 2.png",
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                // const Padding(
+                //   padding: EdgeInsets.only(top: 19, left: 8),
+                //   child: Row(
+                //     children: [
+                //       MyLoyalityCard(
+                //         avatarpath: "assets/images/Burger & Co (6).png",
+                //         title: "Chicken Shack",
+                //         subtitle: "Fast Food",
+                //         location: "7km away",
+                //         mainpctrpath: "assets/images/Group (1).png",
+                //       ),
+                //       MyLoyalityCard(
+                //         avatarpath: "assets/images/Burger & Co (7).png",
+                //         title: "Dunkin’ Burgers",
+                //         subtitle: "Fast Food",
+                //         location: "8km away",
+                //         mainpctrpath: "assets/images/Group (2).png",
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 Padding(
                   padding: const EdgeInsets.only(right: 240, top: 19),
                   child: Container(

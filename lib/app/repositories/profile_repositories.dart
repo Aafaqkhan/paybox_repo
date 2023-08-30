@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
+import 'package:paybox/app/models/user_model.dart';
 import 'package:paybox/app/providers/laravel_provider.dart';
 
 class ProfileRepository {
@@ -8,7 +11,7 @@ class ProfileRepository {
     _laravelApiClient = LaravelApiClient();
   }
 
-  Future<void> getUserProfile() {
+  Future<User> getUserProfile() {
     _laravelApiClient = Get.find<LaravelApiClient>();
     print('00000');
     return _laravelApiClient!.getUserProfile();
@@ -38,15 +41,15 @@ class ProfileRepository {
     return _laravelApiClient!.storeToken();
   }
 
-  Future<void> updateProfilePicture() {
+  Future<void> updateProfilePicture(File? profileImage) {
     _laravelApiClient = Get.find<LaravelApiClient>();
 
-    return _laravelApiClient!.updateProfilePicture();
+    return _laravelApiClient!.updateProfileImage(profileImage);
   }
 
-  Future<void> updateUser() {
+  Future<void> updateUser(User user) {
     _laravelApiClient = Get.find<LaravelApiClient>();
 
-    return _laravelApiClient!.updateUser();
+    return _laravelApiClient!.updateUser(user);
   }
 }

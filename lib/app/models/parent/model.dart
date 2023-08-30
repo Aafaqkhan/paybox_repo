@@ -215,25 +215,25 @@ abstract class Model {
 
   List<T> listFromJsonArray<T>(Map<String, dynamic> json,
       List<String> attribute, T Function(Map<String, dynamic>) callback) {
-    String _attribute = attribute
+    String attribute0 = attribute
         .firstWhere((element) => (json[element] != null), orElse: () => "");
-    return listFromJson(json, _attribute, callback);
+    return listFromJson(json, attribute0, callback);
   }
 
   List<T> listFromJson<T>(Map<String, dynamic> json, String attribute,
       T Function(Map<String, dynamic>) callback) {
     try {
-      List<T> _list = <T>[];
+      List<T> list = <T>[];
       if (json[attribute] != null &&
           json[attribute] is List &&
           json[attribute].length > 0) {
         json[attribute].forEach((v) {
           if (v is Map<String, dynamic>) {
-            _list.add(callback(v));
+            list.add(callback(v));
           }
         });
       }
-      return _list;
+      return list;
     } catch (e) {
       throw Exception('Error while parsing $attribute[$e]');
     }

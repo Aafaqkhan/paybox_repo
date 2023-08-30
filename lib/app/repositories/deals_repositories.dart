@@ -16,4 +16,11 @@ class DealsRepository {
   Future<List<alldealsdata.Data>> getAllDeals() {
     return _laravelApiClient!.getAllDeals();
   }
+
+  Future<void> purchaseDeal() {
+    // User user
+    // _laravelApiClient = Get.find<LaravelApiClient>();
+
+    return _laravelApiClient!.purchaseDeal(); // user
+  }
 }

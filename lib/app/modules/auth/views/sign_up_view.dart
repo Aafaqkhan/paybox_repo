@@ -217,7 +217,7 @@ class SignUpView extends GetView<AuthController> {
                               }
                                   // }
                                   ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
                               ),
                               Obx(() {
@@ -238,7 +238,7 @@ class SignUpView extends GetView<AuthController> {
                                                   fontWeight: FontWeight.w600)),
                                         ),
                                       ).paddingSymmetric(vertical: 5.0)
-                                    : CircularProgressIndicator();
+                                    : const CircularProgressIndicator();
                               }),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,

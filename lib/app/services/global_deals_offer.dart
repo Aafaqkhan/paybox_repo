@@ -37,7 +37,7 @@ class _MyDealsOfferState extends State<MyDealsOffer> {
                     borderRadius: BorderRadius.circular(12),
                     color: const Color(0xffE5E8EF)),
                 child: Image.network(
-                  "https://paybox.jzmaxx.com/" + widget.avatarpath!,
+                  "https://paybox.jzmaxx.com/${widget.avatarpath!}",
                   fit: BoxFit.cover,
                 )),
             Padding(

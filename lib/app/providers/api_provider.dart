@@ -24,11 +24,11 @@ mixin ApiClient {
   // For login And signup
 
   String getApiBaseUrl(String path) {
-    String _apiPath = globalService.global.value.apiPath!;
+    String apiPath = globalService.global.value.apiPath!;
     if (path.startsWith('/')) {
-      return getBaseUrl(_apiPath) + path.substring(1);
+      return getBaseUrl(apiPath) + path.substring(1);
     }
-    return getBaseUrl(_apiPath) + path;
+    return getBaseUrl(apiPath) + path;
   }
 
   Uri getApiBaseUri(String path) {
@@ -38,11 +38,11 @@ mixin ApiClient {
   // For getDeals
 
   String getDealsApiBaseUrl(String path) {
-    String _apiPath = globalService.global.value.dealApiPath!;
+    String apiPath = globalService.global.value.dealApiPath!;
     if (path.startsWith('/')) {
-      return getBaseUrl(_apiPath) + path.substring(1);
+      return getBaseUrl(apiPath) + path.substring(1);
     }
-    return getBaseUrl(_apiPath) + path;
+    return getBaseUrl(apiPath) + path;
   }
 
   Uri getDealsApiBaseUri(String path) {
@@ -52,11 +52,11 @@ mixin ApiClient {
   // For deleteUser
 
   String deleteUserApiBaseUrl(String path) {
-    String _apiPath = globalService.global.value.deleteUserApiPath!;
+    String apiPath = globalService.global.value.deleteUserApiPath!;
     if (path.startsWith('/')) {
-      return getBaseUrl(_apiPath) + path.substring(1);
+      return getBaseUrl(apiPath) + path.substring(1);
     }
-    return getBaseUrl(_apiPath) + path;
+    return getBaseUrl(apiPath) + path;
   }
 
   Uri deleteUserApiBaseUri(String path) {

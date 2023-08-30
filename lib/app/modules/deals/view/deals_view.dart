@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:paybox/app/modules/deals/controller/deals_controller.dart';
 import 'package:paybox/app/modules/deals/view/deals_details.dart';
 import 'package:paybox/app/services/global_deals_details.dart';
@@ -76,8 +75,8 @@ class DealsView extends GetView<DealsController> {
                 child: Obx(() {
                   return controller.categories.isEmpty
                       ? Row(
-                          children: [
-                            const ShimmerList(),
+                          children: const [
+                            ShimmerList(),
                           ],
                         )
                       : Row(

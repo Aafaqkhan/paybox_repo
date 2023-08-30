@@ -81,7 +81,7 @@ class TrendingDealsModel {
   late final String businessName;
   late final int vendorId;
   late final String webAddress;
-  late final String subHeading;
+  late final String? subHeading;
   late final String description;
   late final String about;
   late final String finePrint;

@@ -1,22 +1,62 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:paybox/app/repositories/home_repositories.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:paybox/app/models/user_model.dart';
+import 'package:paybox/app/modules/auth/controllers/auth_controller.dart';
 import 'package:paybox/app/repositories/profile_repositories.dart';
+import 'package:paybox/app/services/auth_service.dart';
 import 'package:paybox/commonWidget/ui.dart';
+import 'package:dio/dio.dart' as dio;
+import 'package:get_storage/get_storage.dart';
 
 class ProfileController extends GetxController {
+  final Rx<User>? currentUser = Get.find<AuthService>().user;
+
   ProfileRepository? _profileRepository;
+  // var userProfile = Rx<User?>;
+  // final userProfile = <User>[].obs;
+  var userProfile = User().obs;
+  GlobalKey<FormState>? profileFormKey;
+  AuthController authController = AuthController();
+
+  Rx<File?> pickedImage = Rx<File?>(null); // Observable to store picked image
+
+  void pickImage() async {
+    final pickedImageFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (pickedImageFile != null) {
+      pickedImage.value = File(pickedImageFile.path);
+    }
+  }
 
   ProfileController() {
     _profileRepository = ProfileRepository();
+    profileFormKey = GlobalKey<FormState>();
   }
 
   @override
   void onInit() {
     super.onInit();
-    getDeleteUser();
+    profileFormKey = GlobalKey<FormState>();
+    // fetchUserProfile();
+    // getDeleteUser();
+    getUserProfile();
   }
 
-  void getUserProfile() async {
+  Future<void> fetchUserProfile() async {
+    try {
+      final user = await getUserProfile();
+      userProfile.value = user;
+    } catch (error) {
+      print('Error fetching user profile: $error');
+    }
+  }
+
+  Future getUserProfile() async {
     print('$_profileRepository');
     // Get.focusScope!.unfocus();
     // if (registerFormKey!.currentState!.validate()) {
@@ -26,7 +66,10 @@ class ProfileController extends GetxController {
     print('ready to fetch getUserProfile apis');
     try {
       if (_profileRepository == null) print('nulleee');
-      await _profileRepository!.getUserProfile();
+      // await _profileRepository!.getUserProfile();
+      userProfile.value = await _profileRepository!.getUserProfile();
+
+      // userProfile.assign(await _profileRepository!.getUserProfile());
       // loading.value = false;
       // print('before going to home page');
       // Get.toNamed(Routes.LOGIN);
@@ -127,7 +170,7 @@ class ProfileController extends GetxController {
     }
   }
 
-  void updateProfilePicture() async {
+  void updateProfilePicture(File? profileImage) async {
     Get.focusScope!.unfocus();
     if (1 == 1
         // loading.value == false
@@ -140,7 +183,7 @@ class ProfileController extends GetxController {
       try {
         // final token = await _userRepository!.login(currentUser!.value);
         // saveToken(token); // Save the token
-        await _profileRepository!.updateProfilePicture();
+        await _profileRepository!.updateProfilePicture(profileImage);
         // loading.value = false;
         // print('before going to home page');
         // Get.toNamed(Routes.HOMEPAGE);
@@ -155,20 +198,67 @@ class ProfileController extends GetxController {
     }
   }
 
-  void updateUser() async {
-    // Get.focusScope!.unfocus();
-    if (1 == 1
+  // Future<void> updateProfileImage() async {
+  //   var id = userProfile.value.id;
+  //   Get.log(id.toString());
+  //   Get.log('ID :: $id');
+
+  //   try {
+  //     if (pickedImage.value == null) {
+  //       return; // No image to update
+  //     }
+
+  //     var data = dio.FormData.fromMap({
+  //       'profile': [
+  //         await dio.MultipartFile.fromFile(
+  //           pickedImage.value!.path,
+  //           filename: 'picture.jpeg',
+  //         ),
+  //       ],
+  //     });
+
+  //     var dioClient = dio.Dio();
+  //     var response = await dioClient.request(
+  //       'https://paybox.jzmaxx.com/api/v2/update/profile/image/$id',
+  //       options: dio.Options(
+  //         method: 'POST',
+  //       ),
+  //       data: data,
+  //     );
+
+  //     if (response.statusCode == 200) {
+  //       print(json.encode(response.data));
+  //       // Handle success, maybe update user profile data
+  //     } else {
+  //       print(response.statusMessage);
+  //       // Handle error
+  //     }
+  //   } catch (error) {
+  //     print('Error updating profile image: $error');
+  //     // Handle error
+  //   }
+  // }
+
+  Future updateUser() async {
+    // final User user = authController.currentUser!.value;
+    // Get.log('222 .. $user');
+    Get.focusScope!.unfocus();
+    if (
+        // 1 == 1
         // loading.value == false
-        // loginFormKey!.currentState!.validate()
-        ) {
+        profileFormKey!.currentState!.validate()) {
+      // Get.log('333 .. $user');
+
+      profileFormKey!.currentState!.save();
       // loginFormKey!.currentState!.save();
       // loading.value = true;
       // print("login here please");
-      print('ready to call updateUser API');
+      Get.log('ready to call updateUser API');
       try {
         // final token = await _userRepository!.login(currentUser!.value);
         // saveToken(token); // Save the token
-        await _profileRepository!.updateUser();
+        if (_profileRepository == null) Get.log('_profileRepository is null');
+        await _profileRepository!.updateUser(currentUser!.value);
         // loading.value = false;
         // print('before going to home page');
         // Get.toNamed(Routes.HOMEPAGE);

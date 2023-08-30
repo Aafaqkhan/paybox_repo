@@ -96,14 +96,14 @@ class Ui {
     return GetSnackBar(
       titleText: Text(title.tr,
           style:
-              Get.textTheme.titleLarge!.merge(TextStyle(color: Colors.white))),
+              Get.textTheme.titleLarge!.merge(const TextStyle(color: Colors.white))),
       messageText: Text(message!.substring(0, min(message.length, 200)),
           style:
-              Get.textTheme.bodySmall!.merge(TextStyle(color: Colors.white))),
+              Get.textTheme.bodySmall!.merge(const TextStyle(color: Colors.white))),
       snackPosition: snackPosition,
       margin: const EdgeInsets.all(20),
       backgroundColor: Colors.redAccent,
-      icon: Icon(Icons.remove_circle_outline, size: 32, color: Colors.white),
+      icon: const Icon(Icons.remove_circle_outline, size: 32, color: Colors.white),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
       borderRadius: 8,
       duration: const Duration(seconds: 5),

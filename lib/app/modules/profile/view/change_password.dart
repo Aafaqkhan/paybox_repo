@@ -12,14 +12,14 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 423,width:326,
      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 38),
+          const Padding(
+            padding: EdgeInsets.only(top: 38),
             child: TextWidget(
                 text: 'Change Password',
                 textStyle: TextStyle(
@@ -28,8 +28,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                     fontWeight: FontWeight.w700,
                     color: Color(0xff1025E4))),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 25, ),
+          const Padding(
+            padding: EdgeInsets.only(top: 25, ),
             child: TextWidget(
                 text: 'Old Password',
                 textStyle: TextStyle(
@@ -39,7 +39,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     color: Color(0xff191D23))),
           ),
           
-          SizedBox(height: 40,width: 252,
+          const SizedBox(height: 40,width: 252,
             child: TextField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
@@ -52,8 +52,8 @@ class _ChangePasswordState extends State<ChangePassword> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top:21,),
+          const Padding(
+            padding: EdgeInsets.only(top:21,),
             child: TextWidget(
                 text: 'New Password',
                 textStyle: TextStyle(
@@ -62,7 +62,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     fontWeight: FontWeight.w600,
                     color: Color(0xff191D23))),
           ),
-          SizedBox(height: 40,width:252,
+          const SizedBox(height: 40,width:252,
             child: TextField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
@@ -76,8 +76,8 @@ class _ChangePasswordState extends State<ChangePassword> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 18,),
+          const Padding(
+            padding: EdgeInsets.only(top: 18,),
             child: TextWidget(
                 text: 'Confirm Password',
                 textStyle: TextStyle(
@@ -86,7 +86,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     fontWeight: FontWeight.w600,
                     color: Color(0xff191D23))),
           ),
-          SizedBox(height: 40,width: 252,
+          const SizedBox(height: 40,width: 252,
             child: TextField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
@@ -103,20 +103,20 @@ class _ChangePasswordState extends State<ChangePassword> {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 36),
-            child: Container(
+            child: SizedBox(
               height: 44,
               width: 252,
               child: ElevatedButton(
                 onPressed: () {},
-                child: TextWidget(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xff1025E4)),
+                child: const TextWidget(
                     text: 'Continue',
                     textStyle: TextStyle(
                         fontSize: 16,
                         fontFamily: "Montserrat",
                         fontWeight: FontWeight.w600,
                         color: Color(0xffFFFFFF))),
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xff1025E4)),
               ),
             ),
           ),

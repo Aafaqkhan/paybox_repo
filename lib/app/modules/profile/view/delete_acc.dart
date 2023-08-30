@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:paybox/app/modules/profile/view/profile_view.dart';
 import 'package:paybox/app/services/colors/custom_colors.dart';
 
 class DeleteAccount extends StatelessWidget {
@@ -18,16 +17,16 @@ class DeleteAccount extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 240, bottom: 80),
+              const Padding(
+                padding: EdgeInsets.only(left: 240, bottom: 80),
                 child: Icon(
                   Icons.cancel_rounded,
                   color: Color(0xff000000),
                   size: 30,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(),
+              const Padding(
+                padding: EdgeInsets.only(),
                 child: TextWidget(
                     text: 'Are you sure? ',
                     textStyle: TextStyle(
@@ -36,8 +35,8 @@ class DeleteAccount extends StatelessWidget {
                         color: Color(0xff191D23),
                         fontFamily: "Montserrat")),
               ),
-              Padding(
-                padding: const EdgeInsets.only(
+              const Padding(
+                padding: EdgeInsets.only(
                   top: 2,
                 ),
                 child: TextWidget(
@@ -50,20 +49,20 @@ class DeleteAccount extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 27),
-                child: Container(
+                child: SizedBox(
                   height: 40,
                   width: 233,
                   child: ElevatedButton(
                     onPressed: onPressed,
-                    child: TextWidget(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xffF63232)),
+                    child: const TextWidget(
                         text: 'Delete',
                         textStyle: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             fontFamily: "Montserrat",
                             color: Color(0xffFFFFFF))),
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xffF63232)),
                   ),
                 ),
               ),
@@ -77,8 +76,8 @@ class DeleteAccount extends StatelessWidget {
             width: 86,
             height: 86,
             decoration:
-                BoxDecoration(color: Color(0xffF63232), shape: BoxShape.circle),
-            child: Icon(
+                const BoxDecoration(color: Color(0xffF63232), shape: BoxShape.circle),
+            child: const Icon(
               Icons.delete,
               color: Colors.white,
               size: 50,

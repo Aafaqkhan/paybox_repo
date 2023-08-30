@@ -1,24 +1,29 @@
 // ignore_for_file: avoid_print
 
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:paybox/app/models/category_model.dart' as categoryydata;
 import 'package:paybox/app/models/allDeals_model.dart' as alldealsdata;
+import 'package:paybox/app/models/loyalty_model.dart' as loyaltydata;
 
 import 'package:paybox/app/models/deals_model.dart';
-import 'package:paybox/app/modules/auth/controllers/auth_controller.dart';
 import 'package:paybox/app/providers/api_provider.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/foundation.dart' as foundation;
-import 'package:paybox/app/services/auth_service.dart';
-import 'package:paybox/app/services/global_trending_deals_card.dart';
 
 import '../models/user_model.dart';
 import 'dio_client.dart';
+
+// import 'dart:convert';
+// import 'dart:io';
+// import 'package:dio/dio.dart';
+// import 'package:get/get.dart';
 
 class LaravelApiClient extends GetxService with ApiClient {
   GetStorage? _box;
@@ -66,11 +71,11 @@ class LaravelApiClient extends GetxService with ApiClient {
 
   Future<User> register(User user) async {
     Get.log('In Laravel Provider');
-    Uri _uri = getApiBaseUri("register");
+    Uri uri = getApiBaseUri("register");
 
-    Get.log(_uri.toString());
+    Get.log(uri.toString());
     var response = await _httpClient!.postUri(
-      _uri,
+      uri,
       data: json.encode(user.toJson()),
       options: _optionsNetwork,
     );
@@ -81,21 +86,21 @@ class LaravelApiClient extends GetxService with ApiClient {
     var data = responsedata["data"];
     if (data != null) {
       var token = responsedata["token"];
+      _box!.write('token', token);
       print('toooooooooken: $token');
 
-      var id = responsedata["id"];
-      print('id: $id');
+      // var name = responsedata["data"]['name'];
+      // print('name: $name');
 
-      var name = responsedata["data"]['name'];
-      print('name: $name');
+      // var email = responsedata["data"]['email'];
+      // print('email: $email');
 
-      var email = responsedata["data"]['email'];
-      print('email: $email');
-
-      _box!.write('token', token);
-      _box!.write('name', name);
-      _box!.write('email', email);
+      var id = responsedata['data']["id"];
       _box!.write('id', id);
+      Get.log("Id while signup : $id");
+
+      // _box!.write('name', name);
+      // _box!.write('email', email);
     }
 
     if (responsedata['success'] == true) {
@@ -112,11 +117,11 @@ class LaravelApiClient extends GetxService with ApiClient {
 
   Future<User> login(User user) async {
     print('1111');
-    Uri _uri = getApiBaseUri("login");
+    Uri uri = getApiBaseUri("login");
 
-    Get.log(_uri.toString());
+    Get.log(uri.toString());
     var response = await _httpClient!.postUri(
-      _uri,
+      uri,
       data: json.encode(user.toJson()),
       options: _optionsNetwork,
     );
@@ -128,24 +133,31 @@ class LaravelApiClient extends GetxService with ApiClient {
       print('new resss');
 
       var token = responsedata["token"];
-      print('toooooooooken: $token');
-
-      var name = responsedata["data"]['name'];
-      print('name: $name');
-
-      var email = responsedata["data"]['email'];
-      print('email: $email');
-
+      Get.log('toooooooooken: $token');
       _box!.write('token', token);
-      _box!.write('name', name);
-      _box!.write('email', email);
+
+      // var name = responsedata['data']["name"];
+      // Get.log('Name2: $name');
+
+      // var name = responsedata["data"]['name'];
+      // print('name: $name');
+
+      // var email = responsedata["data"]['email'];
+      // print('email: $email');
+
+      var id = responsedata['data']["id"];
+      _box!.write('id', id);
+      Get.log("Id while login : $id");
+
+      // _box!.write('name', name);
+      // _box!.write('email', email);
     }
 
     if (responsedata['success'] == true) {
       // response.data['data']['auth'] = true;
       print(responsedata['success']);
       print('2222');
-
+      Get.log('Name 3: ${user.name}');
       return User.fromJson(responsedata);
     } else {
       print('not 2222');
@@ -159,9 +171,9 @@ class LaravelApiClient extends GetxService with ApiClient {
     String platform,
   ) async {
     print('1111');
-    Uri _uri = getDealsApiBaseUri("store/fcmtoken");
+    Uri uri = getDealsApiBaseUri("store/fcmtoken");
 
-    Get.log(_uri.toString());
+    Get.log(uri.toString());
 
     Map<String, dynamic> requestData = {
       "user_id": userId,
@@ -170,7 +182,7 @@ class LaravelApiClient extends GetxService with ApiClient {
     };
 
     var response = await _httpClient!.postUri(
-      _uri,
+      uri,
       data: json.encode(requestData),
       options: _optionsNetwork,
     );
@@ -189,11 +201,11 @@ class LaravelApiClient extends GetxService with ApiClient {
 
   Future<User> forgotPassword() async {
     print('1111');
-    Uri _uri = getDealsApiBaseUri("/forgot/password");
+    Uri uri = getDealsApiBaseUri("/forgot/password");
 
-    Get.log(_uri.toString());
+    Get.log(uri.toString());
     var response = await _httpClient!.postUri(
-      _uri,
+      uri,
       // data: json.encode(user.toJson()),
       options: _optionsNetwork,
     );
@@ -219,11 +231,11 @@ class LaravelApiClient extends GetxService with ApiClient {
 
   Future<User> getDeals() async {
     print('1111');
-    Uri _uri = getDealsApiBaseUri("deals");
+    Uri uri = getDealsApiBaseUri("deals");
 
-    Get.log(_uri.toString());
+    Get.log(uri.toString());
     var response = await _httpClient!.getUri(
-      _uri,
+      uri,
       // data: json.encode(user.toJson()),
       options: _optionsNetwork,
     );
@@ -249,11 +261,11 @@ class LaravelApiClient extends GetxService with ApiClient {
 
   Future<User> getDealById() async {
     print('1111');
-    Uri _uri = getDealsApiBaseUri("deal/1");
+    Uri uri = getDealsApiBaseUri("deal/1");
 
-    Get.log(_uri.toString());
+    Get.log(uri.toString());
     var response = await _httpClient!.getUri(
-      _uri,
+      uri,
       // data: json.encode(user.toJson()),
       options: _optionsNetwork,
     );
@@ -283,10 +295,10 @@ class LaravelApiClient extends GetxService with ApiClient {
     //   'orderBy': 'order',
     //   'sortBy': 'asc',
     // };
-    Uri _uri = getDealsApiBaseUri("categories");
+    Uri uri = getDealsApiBaseUri("categories");
     // .replace(queryParameters: _queryParameters);
-    Get.log(_uri.toString());
-    var response = await _httpClient!.getUri(_uri, options: _optionsCache);
+    Get.log(uri.toString());
+    var response = await _httpClient!.getUri(uri, options: _optionsCache);
     Get.log('responseeeeee ready');
 
     var responsedata = json.decode(response.data);
@@ -328,8 +340,8 @@ class LaravelApiClient extends GetxService with ApiClient {
   // }
 
   Future<List<alldealsdata.Data>> getAllDeals() async {
-    Uri _uri = getDealsApiBaseUri("all/deals");
-    var response = await _httpClient!.getUri(_uri, options: _optionsCache);
+    Uri uri = getDealsApiBaseUri("all/deals");
+    var response = await _httpClient!.getUri(uri, options: _optionsCache);
 
     var responsedata = json.decode(response.data);
 
@@ -414,11 +426,11 @@ class LaravelApiClient extends GetxService with ApiClient {
 
   Future<User> getStores() async {
     print('1111');
-    Uri _uri = getDealsApiBaseUri("store/get-stores");
+    Uri uri = getDealsApiBaseUri("store/get-stores");
 
-    Get.log(_uri.toString());
+    Get.log(uri.toString());
     var response = await _httpClient!.getUri(
-      _uri,
+      uri,
       // data: json.encode(user.toJson()),
       options: _optionsNetwork,
     );
@@ -443,26 +455,28 @@ class LaravelApiClient extends GetxService with ApiClient {
   }
 
   Future<User> getUserProfile() async {
+    var id = _box!.read('id');
     print('1111');
-    Uri _uri = getApiBaseUri("profile/1");
-
-    Get.log(_uri.toString());
+    Uri uri = getApiBaseUri("profile/$id");
+    Get.log(id.toString());
+    Get.log(uri.toString());
     var response = await _httpClient!.getUri(
-      _uri,
-      // data: json.encode(user.toJson()),
+      uri,
+      //  data: json.encode(user.toJson()),
       options: _optionsNetwork,
     );
-    print(response.data);
+    // print(response.data);
     var responsedata = json.decode(response.data);
-    print(responsedata["success"]);
-    print('new resss');
+    // print(responsedata["success"]);
+    // print('new resss');
 
     // var token = responsedata["token"];
     // print('toooooooooken: $token');
 
+    Get.log('IMAGE :: ' + responsedata['data']['image']);
     if (responsedata['success'] == true) {
       // response.data['data']['auth'] = true;
-      print(responsedata['success']);
+      // print(responsedata['success']);
       print('2222 .. getUserProfile APi done');
 
       return User.fromJson(responsedata);
@@ -474,11 +488,11 @@ class LaravelApiClient extends GetxService with ApiClient {
 
   Future<User> getAllUsers() async {
     print('1111');
-    Uri _uri = getDealsApiBaseUri("users");
+    Uri uri = getDealsApiBaseUri("users");
 
-    Get.log(_uri.toString());
+    Get.log(uri.toString());
     var response = await _httpClient!.getUri(
-      _uri,
+      uri,
       // data: json.encode(user.toJson()),
       options: _optionsNetwork,
     );
@@ -504,11 +518,11 @@ class LaravelApiClient extends GetxService with ApiClient {
 
   Future<User> restoreUpdate() async {
     print('1111');
-    Uri _uri = getDealsApiBaseUri("restore/user/1");
+    Uri uri = getDealsApiBaseUri("restore/user/1");
 
-    Get.log(_uri.toString());
+    Get.log(uri.toString());
     var response = await _httpClient!.getUri(
-      _uri,
+      uri,
       // data: json.encode(user.toJson()),
       options: _optionsNetwork,
     );
@@ -540,10 +554,10 @@ class LaravelApiClient extends GetxService with ApiClient {
     // };
     print('5');
     var id = _box!.read('id');
-    Uri _uri = getDealsApiBaseUri("delete/user/$id");
+    Uri uri = getDealsApiBaseUri("delete/user/$id");
     // .replace(queryParameters: _queryParameters);
-    Get.log(_uri.toString());
-    var response = await _httpClient!.getUri(_uri, options: _optionsCache);
+    Get.log(uri.toString());
+    var response = await _httpClient!.getUri(uri, options: _optionsCache);
     Get.log('responseeeeee ready');
 
     var responsedata = json.decode(response.data);
@@ -587,11 +601,11 @@ class LaravelApiClient extends GetxService with ApiClient {
 
   Future<User> storeToken() async {
     print('1111');
-    Uri _uri = getDealsApiBaseUri("/store/fcmtoken");
+    Uri uri = getDealsApiBaseUri("/store/fcmtoken");
 
-    Get.log(_uri.toString());
+    Get.log(uri.toString());
     var response = await _httpClient!.postUri(
-      _uri,
+      uri,
       // data: json.encode(),
       options: _optionsNetwork,
     );
@@ -615,66 +629,218 @@ class LaravelApiClient extends GetxService with ApiClient {
     }
   }
 
-  Future<User> updateProfilePicture() async {
-    print('1111');
-    Uri _uri = getDealsApiBaseUri("/update/profile/image/1");
+  // Future<User> updateProfilePicture(File? profileImage) async {
+  //   int id = _box!.read('id') ?? 2;
+  //   Get.log(id.toString());
+  //   print('1111');
+  //   Uri uri = getDealsApiBaseUri("/update/profile/image/$id");
 
-    Get.log(_uri.toString());
-    var response = await _httpClient!.postUri(
-      _uri,
-      // data: json.encode(),
-      options: _optionsNetwork,
-    );
-    print(response.data);
-    var responsedata = json.decode(response.data);
-    print(responsedata["success"]);
-    print('new resss');
+  //   // final request = http.MultipartRequest('POST', url)
+  //   //   ..files.add(await http.MultipartFile.fromPath('profile_image', pickedImage.value!.path));
 
-    // var token = responsedata["token"];
-    // print('toooooooooken: $token');
+  //   // FormData formData = FormData.fromMap({
+  //   //   "profile_image": await MultipartFile.fromFile(
+  //   //     profileImage!.path,
+  //   //     filename: "profile_image",
+  //   //   ),
+  //   // });
 
-    if (responsedata['success'] == true) {
-      // response.data['data']['auth'] = true;
-      print(responsedata['success']);
-      print('2222  for updateProfile');
+  //   var formData = FormData.fromMap({
+  //     'files': [
+  //       await MultipartFile.fromFile(profileImage!.path,
+  //           filename: 'picture.jpeg')
+  //     ],
+  //   });
 
-      return User.fromJson(responsedata);
-    } else {
-      print('not 2222');
-      throw Exception(responsedata['error']);
+  //   Get.log(uri.toString());
+  //   var response = await _httpClient!.postUri(
+  //     uri,
+  //     data: formData,
+  //     options: _optionsNetwork,
+  //   );
+  //   print(response.data);
+  //   var responsedata = json.decode(response.data);
+  //   print(responsedata["success"]);
+  //   print('new resss');
+
+  //   // var token = responsedata["token"];
+  //   // print('toooooooooken: $token');
+
+  //   if (responsedata['success'] == true) {
+  //     // response.data['data']['auth'] = true;
+  //     print(responsedata['success']);
+  //     print('2222  for updateProfile');
+
+  //     return User.fromJson(responsedata);
+  //   } else {
+  //     print('not 2222');
+  //     throw Exception(responsedata['error']);
+  //   }
+  // }
+
+  Future<void> updateProfileImage(File? pickedImage) async {
+    int id = _box!.read('id') ?? 2;
+    Get.log('ID ::: $id');
+    try {
+      if (pickedImage == null) {
+        return; // No image to update
+      }
+
+      var data = dio.FormData.fromMap({
+        'profile': [
+          await dio.MultipartFile.fromFile(
+            pickedImage!.path,
+            filename: 'picture.jpeg',
+          ),
+        ],
+      });
+
+      var dioClient = dio.Dio();
+      var response = await dioClient.request(
+        'https://paybox.jzmaxx.com/api/v2/update/profile/image/$id',
+        options: dio.Options(
+          method: 'POST',
+        ),
+        data: data,
+      );
+
+      if (response.statusCode == 200) {
+        print(json.encode(response.data));
+        // Handle success, maybe update user profile data
+      } else {
+        print(response.statusMessage);
+        // Handle error
+      }
+    } catch (error) {
+      print('Error updating profile image: $error');
+      // Handle error
     }
   }
 
-  Future<User> updateUser() async {
+  // Future<User> updateUser(User user) async {
+  //   // final User user = authController.currentUser!.value;
+  //   Get.log('333 .. $user');
+  //   int id = _box!.read('id') ?? 2;
+  //   Get.log(id.toString());
+  //   Uri uri = getDealsApiBaseUri("/update/user/$id");
+
+  //   Get.log(uri.toString());
+  //   Get.log(id.toString());
+  //   // Map updatedUser = {
+  //   //   "name": "afaqUpdated",
+  //   //   "telephone": "1234",
+  //   // };
+
+  //   var response = await _httpClient!.postUri(
+  //     uri,
+  //     data: json.encode(user.toJson()),
+  //     options: _optionsNetwork,
+  //   );
+
+  //   var responsedata = json.decode(response.data);
+
+  //   // var token = responsedata["token"];
+  //   // print('toooooooooken: $token');
+
+  //   if (responsedata['success'] == true) {
+  //     // response.data['data']['auth'] = true;
+  //     print(responsedata['success']);
+
+  //     return User.fromJson(responsedata);
+  //   } else {
+  //     print('not 2222');
+  //     throw Exception(responsedata['error']);
+  //   }
+  // }
+
+  Future<void> updateUser(User user) async {
     int id = _box!.read('id') ?? 2;
-    Get.log(id.toString());
-    Uri _uri = getDealsApiBaseUri("/update/user/$id");
+    Get.log('ID ::: $id');
+    try {
+      if (user == null) {
+        return; // No image to update
+      }
 
-    Get.log(_uri.toString());
-    Map updatedUser = {
-      "name": "afaq",
-      "telephone": "1234",
-    };
+      var data =
+          FormData.fromMap({'name': user.name, 'telephone': user.telephone});
 
-    var response = await _httpClient!.postUri(
-      _uri,
-      data: json.encode(updatedUser),
-      options: _optionsNetwork,
-    );
+      var dio = Dio();
+      var response = await dio.request(
+        'https://paybox.jzmaxx.com/api/v2/update/user/$id',
+        options: Options(
+          method: 'POST',
+        ),
+        data: json.encode(user.toJson()),
+        // data: data,
+      );
+
+      // var responsedata = json.decode(response.data);
+      // var data = responsedata['data'];
+      // if (data != null) print(responsedata["success"]);
+
+      if (response.statusCode == 200) {
+        print(json.encode(response.data));
+        // return User.fromJson(responsedata);
+      } else {
+        Get.log(response.statusCode.toString());
+        print(response.statusMessage);
+      }
+    } catch (error) {
+      print('Error updating profile image: $error');
+      // Handle error
+    }
+  }
+
+  Future<List<loyaltydata.Data>> getLoyalties() async {
+    // const _queryParameters = {
+    //   'parent': 'true',
+    //   'orderBy': 'order',
+    //   'sortBy': 'asc',
+    // };
+    Uri uri = getDealsApiBaseUri("loyalties");
+    // .replace(queryParameters: _queryParameters);
+    Get.log(uri.toString());
+    var response = await _httpClient!.getUri(uri, options: _optionsCache);
+    Get.log('responseeeeee ready');
 
     var responsedata = json.decode(response.data);
-
-    // var token = responsedata["token"];
-    // print('toooooooooken: $token');
+    print(responsedata);
 
     if (responsedata['success'] == true) {
-      // response.data['data']['auth'] = true;
-      print(responsedata['success']);
-
-      return User.fromJson(responsedata);
+      Get.log('responseeeeee success');
+      return responsedata['data']
+          .map<loyaltydata.Data>((obj) => loyaltydata.Data.fromJson(obj))
+          .toList();
     } else {
-      print('not 2222');
-      throw Exception(responsedata['error']);
+      throw Exception(response.data['message']);
+    }
+  }
+
+  Future<void> purchaseDeal() async {
+    // User user
+    int id = _box!.read('id') ?? 0;
+    Get.log('ID ::: $id');
+    var headers = {'Content-Type': 'application/json'};
+    var data = json.encode({
+      "user_id": id,
+      "deal_id": "8",
+      "purchase_status": "Redeemed",
+      "redeem_code": "123456"
+    });
+    var dio = Dio();
+    var response = await dio.request(
+      'https://paybox.jzmaxx.com/api/v2/purchase/deal',
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+      print(json.encode(response.data));
+    } else {
+      print(response.statusMessage);
     }
   }
 }

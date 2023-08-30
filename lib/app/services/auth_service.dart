@@ -17,11 +17,11 @@ class AuthService extends GetxService {
   }
 
   Future<AuthService> init() async {
-    user.listen((User _user) {
+    user.listen((User user) {
       if (Get.isRegistered<SettingsService>()) {
-        Get.find<SettingsService>().address.value.userId = _user.id!;
+        Get.find<SettingsService>().address.value.userId = user.id!;
       }
-      _box!.write('current_user', _user.toJson());
+      _box!.write('current_user', user.toJson());
     });
     await getCurrentUser();
     return this;

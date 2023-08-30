@@ -28,7 +28,7 @@ class _MyTrendingDealsState extends State<MyTrendingDeals> {
               height: 112,
               width: 112,
               child: Image.network(
-                  "https://paybox.jzmaxx.com/" + widget.avatarpath!),
+                  "https://paybox.jzmaxx.com/${widget.avatarpath!}"),
             ),
             TextWidget(
                 text: widget.title!,

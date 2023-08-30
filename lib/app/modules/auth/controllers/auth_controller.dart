@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -28,6 +29,16 @@ class AuthController extends GetxController {
   final _box = GetStorage();
   // var platForm;
 
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+
+  String? fcmToken;
+
+  Future<void> getFcmTokenFirebase() async {
+    print('11');
+    fcmToken = await _firebaseMessaging.getToken();
+    Get.log("FCM Token: $fcmToken");
+  }
+
   // var token = '';
 
   UserRepository? _userRepository;
@@ -41,7 +52,9 @@ class AuthController extends GetxController {
   @override
   Future onInit() async {
     super.onInit();
-    // login();
+    // await getFcmTokenFirebase();
+
+    login();
     register();
     Platform.isAndroid ? platForm = 'andriod' : platForm = 'ios';
   }
@@ -67,6 +80,7 @@ class AuthController extends GetxController {
         await _userRepository!.register(currentUser!.value);
         signupLoading.value = false;
         Get.log('before going to home page');
+
         Get.toNamed(Routes.LOGIN);
         print('After went to home page');
       } catch (e) {
@@ -79,8 +93,8 @@ class AuthController extends GetxController {
     }
   }
 
-  void login() async {
-    Get.focusScope!.unfocus();
+  Future login() async {
+    // Get.focusScope!.unfocus();
     if (
         // loading.value == false
         loginFormKey!.currentState!.validate()) {
@@ -94,6 +108,10 @@ class AuthController extends GetxController {
         await _userRepository!.login(currentUser!.value);
         loginLoading.value = false;
         print('before going to home page');
+        // await getFcmTokenFirebase();
+        Get.log("FCM Token: $fcmToken");
+
+        // getFcmToken();
         Get.toNamed(Routes.HOMEPAGE);
         print('After went to home page');
       } catch (e) {
@@ -120,7 +138,7 @@ class AuthController extends GetxController {
         // final token = await _userRepository!.login(currentUser!.value);
         // saveToken(token); // Save the token
         await _userRepository!
-            .getFcmToken(id.toString(), 'hggfgdfgdfgdfgdfgdgf', platForm);
+            .getFcmToken(id.toString(), fcmToken ?? '', platForm);
         // loading.value = false;
 
         // Get.toNamed(Routes.HOMEPAGE);

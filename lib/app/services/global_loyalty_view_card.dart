@@ -26,14 +26,14 @@ class _MyLoyalityViewState extends State<MyLoyalityView> {
   Widget build(BuildContext context) {
     return Card(
       child: SizedBox(
-        height: 93,
+        height: 110,
         width: 370,
         child: Stack(
           children: [
             Row(
               children: [
                 SizedBox(
-                  height: 93,
+                  height: 110,
                   width: 175,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 14, top: 18),
@@ -84,17 +84,20 @@ class _MyLoyalityViewState extends State<MyLoyalityView> {
                 SizedBox(
                   height: 93,
                   width: 185,
-                  child: Image.asset(widget.avatarpath!),
+                  child: Image.network(
+                      'https://paybox.jzmaxx.com/${widget.avatarpath!}'),
                 ),
               ],
             ),
             Positioned(
               right: 137,
               bottom: 17.5,
-              child: SizedBox(
-                height: 64,
-                width: 64,
-                child: Image.asset(widget.mainpctrpath!),
+              child: CircleAvatar(
+                radius: 30,
+                // height: 64,
+                // width: 64,
+                backgroundImage: NetworkImage(
+                    'https://paybox.jzmaxx.com/${widget.mainpctrpath!}'),
               ),
             ),
           ],

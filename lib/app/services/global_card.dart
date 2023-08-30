@@ -124,7 +124,10 @@ class _MyPurchasesState extends State<MyPurchases> {
                 width: 150,
                 child: Stack(
                   children: [
-                    Image.asset(widget.mainpctrpath!),
+                    Image.asset(
+                      widget.mainpctrpath!,
+                      height: 150,
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(left: 70.5, top: 16),
                       child: Container(
@@ -147,10 +150,10 @@ class _MyPurchasesState extends State<MyPurchases> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 56, left: 50),
+                      padding: const EdgeInsets.only(top: 56, left: 35),
                       child: Container(
-                        height: 18.72,
-                        width: 63.83,
+                        height: 19,
+                        width: 83,
                         decoration: BoxDecoration(
                             color: const Color(0xffFFFFFF),
                             borderRadius: BorderRadius.circular(100)),

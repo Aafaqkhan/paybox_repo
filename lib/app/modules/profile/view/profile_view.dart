@@ -75,7 +75,7 @@ class ProfileView extends GetView<ProfileController> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return const AlertDialog(
+        return AlertDialog(
           content: EditProf(),
         );
       },
@@ -122,12 +122,19 @@ class ProfileView extends GetView<ProfileController> {
 
   @override
   Widget build(BuildContext context) {
-    final _box = GetStorage();
+    // final _box = GetStorage();
+    // controller.getUserProfile();
+    // final name = _box.read('name');
+    // final email = _box.read('email');
 
-    final name = _box.read('name');
-    final email = _box.read('email');
+    var completeUrl =
+        "https://paybox.jzmaxx.com/${controller.userProfile.value.avatar}";
 
-    controller.updateUser();
+    var imageUrl = controller.userProfile.value.avatar;
+
+    // User userModel = User(); // Create an instance of UserModel
+    // controller.getUserProfile();
+    // controller.updateUser();
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -149,64 +156,91 @@ class ProfileView extends GetView<ProfileController> {
               height: 110,
               child: Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 19),
-                    child: SizedBox(
-                      width: 146,
-                      height: 100,
-                      child: Image.asset('assets/images/Group 69.png'),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 31),
-                    child: SizedBox(
-                        width: 190,
-                        height: 150,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            TextWidget(
-                                text: name ?? 'Guest',
-                                textStyle: const TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: "Montserrat",
-                                    fontWeight: FontWeight.w700,
-                                    color: Color(0xff000000))),
-                            TextWidget(
-                                text: email ?? "Guest@guest.com",
-                                textStyle: const TextStyle(
-                                    fontSize: 12,
-                                    fontFamily: "Montserrat",
-                                    fontWeight: FontWeight.w400,
-                                    color: Color(0xff000000))),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 5),
-                              child: SizedBox(
-                                width: 100,
-                                height: 32,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    _showEditProfileDialog(context);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xff717CF1),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(100),
+                  Obx(() {
+                    return Padding(
+                      padding:
+                          const EdgeInsets.only(top: 19, left: 19, right: 19),
+                      child: CircleAvatar(
+                        radius: 35,
+
+                        // width: 146,
+                        // height: 100,
+                        child: controller.userProfile.value.avatar == null
+                            ? const Icon(
+                                Icons.person,
+                                size: 45,
+                              )
+                            : Image.network(
+                                // "https://paybox.jzmaxx.com/profile/1693295152.jpeg"
+                                "https://paybox.jzmaxx.com/${controller.userProfile.value.avatar}"),
+                        // Image.network(
+                        //     'https://paybox.jzmaxx.com/images/profile/1693228236.jpeg',
+                        //     // width: 70,
+                        //     // height: 70,
+                        //     fit: BoxFit.cover,
+                        //   ),
+                        // Image.asset('assets/images/Group 69.png'),
+                      ),
+                    );
+                  }),
+                  Obx(() {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 31, left: 8),
+                      child: SizedBox(
+                          width: 190,
+                          height: 150,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TextWidget(
+                                  text: controller.userProfile.value.name
+                                          .toString() ??
+                                      'Guest',
+                                  textStyle: const TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: "Montserrat",
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xff000000))),
+                              TextWidget(
+                                  text: controller.userProfile.value.email
+                                          .toString() ??
+                                      "Guest@guest.com",
+                                  textStyle: const TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: "Montserrat",
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xff000000))),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8),
+                                child: SizedBox(
+                                  width: 100,
+                                  height: 32,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Get.log(imageUrl.toString());
+                                      _showEditProfileDialog(context);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xff717CF1),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                      ),
                                     ),
+                                    child: const TextWidget(
+                                        text: 'Edit Profile',
+                                        textStyle: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            color: Color(0xffFFFFFF))),
                                   ),
-                                  child: const TextWidget(
-                                      text: 'Edit Profile',
-                                      textStyle: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: Color(0xffFFFFFF))),
                                 ),
                               ),
-                            ),
-                          ],
-                        )),
-                  )
+                            ],
+                          )),
+                    );
+                  })
                 ],
               ),
             ),

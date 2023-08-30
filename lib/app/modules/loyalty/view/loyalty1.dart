@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:paybox/app/services/global_loyalty_view_card.dart';
 
 class LoyaltyScreen extends StatefulWidget {
@@ -57,10 +56,10 @@ class _LoyaltyScreenState extends State<LoyaltyScreen> {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Column(
           children: [
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(left: 12, top: 16),
               child: MyLoyalityView(
                 avatarpath: "assets/images/Rectangle 15 (2).png",
@@ -70,7 +69,7 @@ class _LoyaltyScreenState extends State<LoyaltyScreen> {
                 mainpctrpath: "assets/images/boxco.png",
               ),
             ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(left: 12, top: 16),
               child: MyLoyalityView(
                 avatarpath: "assets/images/Rectangle 60.png",
@@ -80,7 +79,7 @@ class _LoyaltyScreenState extends State<LoyaltyScreen> {
                 mainpctrpath: "assets/images/Ellipse 1.png",
               ),
             ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(left: 12, top: 16),
               child: MyLoyalityView(
                 avatarpath: "assets/images/Rectangle 62.png",
@@ -90,7 +89,7 @@ class _LoyaltyScreenState extends State<LoyaltyScreen> {
                 mainpctrpath: "assets/images/Group (2).png",
               ),
             ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(left: 12, top: 16),
               child: MyLoyalityView(
                 avatarpath: "assets/images/Rectangle 70.png",
@@ -100,7 +99,7 @@ class _LoyaltyScreenState extends State<LoyaltyScreen> {
                 mainpctrpath: "assets/images/olympus.png",
               ),
             ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(left: 12, top: 16),
               child: MyLoyalityView(
                 avatarpath: "assets/images/Rectangle 64.png",
@@ -110,7 +109,7 @@ class _LoyaltyScreenState extends State<LoyaltyScreen> {
                 mainpctrpath: "assets/images/Ellipse 2.png",
               ),
             ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(left: 12, top: 16),
               child: MyLoyalityView(
                 avatarpath: "assets/images/Rectangle 66.png",
@@ -120,7 +119,7 @@ class _LoyaltyScreenState extends State<LoyaltyScreen> {
                 mainpctrpath: "assets/images/13 (1) 1 1.png",
               ),
             ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(left: 12, top: 16),
               child: MyLoyalityView(
                 avatarpath: "assets/images/Rectangle 68.png",

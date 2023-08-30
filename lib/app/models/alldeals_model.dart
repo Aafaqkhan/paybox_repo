@@ -75,7 +75,7 @@ class Deals {
   double? longitude;
   String? startPrice;
   String? dealPrice;
-  Null? dealNotes;
+  String? dealNotes;
   String? status;
   String? businessLogo;
   String? dealImage;

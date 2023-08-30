@@ -30,7 +30,7 @@ class Theme1AppPages {
   //   return token == null ? Routes.ONBORDING : Routes.LOGIN;
   // }
 
-  static const INITIAL = Routes.ONBORDING;
+  static const INITIAL = Routes.LOGIN;
   static final routes = [
     GetPage(name: Routes.ONBORDING, page: () => OnboardingScreen()),
     GetPage(
@@ -65,12 +65,12 @@ class Theme1AppPages {
     ),
     GetPage(
       name: Routes.DEALSDETAILS,
-      page: () => DealsDetails(),
+      page: () => const DealsDetails(),
       binding: HomeBinding(),
     ),
     GetPage(
       name: Routes.DEALSDETAILS,
-      page: () => DealsDetails(),
+      page: () => const DealsDetails(),
       binding: HomeBinding(),
     ),
   ];
