@@ -15,6 +15,12 @@ class LoyaltyController extends GetxController {
     _loyaltyRepository = LoyaltyRepository();
   }
 
+  @override
+  Future onInit() async {
+    super.onInit();
+    await getLoyalties();
+  }
+
   Future getLoyalties() async {
     if (_loyaltyRepository == null) Get.log('_loyaltyRepository is null');
     try {

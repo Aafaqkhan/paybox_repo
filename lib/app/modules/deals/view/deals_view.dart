@@ -16,7 +16,7 @@ class DealsView extends GetView<DealsController> {
   Widget build(BuildContext context) {
     print('get categories in deals view ');
     // controller.getCategories();
-    controller.getAllDeals();
+    // controller.getAllDeals();
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(

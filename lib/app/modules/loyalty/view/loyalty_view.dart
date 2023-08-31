@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:paybox/app/modules/loyalty/view/collect_points_panel.dart';
 import 'package:paybox/app/services/global_loyalityoints_img.dart';
 import 'package:paybox/app/services/global_loyalty_view_card.dart';
 import 'package:paybox/app/services/global_shimmer_card.dart';
@@ -12,7 +14,7 @@ class LoyaltyView extends GetView<LoyaltyController> {
 
   @override
   Widget build(BuildContext context) {
-    controller.getLoyalties();
+    // controller.getLoyalties();
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -63,390 +65,462 @@ class LoyaltyView extends GetView<LoyaltyController> {
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 12, top: 16),
-              child:
-                  //  Obx(() {
-                  //   return
-                  InkWell(
-                onTap: () {
-                  controller.collectPointsPanel.value =
-                      !controller.collectPointsPanel.value;
-                  print(controller.collectPointsPanel.value);
-                },
-                child: Obx(() {
-                  return controller.loyalties.isEmpty
-                      ? SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: const [
-                              ShimmerList(),
-                            ],
-                          ),
-                        )
-                      : Column(
-                          children: controller.loyalties
-                              .map((e) => MyLoyalityView(
-                                    avatarpath:
-                                        "${e.banner!.path}/${e.banner!.name}",
-                                    title: e.name,
-                                    subtitle: e.shortInfo,
-                                    location: e.distance,
-                                    mainpctrpath:
-                                        "${e.logo!.path}/${e.logo!.name}",
-                                  ))
-                              .toList(),
-                        );
-                }),
-                // const MyLoyalityView(
-                //   avatarpath: "assets/images/Rectangle 15 (2).png",
-                //   title: "Boxco",
-                //   subtitle: "Healthy Food Restaurant",
-                //   location: "2km away",
-                //   mainpctrpath: "assets/images/boxco.png",
-                // ),
-              ),
-              // }),
-            ),
-            Obx(() {
-              return controller.collectPointsPanel.value == true
-                  ? Padding(
-                      padding: const EdgeInsets.only(top: 12),
-                      child: Container(
-                        height: 460,
-                        width: 331,
-                        decoration: BoxDecoration(
-                            color: const Color(0xffFFFFFF),
-                            borderRadius: BorderRadius.circular(27),
-                            boxShadow: const [
-                              BoxShadow(
-                                offset: Offset(0, 0),
-                              )
-                            ]),
-                        child: Column(
+              // child:
+              //  Obx(() {
+              //   return
+              //   InkWell(
+              // onTap: () {
+              //   controller.collectPointsPanel.value =
+              //       !controller.collectPointsPanel.value;
+              //   print(controller.collectPointsPanel.value);
+              // },
+              child: Obx(() {
+                return controller.loyalties.isEmpty
+                    ? const SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
                           children: [
-                            const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              // crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(left: 70, top: 19),
-                                  child: SizedBox(
-                                    height: 60,
-                                    width: 193,
-                                    child: TextWidget(
-                                        text:
-                                            'Give your paybox pin code to The merchant to collect points or redeem reward',
-                                        textStyle: TextStyle(
-                                            fontSize: 12,
-                                            fontFamily: "Mukta",
-                                            fontWeight: FontWeight.w400,
-                                            color: Color(0xff000000))),
-                                  ),
-                                ),
-                                Icon(
-                                  Icons.cancel,
-                                )
-                              ],
-                            ),
-                            const TextWidget(
-                                text: '600235',
-                                textStyle: TextStyle(
-                                    fontSize: 28,
-                                    fontFamily: "Montserrat",
-                                    fontWeight: FontWeight.w700,
-                                    color: Color(0xff3242F6))),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 21, top: 33),
-                              child: SizedBox(
-                                height: 23,
-                                width: 316,
-                                child: Row(
-                                  children: [
-                                    const TextWidget(
-                                        text: '25 points',
-                                        textStyle: TextStyle(
-                                            fontSize: 18,
-                                            fontFamily: "Montserrat",
-                                            fontWeight: FontWeight.w700,
-                                            color: Color(0xff000000))),
-                                    const Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 4, right: 33, top: 4),
-                                      child: TextWidget(
-                                          text: 'Collected',
-                                          textStyle: TextStyle(
-                                              fontSize: 10,
-                                              fontFamily: "Mukta",
-                                              fontWeight: FontWeight.w400,
-                                              color: Color(0xff000000))),
-                                    ),
-                                    Container(
-                                      width: 138,
-                                      height: 22,
-                                      color: const Color(0xff000000),
-                                      alignment: Alignment.center,
-                                      child: const TextWidget(
-                                          text: 'View my transaction history',
-                                          textStyle: TextStyle(
-                                              fontSize: 10,
-                                              fontFamily: "Mukta",
-                                              fontWeight: FontWeight.w500,
-                                              color: Color(0xffFFFFFF))),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.only(left: 18, top: 18),
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    LoyalityPointsImages(
-                                      avatarpath:
-                                          "assets/images/delievery (1).png",
-                                    ),
-                                    LoyalityPointsImages(
-                                      avatarpath:
-                                          "assets/images/delievery (3).png",
-                                    ),
-                                    LoyalityPointsImages(
-                                      avatarpath:
-                                          "assets/images/delievery (4).png",
-                                    ),
-                                    LoyalityPointsImages(
-                                      avatarpath:
-                                          "assets/images/delievery (5).png",
-                                    ),
-                                    LoyalityPointsImages(
-                                      avatarpath:
-                                          "assets/images/delievery (2).png",
-                                    ),
-                                    SizedBox(
-                                      height: 15,
-                                      width: 145,
-                                      child: TextWidget(
-                                          text:
-                                              'Collect points on delivery orders ',
-                                          textStyle: TextStyle(
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w400,
-                                              fontFamily: "Mukta",
-                                              color: Color(0xff000000))),
-                                    )
-                                  ]),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 14, left: 20),
-                              child: Container(
-                                child: const Row(
-                                  children: [
-                                    TextWidget(
-                                        text: '25 points = ',
-                                        textStyle: TextStyle(
-                                            fontSize: 10,
-                                            fontFamily: "Montserrat",
-                                            fontWeight: FontWeight.w700,
-                                            color: Color(0xff000000))),
-                                    TextWidget(
-                                        text: 'Free Coffee  ',
-                                        textStyle: TextStyle(
-                                            fontSize: 10,
-                                            fontFamily: "Montserrat",
-                                            fontWeight: FontWeight.w700,
-                                            color: Color(0xff000000))),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 20),
-                              child: Container(
-                                child: const Row(
-                                  children: [
-                                    TextWidget(
-                                        text: '100 points = ',
-                                        textStyle: TextStyle(
-                                            fontSize: 10,
-                                            fontFamily: "Montserrat",
-                                            fontWeight: FontWeight.w700,
-                                            color: Color(0xff000000))),
-                                    TextWidget(
-                                        text:
-                                            'Free Sandwich, Burrito or Smoothie  ',
-                                        textStyle: TextStyle(
-                                            fontSize: 10,
-                                            fontFamily: "Montserrat",
-                                            fontWeight: FontWeight.w700,
-                                            color: Color(0xff000000))),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.only(top: 5, right: 24),
-                              child: SizedBox(
-                                height: 30,
-                                width: 265,
-                                child: TextWidget(
-                                    text:
-                                        'Collect 05 points for every coffee,  burrito or smoothie & grab and go sandwich purchased ',
-                                    textStyle: TextStyle(
-                                        fontSize: 10,
-                                        fontFamily: "Mukta",
-                                        fontWeight: FontWeight.w400,
-                                        color: Color(0xff000000))),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10),
-                              child: Container(
-                                  height: 159,
-                                  width: 335,
-                                  decoration: BoxDecoration(
-                                      color: const Color(0xffF3F3F3),
-                                      borderRadius: BorderRadius.circular(17)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 17, top: 18),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              const TextWidget(
-                                                  text: 'BOXCO',
-                                                  textStyle: TextStyle(
-                                                      fontSize: 28,
-                                                      fontFamily: "Montserrat",
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color:
-                                                          Color(0xff000000))),
-                                              const TextWidget(
-                                                  text: 'SUBSCRIPTION',
-                                                  textStyle: TextStyle(
-                                                      fontSize: 24,
-                                                      fontFamily: "Montserrat",
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color:
-                                                          Color(0xff3242F6))),
-                                              const TextWidget(
-                                                  text: 'Unlimited Hot Drinks ',
-                                                  textStyle: TextStyle(
-                                                      fontSize: 10,
-                                                      fontStyle:
-                                                          FontStyle.italic,
-                                                      fontFamily: "Montserrat",
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color:
-                                                          Color(0xff000000))),
-                                              const TextWidget(
-                                                  text: '10% off all food',
-                                                  textStyle: TextStyle(
-                                                      fontSize: 10,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      fontStyle:
-                                                          FontStyle.italic,
-                                                      fontFamily: "Montserrat",
-                                                      color:
-                                                          Color(0xff000000))),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 21),
-                                                child: Row(
-                                                  children: [
-                                                    const TextWidget(
-                                                        text: '£ 39',
-                                                        textStyle: TextStyle(
-                                                            fontSize: 19,
-                                                            fontFamily:
-                                                                "Montserrat",
-                                                            fontStyle: FontStyle
-                                                                .italic,
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                            color: Color(
-                                                                0xff3242F6))),
-                                                    const TextWidget(
-                                                        text: '/month',
-                                                        textStyle: TextStyle(
-                                                            fontSize: 19,
-                                                            fontFamily:
-                                                                "Montserrat",
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                            color: Color(
-                                                                0xff000000))),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 58),
-                                                      child: InkWell(
-                                                        onTap: () {},
-                                                        child: Container(
-                                                          height: 23,
-                                                          width: 74,
-                                                          alignment:
-                                                              Alignment.center,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: const Color(
-                                                                0xff3242F6),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        4),
-                                                          ),
-                                                          child: const TextWidget(
-                                                              text: 'Subscribe',
-                                                              textStyle: TextStyle(
-                                                                  fontSize: 10,
-                                                                  fontFamily:
-                                                                      "Montserrat",
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w700,
-                                                                  color: Color(
-                                                                      0xffFFFFFF))),
-                                                        ),
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                            bottom: 21,
-                                          ),
-                                          child: SizedBox(
-                                            height: 122,
-                                            width: 65,
-                                            child: Image.asset(
-                                                'assets/images/drin 1.png'),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )),
-                            ),
+                            ShimmerList(),
                           ],
                         ),
-                      ),
-                    )
-                  : const SizedBox();
-            }),
+                      )
+                    : Container(
+                        height: 560,
+                        child: ListView.builder(
+                          itemCount: controller.loyalties.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final loyalty = controller.loyalties[index];
+
+                            // List<bool> isPanelVisibleList =
+                            //     List.filled(controller.loyalties.length, true);
+
+                            List<RxBool> isPanelVisibleList = controller
+                                .loyalties
+                                .map((_) => false.obs)
+                                .toList();
+
+                            // bool isPanelVisible =
+                            //     controller.collectPointsPanel.value;
+
+                            return Column(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    // controller.collectPointsPanel.value =
+                                    //     !controller.collectPointsPanel.value;
+                                    isPanelVisibleList[index].value =
+                                        !isPanelVisibleList[index].value;
+                                    Get.log(isPanelVisibleList.toString());
+
+                                    // Get.log(controller.collectPointsPanel.value
+                                    //     .toString());
+                                  },
+                                  child: MyLoyalityView(
+                                    avatarpath:
+                                        "${loyalty.banner!.path}/${loyalty.banner!.name}",
+                                    title: loyalty.name,
+                                    subtitle: loyalty.shortInfo,
+                                    location: loyalty.distance,
+                                    mainpctrpath:
+                                        "${loyalty.logo!.path}/${loyalty.logo!.name}",
+                                  ),
+                                ),
+                                // The additional container that is visible when isPanelVisible is true
+                                Obx(() {
+                                  return Visibility(
+                                    visible: isPanelVisibleList[index].value,
+                                    child: Container(
+                                      // Customize the appearance of the additional container as needed
+                                      padding: const EdgeInsets.all(16),
+                                      color: Colors.grey,
+                                      child:
+                                          // Container(),
+                                          CollectPointsPanel(
+                                        pinCode: loyalty.pinCode,
+                                        userPoints: loyalty.userPoints,
+                                        description: loyalty.description,
+                                        redeemPoints: loyalty.redeemPoints,
+                                      ),
+                                    ),
+                                  );
+                                }),
+                              ],
+                            );
+                          },
+                        ),
+                      );
+                //Column(children: [
+                //     ...controller.loyalties
+                //         .map((e) => InkWell(
+                //               onTap: () {
+                //                 controller.collectPointsPanel.value =
+                //                     !controller.collectPointsPanel.value;
+                //                 print(controller.collectPointsPanel.value);
+                //               },
+                //               child: MyLoyalityView(
+                //                 avatarpath:
+                //                     "${e.banner!.path}/${e.banner!.name}",
+                //                 title: e.name,
+                //                 subtitle: e.shortInfo,
+                //                 location: e.distance,
+                //                 mainpctrpath:
+                //                     "${e.logo!.path}/${e.logo!.name}",
+                //               ),
+                //             ))
+                //         .toList(),
+                //   ]);
+              }),
+              // const MyLoyalityView(
+              //   avatarpath: "assets/images/Rectangle 15 (2).png",
+              //   title: "Boxco",
+              //   subtitle: "Healthy Food Restaurant",
+              //   location: "2km away",
+              //   mainpctrpath: "assets/images/boxco.png",
+              // ),
+              // ),
+              // }),
+            ),
+            // Obx(() {
+            //   return controller.collectPointsPanel.value == true
+            //       ? Padding(
+            //           padding: const EdgeInsets.only(top: 12),
+            //           child: Container(
+            //             height: 460,
+            //             width: 331,
+            //             decoration: BoxDecoration(
+            //                 color: const Color(0xffFFFFFF),
+            //                 borderRadius: BorderRadius.circular(27),
+            //                 boxShadow: const [
+            //                   BoxShadow(
+            //                     offset: Offset(0, 0),
+            //                   )
+            //                 ]),
+            //             child: Column(
+            //               children: [
+            //                 const Row(
+            //                   mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //                   // crossAxisAlignment: CrossAxisAlignment.start,
+            //                   children: [
+            //                     Padding(
+            //                       padding: EdgeInsets.only(left: 70, top: 19),
+            //                       child: SizedBox(
+            //                         height: 60,
+            //                         width: 193,
+            //                         child: TextWidget(
+            //                             text:
+            //                                 'Give your paybox pin code to The merchant to collect points or redeem reward',
+            //                             textStyle: TextStyle(
+            //                                 fontSize: 12,
+            //                                 fontFamily: "Mukta",
+            //                                 fontWeight: FontWeight.w400,
+            //                                 color: Color(0xff000000))),
+            //                       ),
+            //                     ),
+            //                     Icon(
+            //                       Icons.cancel,
+            //                     )
+            //                   ],
+            //                 ),
+            //                 const TextWidget(
+            //                     text: '600235',
+            //                     textStyle: TextStyle(
+            //                         fontSize: 28,
+            //                         fontFamily: "Montserrat",
+            //                         fontWeight: FontWeight.w700,
+            //                         color: Color(0xff3242F6))),
+            //                 Padding(
+            //                   padding: const EdgeInsets.only(left: 21, top: 33),
+            //                   child: SizedBox(
+            //                     height: 23,
+            //                     width: 316,
+            //                     child: Row(
+            //                       children: [
+            //                         const TextWidget(
+            //                             text: '25 points',
+            //                             textStyle: TextStyle(
+            //                                 fontSize: 18,
+            //                                 fontFamily: "Montserrat",
+            //                                 fontWeight: FontWeight.w700,
+            //                                 color: Color(0xff000000))),
+            //                         const Padding(
+            //                           padding: EdgeInsets.only(
+            //                               left: 4, right: 33, top: 4),
+            //                           child: TextWidget(
+            //                               text: 'Collected',
+            //                               textStyle: TextStyle(
+            //                                   fontSize: 10,
+            //                                   fontFamily: "Mukta",
+            //                                   fontWeight: FontWeight.w400,
+            //                                   color: Color(0xff000000))),
+            //                         ),
+            //                         Container(
+            //                           width: 138,
+            //                           height: 22,
+            //                           color: const Color(0xff000000),
+            //                           alignment: Alignment.center,
+            //                           child: const TextWidget(
+            //                               text: 'View my transaction history',
+            //                               textStyle: TextStyle(
+            //                                   fontSize: 10,
+            //                                   fontFamily: "Mukta",
+            //                                   fontWeight: FontWeight.w500,
+            //                                   color: Color(0xffFFFFFF))),
+            //                         ),
+            //                       ],
+            //                     ),
+            //                   ),
+            //                 ),
+            //                 const Padding(
+            //                   padding: EdgeInsets.only(left: 18, top: 18),
+            //                   child: Row(
+            //                       mainAxisAlignment:
+            //                           MainAxisAlignment.spaceBetween,
+            //                       crossAxisAlignment: CrossAxisAlignment.end,
+            //                       children: [
+            //                         LoyalityPointsImages(
+            //                           avatarpath:
+            //                               "assets/images/delievery (1).png",
+            //                         ),
+            //                         LoyalityPointsImages(
+            //                           avatarpath:
+            //                               "assets/images/delievery (3).png",
+            //                         ),
+            //                         LoyalityPointsImages(
+            //                           avatarpath:
+            //                               "assets/images/delievery (4).png",
+            //                         ),
+            //                         LoyalityPointsImages(
+            //                           avatarpath:
+            //                               "assets/images/delievery (5).png",
+            //                         ),
+            //                         LoyalityPointsImages(
+            //                           avatarpath:
+            //                               "assets/images/delievery (2).png",
+            //                         ),
+            //                         SizedBox(
+            //                           height: 15,
+            //                           width: 145,
+            //                           child: TextWidget(
+            //                               text:
+            //                                   'Collect points on delivery orders ',
+            //                               textStyle: TextStyle(
+            //                                   fontSize: 10,
+            //                                   fontWeight: FontWeight.w400,
+            //                                   fontFamily: "Mukta",
+            //                                   color: Color(0xff000000))),
+            //                         )
+            //                       ]),
+            //                 ),
+            //                 Padding(
+            //                   padding: const EdgeInsets.only(top: 14, left: 20),
+            //                   child: Container(
+            //                     child: const Row(
+            //                       children: [
+            //                         TextWidget(
+            //                             text: '25 points = ',
+            //                             textStyle: TextStyle(
+            //                                 fontSize: 10,
+            //                                 fontFamily: "Montserrat",
+            //                                 fontWeight: FontWeight.w700,
+            //                                 color: Color(0xff000000))),
+            //                         TextWidget(
+            //                             text: 'Free Coffee  ',
+            //                             textStyle: TextStyle(
+            //                                 fontSize: 10,
+            //                                 fontFamily: "Montserrat",
+            //                                 fontWeight: FontWeight.w700,
+            //                                 color: Color(0xff000000))),
+            //                       ],
+            //                     ),
+            //                   ),
+            //                 ),
+            //                 Padding(
+            //                   padding: const EdgeInsets.only(left: 20),
+            //                   child: Container(
+            //                     child: const Row(
+            //                       children: [
+            //                         TextWidget(
+            //                             text: '100 points = ',
+            //                             textStyle: TextStyle(
+            //                                 fontSize: 10,
+            //                                 fontFamily: "Montserrat",
+            //                                 fontWeight: FontWeight.w700,
+            //                                 color: Color(0xff000000))),
+            //                         TextWidget(
+            //                             text:
+            //                                 'Free Sandwich, Burrito or Smoothie  ',
+            //                             textStyle: TextStyle(
+            //                                 fontSize: 10,
+            //                                 fontFamily: "Montserrat",
+            //                                 fontWeight: FontWeight.w700,
+            //                                 color: Color(0xff000000))),
+            //                       ],
+            //                     ),
+            //                   ),
+            //                 ),
+            //                 const Padding(
+            //                   padding: EdgeInsets.only(top: 5, right: 24),
+            //                   child: SizedBox(
+            //                     height: 30,
+            //                     width: 265,
+            //                     child: TextWidget(
+            //                         text:
+            //                             'Collect 05 points for every coffee,  burrito or smoothie & grab and go sandwich purchased ',
+            //                         textStyle: TextStyle(
+            //                             fontSize: 10,
+            //                             fontFamily: "Mukta",
+            //                             fontWeight: FontWeight.w400,
+            //                             color: Color(0xff000000))),
+            //                   ),
+            //                 ),
+            //                 Padding(
+            //                   padding: const EdgeInsets.only(top: 10),
+            //                   child: Container(
+            //                       height: 159,
+            //                       width: 335,
+            //                       decoration: BoxDecoration(
+            //                           color: const Color(0xffF3F3F3),
+            //                           borderRadius: BorderRadius.circular(17)),
+            //                       child: Padding(
+            //                         padding: const EdgeInsets.only(
+            //                             left: 17, top: 18),
+            //                         child: Row(
+            //                           children: [
+            //                             Container(
+            //                               child: Column(
+            //                                 mainAxisAlignment:
+            //                                     MainAxisAlignment.start,
+            //                                 crossAxisAlignment:
+            //                                     CrossAxisAlignment.start,
+            //                                 children: [
+            //                                   const TextWidget(
+            //                                       text: 'BOXCO',
+            //                                       textStyle: TextStyle(
+            //                                           fontSize: 28,
+            //                                           fontFamily: "Montserrat",
+            //                                           fontWeight:
+            //                                               FontWeight.w700,
+            //                                           color:
+            //                                               Color(0xff000000))),
+            //                                   const TextWidget(
+            //                                       text: 'SUBSCRIPTION',
+            //                                       textStyle: TextStyle(
+            //                                           fontSize: 24,
+            //                                           fontFamily: "Montserrat",
+            //                                           fontWeight:
+            //                                               FontWeight.w700,
+            //                                           color:
+            //                                               Color(0xff3242F6))),
+            //                                   const TextWidget(
+            //                                       text: 'Unlimited Hot Drinks ',
+            //                                       textStyle: TextStyle(
+            //                                           fontSize: 10,
+            //                                           fontStyle:
+            //                                               FontStyle.italic,
+            //                                           fontFamily: "Montserrat",
+            //                                           fontWeight:
+            //                                               FontWeight.w700,
+            //                                           color:
+            //                                               Color(0xff000000))),
+            //                                   const TextWidget(
+            //                                       text: '10% off all food',
+            //                                       textStyle: TextStyle(
+            //                                           fontSize: 10,
+            //                                           fontWeight:
+            //                                               FontWeight.w700,
+            //                                           fontStyle:
+            //                                               FontStyle.italic,
+            //                                           fontFamily: "Montserrat",
+            //                                           color:
+            //                                               Color(0xff000000))),
+            //                                   Padding(
+            //                                     padding: const EdgeInsets.only(
+            //                                         top: 21),
+            //                                     child: Row(
+            //                                       children: [
+            //                                         const TextWidget(
+            //                                             text: '£ 39',
+            //                                             textStyle: TextStyle(
+            //                                                 fontSize: 19,
+            //                                                 fontFamily:
+            //                                                     "Montserrat",
+            //                                                 fontStyle: FontStyle
+            //                                                     .italic,
+            //                                                 fontWeight:
+            //                                                     FontWeight.w700,
+            //                                                 color: Color(
+            //                                                     0xff3242F6))),
+            //                                         const TextWidget(
+            //                                             text: '/month',
+            //                                             textStyle: TextStyle(
+            //                                                 fontSize: 19,
+            //                                                 fontFamily:
+            //                                                     "Montserrat",
+            //                                                 fontWeight:
+            //                                                     FontWeight.w700,
+            //                                                 color: Color(
+            //                                                     0xff000000))),
+            //                                         Padding(
+            //                                           padding:
+            //                                               const EdgeInsets.only(
+            //                                                   left: 58),
+            //                                           child: InkWell(
+            //                                             onTap: () {},
+            //                                             child: Container(
+            //                                               height: 23,
+            //                                               width: 74,
+            //                                               alignment:
+            //                                                   Alignment.center,
+            //                                               decoration:
+            //                                                   BoxDecoration(
+            //                                                 color: const Color(
+            //                                                     0xff3242F6),
+            //                                                 borderRadius:
+            //                                                     BorderRadius
+            //                                                         .circular(
+            //                                                             4),
+            //                                               ),
+            //                                               child: const TextWidget(
+            //                                                   text: 'Subscribe',
+            //                                                   textStyle: TextStyle(
+            //                                                       fontSize: 10,
+            //                                                       fontFamily:
+            //                                                           "Montserrat",
+            //                                                       fontWeight:
+            //                                                           FontWeight
+            //                                                               .w700,
+            //                                                       color: Color(
+            //                                                           0xffFFFFFF))),
+            //                                             ),
+            //                                           ),
+            //                                         )
+            //                                       ],
+            //                                     ),
+            //                                   ),
+            //                                 ],
+            //                               ),
+            //                             ),
+            //                             Padding(
+            //                               padding: const EdgeInsets.only(
+            //                                 bottom: 21,
+            //                               ),
+            //                               child: SizedBox(
+            //                                 height: 122,
+            //                                 width: 65,
+            //                                 child: Image.asset(
+            //                                     'assets/images/drin 1.png'),
+            //                               ),
+            //                             ),
+            //                           ],
+            //                         ),
+            //                       )),
+            //                 ),
+            //               ],
+            //             ),
+            //           ),
+            //         )
+            //       : const SizedBox();
+            // }),
 
             // const Padding(
             //   padding: EdgeInsets.only(left: 12, top: 16),

@@ -34,6 +34,10 @@ class Data {
   String? address;
   String? city;
   String? postalCode;
+  String? pinCode;
+  String? description;
+  int? userPoints;
+  int? redeemPoints;
   String? shortInfo;
   String? latitude;
   String? longitude;
@@ -52,6 +56,10 @@ class Data {
       this.address,
       this.city,
       this.postalCode,
+      this.pinCode,
+      this.description,
+      this.userPoints,
+      this.redeemPoints,
       this.shortInfo,
       this.latitude,
       this.longitude,
@@ -70,6 +78,11 @@ class Data {
     address = json['address'];
     city = json['city'];
     postalCode = json['postal_code'];
+    pinCode = json['pin_code'];
+    description = json['description'];
+    userPoints = json['user_points'];
+    // redeemPoints = json['user_points']
+    redeemPoints = json['logo']['id'];
     shortInfo = json['short_info'];
     latitude = json['latitude'];
     longitude = json['longitude'];
@@ -90,6 +103,9 @@ class Data {
     data['address'] = address;
     data['city'] = city;
     data['postal_code'] = postalCode;
+    data['pin_code'] = pinCode;
+    data['description'] = description;
+    data['user_points'] = userPoints;
     data['short_info'] = shortInfo;
     data['latitude'] = latitude;
     data['longitude'] = longitude;

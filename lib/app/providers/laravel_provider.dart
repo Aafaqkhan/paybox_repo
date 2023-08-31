@@ -792,15 +792,26 @@ class LaravelApiClient extends GetxService with ApiClient {
   }
 
   Future<List<loyaltydata.Data>> getLoyalties() async {
+    var token = _box!.read('token');
+    Get.log('token in getLoyalties ::: t$token');
     // const _queryParameters = {
     //   'parent': 'true',
     //   'orderBy': 'order',
     //   'sortBy': 'asc',
     // };
     Uri uri = getDealsApiBaseUri("loyalties");
+
+    var headers = {'Authorization': 'Bearer $token'};
+    Get.log('Headers ::: $headers');
     // .replace(queryParameters: _queryParameters);
     Get.log(uri.toString());
-    var response = await _httpClient!.getUri(uri, options: _optionsCache);
+    var response = await _httpClient!.getUri(
+      uri,
+      options: Options(
+        method: 'GET',
+        headers: headers,
+      ),
+    );
     Get.log('responseeeeee ready');
 
     var responsedata = json.decode(response.data);
@@ -808,6 +819,10 @@ class LaravelApiClient extends GetxService with ApiClient {
 
     if (responsedata['success'] == true) {
       Get.log('responseeeeee success');
+      List data = responsedata['data'];
+      List redeempoints = data[0]["loyalty_redeem_rules"];
+      var point = redeempoints[0]["points"];
+
       return responsedata['data']
           .map<loyaltydata.Data>((obj) => loyaltydata.Data.fromJson(obj))
           .toList();

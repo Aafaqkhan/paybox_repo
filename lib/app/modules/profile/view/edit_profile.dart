@@ -136,16 +136,16 @@ class EditProf extends GetView<ProfileController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 7, bottom: 0, top: 11),
-                      child: TextWidget(
-                          text: 'Name',
-                          textStyle: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              fontFamily: "Montserrat",
-                              color: Color(0xff000000))),
-                    ),
+                    // const Padding(
+                    //   padding: EdgeInsets.only(left: 7, bottom: 0, top: 11),
+                    //   child: TextWidget(
+                    //       text: 'Name',
+                    //       textStyle: TextStyle(
+                    //           fontSize: 14,
+                    //           fontWeight: FontWeight.w600,
+                    //           fontFamily: "Montserrat",
+                    //           color: Color(0xff000000))),
+                    // ),
                     Padding(
                       padding: const EdgeInsets.only(
                         left: 7,
