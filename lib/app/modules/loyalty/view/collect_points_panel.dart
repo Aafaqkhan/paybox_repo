@@ -5,6 +5,7 @@ import 'package:paybox/app/services/global_loyalityoints_img.dart';
 class CollectPointsPanel extends StatelessWidget {
   final String? pinCode;
   final String? description;
+  final String? name;
   final int? userPoints;
   final int? redeemPoints;
 
@@ -13,7 +14,8 @@ class CollectPointsPanel extends StatelessWidget {
       this.pinCode,
       this.userPoints,
       this.description,
-      this.redeemPoints});
+      this.redeemPoints,
+      this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -150,8 +152,8 @@ class CollectPointsPanel extends StatelessWidget {
                             fontFamily: "Montserrat",
                             fontWeight: FontWeight.w700,
                             color: Color(0xff000000))),
-                    const TextWidget(
-                        text: 'Free Coffee  ',
+                    TextWidget(
+                        text: '$name',
                         textStyle: TextStyle(
                             fontSize: 10,
                             fontFamily: "Montserrat",

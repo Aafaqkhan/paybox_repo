@@ -11,6 +11,9 @@ import 'package:get_storage/get_storage.dart';
 import 'package:paybox/app/models/category_model.dart' as categoryydata;
 import 'package:paybox/app/models/allDeals_model.dart' as alldealsdata;
 import 'package:paybox/app/models/loyalty_model.dart' as loyaltydata;
+import 'package:paybox/app/models/purchase_model.dart' as purchasedata;
+import 'package:paybox/app/models/deal_by_category_model.dart'
+    as dealByCategorydata;
 
 import 'package:paybox/app/models/deals_model.dart';
 import 'package:paybox/app/providers/api_provider.dart';
@@ -793,7 +796,7 @@ class LaravelApiClient extends GetxService with ApiClient {
 
   Future<List<loyaltydata.Data>> getLoyalties() async {
     var token = _box!.read('token');
-    Get.log('token in getLoyalties ::: t$token');
+    Get.log('token in getLoyalties ::: $token');
     // const _queryParameters = {
     //   'parent': 'true',
     //   'orderBy': 'order',
@@ -819,12 +822,52 @@ class LaravelApiClient extends GetxService with ApiClient {
 
     if (responsedata['success'] == true) {
       Get.log('responseeeeee success');
+      // List data = responsedata['data'];
+      // List redeempoints = data[0]["loyalty_redeem_rules"];
+      // var point = redeempoints[0]["points"];
+
+      return responsedata['data']
+          .map<loyaltydata.Data>((obj) => loyaltydata.Data.fromJson(obj))
+          .toList();
+    } else {
+      throw Exception(response.data['message']);
+    }
+  }
+
+  Future<List<purchasedata.Data>> getPurchases() async {
+    var token = _box!.read('token');
+    Get.log('token in getPurchases ::: $token');
+    // const _queryParameters = {
+    //   'parent': 'true',
+    //   'orderBy': 'order',
+    //   'sortBy': 'asc',
+    // };
+    Uri uri = getDealsApiBaseUri("get-my-purchases");
+
+    var headers = {'Authorization': 'Bearer $token'};
+    Get.log('Headers ::: $headers');
+    // .replace(queryParameters: _queryParameters);
+    Get.log(uri.toString());
+    var response = await _httpClient!.getUri(
+      uri,
+      options: Options(
+        method: 'GET',
+        headers: headers,
+      ),
+    );
+    Get.log('responseeeeee ready');
+
+    var responsedata = json.decode(response.data);
+    print(responsedata);
+
+    if (responsedata['success'] == true) {
+      Get.log('responseeeeee success');
       List data = responsedata['data'];
       List redeempoints = data[0]["loyalty_redeem_rules"];
       var point = redeempoints[0]["points"];
 
       return responsedata['data']
-          .map<loyaltydata.Data>((obj) => loyaltydata.Data.fromJson(obj))
+          .map<purchasedata.Data>((obj) => purchasedata.Data.fromJson(obj))
           .toList();
     } else {
       throw Exception(response.data['message']);
@@ -856,6 +899,35 @@ class LaravelApiClient extends GetxService with ApiClient {
       print(json.encode(response.data));
     } else {
       print(response.statusMessage);
+    }
+  }
+
+  Future<List<dealByCategorydata.Data>> dealsByCategory(String id) async {
+    // User user
+    // int id = _box!.read('id') ?? 0;
+    // Get.log('ID ::: $id');
+    Get.log('dealsByCategory ::: $id');
+    var headers = {'Content-Type': 'application/json'};
+    var data = json.encode({"category_id": "$id"});
+    var dio = Dio();
+    var response = await dio.request(
+      'https://paybox.jzmaxx.com/api/v2/store/deals/by-category',
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: data,
+    );
+
+    var responsedata = json.decode(response.data);
+
+    if (responsedata['success'] == true) {
+      return responsedata['data']
+          .map<dealByCategorydata.Data>(
+              (obj) => dealByCategorydata.Data.fromJson(obj))
+          .toList();
+    } else {
+      throw Exception(response.data['message']);
     }
   }
 }

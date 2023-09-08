@@ -24,11 +24,19 @@ class _MyTrendingDealsState extends State<MyTrendingDeals> {
         // width: 180,
         child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
           Column(children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12.0),
+              child: SizedBox(
+                height: 112,
+                width: 112,
+                child: Image.network(
+                  "https://paybox.jzmaxx.com/${widget.avatarpath!}",
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
             SizedBox(
-              height: 112,
-              width: 112,
-              child: Image.network(
-                  "https://paybox.jzmaxx.com/${widget.avatarpath!}"),
+              height: 17,
             ),
             TextWidget(
                 text: widget.title!,

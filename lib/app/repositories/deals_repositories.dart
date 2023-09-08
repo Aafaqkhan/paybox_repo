@@ -1,5 +1,7 @@
 import 'package:paybox/app/models/category_model.dart' as categorydata;
 import 'package:paybox/app/models/allDeals_model.dart' as alldealsdata;
+import 'package:paybox/app/models/deal_by_category_model.dart'
+    as dealByCategorydata;
 import 'package:paybox/app/providers/laravel_provider.dart';
 
 class DealsRepository {
@@ -22,5 +24,12 @@ class DealsRepository {
     // _laravelApiClient = Get.find<LaravelApiClient>();
 
     return _laravelApiClient!.purchaseDeal(); // user
+  }
+
+  Future<List<dealByCategorydata.Data>> dealsByCategory(String id) {
+    // User user
+    // _laravelApiClient = Get.find<LaravelApiClient>();
+
+    return _laravelApiClient!.dealsByCategory(id); // user
   }
 }

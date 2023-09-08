@@ -29,6 +29,7 @@ class LoginView extends GetView<AuthController> {
                   margin: const EdgeInsets.only(top: 80),
                   child: Image.asset(
                     "assets/icon/logo.png",
+                    fit: BoxFit.cover,
                   ),
                 )
               ],
@@ -45,7 +46,7 @@ class LoginView extends GetView<AuthController> {
                 color: Colors.white,
                 child: SizedBox(
                   width: 326.0,
-                  height: 566.0,
+                  height: 533.0,
                   child: Padding(
                     padding: const EdgeInsets.only(
                         top: 20, left: 20, right: 20, bottom: 20),
@@ -148,6 +149,7 @@ class LoginView extends GetView<AuthController> {
                             //     ),
                             //   ],
                             // ),
+
                             Obx(() {
                               return controller.loginLoading == false
                                   ? BlockButtonWidget(
@@ -165,8 +167,20 @@ class LoginView extends GetView<AuthController> {
                                         )),
                                       ),
                                     ).paddingSymmetric(vertical: 5.0)
-                                  : const CircularProgressIndicator();
+                                  : const Align(
+                                      alignment: Alignment
+                                          .center, // Center the CircularProgressIndicator
+                                      child: SizedBox(
+                                        width:
+                                            30, // Adjust the width to your desired value
+                                        height: 40,
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                    );
                             }),
+                            const SizedBox(
+                              height: 16,
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -189,6 +203,9 @@ class LoginView extends GetView<AuthController> {
                                 ),
                               ],
                             ),
+                            const SizedBox(
+                              height: 16,
+                            ),
                             BlockButtonWidget(
                               onPressed: () {
                                 Get.toNamed(Routes.HOMEPAGE);
@@ -203,8 +220,9 @@ class LoginView extends GetView<AuthController> {
                                   fontFamily: "Montserrat",
                                 )),
                               ),
-                            ).paddingSymmetric(
-                              vertical: 10.0,
+                            ),
+                            const SizedBox(
+                              height: 30,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,

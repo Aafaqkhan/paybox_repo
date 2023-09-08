@@ -4,11 +4,13 @@ import 'package:paybox/app/services/colors/custom_colors.dart';
 class MyDealsOffer extends StatefulWidget {
   final String? avatarpath;
   final String? title;
+  final Color? color;
 
   const MyDealsOffer({
     super.key,
     this.avatarpath,
     this.title,
+    this.color,
   });
   @override
   State<MyDealsOffer> createState() => _MyDealsOfferState();
@@ -18,6 +20,7 @@ class _MyDealsOfferState extends State<MyDealsOffer> {
   @override
   Widget build(BuildContext context) {
     return Card(
+        color: widget.color,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(12),
@@ -30,16 +33,16 @@ class _MyDealsOfferState extends State<MyDealsOffer> {
           height: 90,
           width: 83,
           child: Column(children: [
-            Container(
-                width: 83,
-                height: 57,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: const Color(0xffE5E8EF)),
-                child: Image.network(
-                  "https://paybox.jzmaxx.com/${widget.avatarpath!}",
-                  fit: BoxFit.cover,
-                )),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12.0),
+              child: SizedBox(
+                  width: 83,
+                  height: 57,
+                  child: Image.network(
+                    "https://paybox.jzmaxx.com/${widget.avatarpath!}",
+                    fit: BoxFit.cover,
+                  )),
+            ),
             Padding(
               padding: const EdgeInsets.all(0.0),
               child: SizedBox(

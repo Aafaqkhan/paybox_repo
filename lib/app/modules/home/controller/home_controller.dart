@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:paybox/app/models/deals_model.dart';
 import 'package:paybox/app/modules/loyalty/controller/loyalty_controller.dart';
+import 'package:paybox/app/modules/purchases/controller/purchase_controller.dart';
 import 'package:paybox/app/repositories/home_repositories.dart';
 // import 'package:paybox/app/models/category_model.dart' as cat;
 // import 'package:paybox/app/models/category_model.dart';
@@ -14,6 +15,7 @@ class HomeController extends GetxController {
   final trendingDeals = <TrendingDealsModel>[].obs;
 
   LoyaltyController loyaltyController = LoyaltyController();
+  PurchasesController purchasesController = PurchasesController();
 
   HomeController() {
     _homeRepository = HomeRepository();
@@ -23,8 +25,9 @@ class HomeController extends GetxController {
   @override
   Future onInit() async {
     super.onInit();
-    await getTrendingDeals();
-    await loyaltyController.getLoyalties();
+    getTrendingDeals();
+    loyaltyController.getLoyalties();
+    purchasesController.getPurchases();
   }
 
   Future getTrendingDeals() async {

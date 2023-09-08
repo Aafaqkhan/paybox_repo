@@ -2,9 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:paybox/app/modules/deals/view/deals_details.dart';
 import 'package:paybox/app/modules/home/controller/home_controller.dart';
 import 'package:paybox/app/modules/loyalty/controller/loyalty_controller.dart';
+import 'package:paybox/app/modules/loyalty/view/loyalty_view.dart';
+import 'package:paybox/app/modules/purchases/controller/purchase_controller.dart';
+import 'package:paybox/app/modules/purchases/view/purchase_view.dart';
 import 'package:paybox/app/providers/laravel_provider.dart';
 import 'package:paybox/app/routes/app_routes.dart';
 import 'package:paybox/app/services/global_card.dart';
@@ -22,8 +26,15 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     final LoyaltyController loyaltyController = LoyaltyController();
+    final PurchasesController purchasesController = PurchasesController();
+    GetStorage? _box = GetStorage();
+
+    var token = _box!.read('token');
+
+    Get.log('TOOOKEN in homeView :: $token');
 
     loyaltyController.getLoyalties();
+    purchasesController.getPurchases();
 
     Get.log('home view ///');
     // controller.getCategories();
@@ -61,7 +72,7 @@ class HomeView extends GetView<HomeController> {
             color: const Color(0xffFFFFFF),
             child: Column(
               children: [
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(top: 36, left: 16, right: 14.56),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -73,44 +84,111 @@ class HomeView extends GetView<HomeController> {
                               fontSize: 18,
                               fontWeight: FontWeight.w700,
                               color: Color(0xff000000))),
-                      TextWidget(
-                          text: 'View All',
-                          textStyle: TextStyle(
-                              fontFamily: "Montserrat",
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xff1025E4))),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PurchasesView()));
+                        },
+                        child: TextWidget(
+                            text: 'View All',
+                            textStyle: TextStyle(
+                                fontFamily: "Montserrat",
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xff1025E4))),
+                      ),
                     ],
                   ),
                 ),
-                const Padding(
+
+                Padding(
                   padding: EdgeInsets.only(top: 16, left: 6),
-                  child: MyPurchases(
-                    avatarpath: "assets/images/Range Dessert.png",
-                    title: "Range Desserts",
-                    subtitle:
-                        "66c Beech Rd, Chorlton-cum-Hardy, Manchester M21 EG",
-                    openingtime: "After Noon Tea for 2",
-                    oldprize: "£ 52",
-                    newprize: "£ 39",
-                    mainpctrpath: "assets/images/Rectangle 15 (1).png",
-                    salevalue: "25% off",
-                  ),
+                  child: token != null && token.isNotEmpty
+                      ? Obx(() {
+                          if (purchasesController.purchases.isEmpty) {
+                            // Return a loading indicator or any other placeholder
+                            return const Column(
+                              children: [
+                                ShimmerList(),
+                              ],
+                            ); // Replace with your loading widget
+                          } else {
+                            return Container(
+                              height: 200,
+                              child: ListView.builder(
+                                  itemCount: 2,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Column(
+                                      children: purchasesController.purchases
+                                          .map((e) => InkWell(
+                                                onTap: () {
+                                                  print('nav');
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              DealsDetails(
+                                                                image:
+                                                                    "${e.banner!.path}/${e.banner!.name}",
+                                                                buisnessName:
+                                                                    e.name,
+                                                                address:
+                                                                    e.address,
+                                                                saleValue:
+                                                                    '25% ',
+                                                                subHeading:
+                                                                    e.shortInfo,
+                                                                endDate:
+                                                                    '11/11/11',
+                                                                startPrice:
+                                                                    "£ 52",
+                                                                dealPrice:
+                                                                    "£ 42",
+                                                                description: e
+                                                                    .description,
+                                                                about: e
+                                                                    .description,
+                                                              )));
+                                                },
+                                                child: MyPurchases(
+                                                  mainpctrpath:
+                                                      "${e.banner!.path}/${e.banner!.name}",
+                                                  title: e.name,
+                                                  avatarpath:
+                                                      "${e.logo!.path}/${e.logo!.name}",
+                                                  subtitle: e.address,
+                                                  openingtime:
+                                                      "After Noon Tea for 2",
+                                                  oldprize: "£ 52",
+                                                  newprize: "£ 39",
+                                                  salevalue: "25% off",
+                                                ),
+                                              ))
+                                          .toList(),
+                                    );
+                                  }),
+                            );
+                          }
+                        })
+                      : Padding(
+                          padding: const EdgeInsets.only(left: 14),
+                          child: TextWidget(
+                              text:
+                                  'Nothing to see here yet! Start searching deals, once you purchase, they will be here ready to redeem!',
+                              textStyle: TextStyle(
+                                fontSize: 14,
+                                fontFamily: "Mukta",
+                                fontWeight: FontWeight.w600,
+                                // color: Color(0xff1025E4)
+                              )),
+                        ),
+                  // Text(
+                  //     'Nothing to see here yet! Start searching deals, once you purchase, they will be here ready to redeem!'),
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 16, left: 6),
-                  child: MyPurchases(
-                    avatarpath: "assets/images/Vector (8).png",
-                    title: "Yaffa Knafeh",
-                    subtitle:
-                        "442 Coventry Rd, Small Health Birmingham B10 OUG, UK",
-                    openingtime: "Yaffah Knafeh Table",
-                    oldprize: "£ 52",
-                    newprize: "£ 102",
-                    mainpctrpath: "assets/images/Group 211.png",
-                    salevalue: "50% off",
-                  ),
-                ),
+
                 const Padding(
                   padding: EdgeInsets.only(top: 31, left: 14),
                   child: SizedBox(
@@ -142,7 +220,7 @@ class HomeView extends GetView<HomeController> {
                     padding:
                         const EdgeInsets.only(left: 16, top: 22, right: 16),
                     child: SizedBox(
-                      height: 160,
+                      height: 190,
                       child: Obx(() {
                         if (controller.trendingDeals.isEmpty) {
                           // Return a loading indicator or any other placeholder
@@ -175,21 +253,6 @@ class HomeView extends GetView<HomeController> {
                                                           e.description,
                                                       about: e.about,
                                                     )));
-                                        // Get.toNamed(
-                                        //   Routes.DEALSDETAILS,
-                                        //   arguments: DealsDetails(
-                                        //     buisnessName: e.businessName.toString(),
-                                        //     address: e.address,
-                                        //     saleValue: e.dealPrice,
-                                        //     subHeading: e.subHeading,
-                                        //     endDate: e.endDate,
-                                        //     startPrice: e.startPrice,
-                                        //     dealPrice: e.dealPrice,
-                                        //     description: e.description,
-                                        //     about: e.about,
-                                        //     // ... other properties
-                                        //   ),
-                                        // );
                                       },
                                       child: MyTrendingDeals(
                                         avatarpath: e.dealImage,
@@ -199,38 +262,13 @@ class HomeView extends GetView<HomeController> {
                                       ),
                                     ))
                                 .toList(),
-
-                            // MyTrendingDeals(
-                            //   avatarpath: "assets/images/Burger & Co (4).png",
-                            //   title: "Ana medical ",
-                            //   subtitle: "Botox 2 areas",
-                            //   salevalue: "47% off",
-                            // ),
-                            // MyTrendingDeals(
-                            //   avatarpath: "assets/images/Burger & Co (2).png",
-                            //   title: "Boxco Vegan ",
-                            //   subtitle: "Rice Bowls",
-                            //   salevalue: "20% off",
-                            // ),
-                            // MyTrendingDeals(
-                            //   avatarpath: "assets/images/Burger & Co (3).png",
-                            //   title: "Bingo Balls ",
-                            //   subtitle: "Mega Package",
-                            //   salevalue: "65% off",
-                            // ),
-                            // MyTrendingDeals(
-                            //   avatarpath: "assets/images/Burger & Co (9).png",
-                            //   title: "Wolf",
-                            //   subtitle: "Coffee & Pizza",
-                            //   salevalue: "25% off",
-                            // ),
                           );
                         }
                       }),
                     ),
                   ),
                 ),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(top: 20, left: 15),
                   child: SizedBox(
                     width: 350,
@@ -244,13 +282,21 @@ class HomeView extends GetView<HomeController> {
                                 fontSize: 18,
                                 fontFamily: "Montserrat",
                                 color: Color(0xff000000))),
-                        TextWidget(
-                            text: 'View All',
-                            textStyle: TextStyle(
-                                fontSize: 12,
-                                fontFamily: "Montserrat",
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xff1025E4))),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoyaltyView()));
+                          },
+                          child: TextWidget(
+                              text: 'View All',
+                              textStyle: TextStyle(
+                                  fontSize: 12,
+                                  fontFamily: "Montserrat",
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xff1025E4))),
+                        ),
                       ],
                     ),
                   ),

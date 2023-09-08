@@ -32,6 +32,7 @@ class SignUpView extends GetView<AuthController> {
                       margin: const EdgeInsets.only(top: 80),
                       child: Image.asset(
                         "assets/icon/logo.png",
+                        fit: BoxFit.cover,
                       ),
                     )
                   ],
@@ -237,9 +238,21 @@ class SignUpView extends GetView<AuthController> {
                                                   fontFamily: "Montserrat",
                                                   fontWeight: FontWeight.w600)),
                                         ),
-                                      ).paddingSymmetric(vertical: 5.0)
-                                    : const CircularProgressIndicator();
+                                      )
+                                    : const Align(
+                                        alignment: Alignment
+                                            .center, // Center the CircularProgressIndicator
+                                        child: SizedBox(
+                                          width:
+                                              30, // Adjust the width to your desired value
+                                          height: 40,
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                      );
                               }),
+                              const SizedBox(
+                                height: 32,
+                              ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [

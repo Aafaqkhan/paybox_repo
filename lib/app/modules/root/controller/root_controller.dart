@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:paybox/app/modules/profile/controller/profile_controller.dart';
 import 'package:paybox/app/modules/profile/view/profile_view.dart';
+import 'package:paybox/app/modules/purchases/controller/purchase_controller.dart';
 
 import '../../../modules/deals/controller/deals_controller.dart';
 import '../../../routes/app_routes.dart';
@@ -75,6 +76,11 @@ class RootController extends GetxController {
       case 3:
         {
           await Get.find<ProfileController>().refreshMessages();
+          break;
+        }
+      case 4:
+        {
+          await Get.find<PurchasesController>(); //.refreshMessages();
           break;
         }
     }

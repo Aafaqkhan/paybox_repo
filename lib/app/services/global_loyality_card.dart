@@ -40,17 +40,23 @@ class _MyLoyalityCardState extends State<MyLoyalityCard> {
                       left: 8,
                     ),
                     child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        // mainAxisAlignment: MainAxisAlignment.center,
+                        // crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            height: 47,
-                            width: 120,
-                            // 'https://paybox.jzmaxx.com/${widget.avatarpath!}'
-                            child: Image.network(
-                              'https://paybox.jzmaxx.com/${widget.avatarpath!}',
-                              fit: BoxFit.cover,
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(12.0),
+                            child: SizedBox(
+                              height: 47,
+                              width: 120,
+                              // 'https://paybox.jzmaxx.com/${widget.avatarpath!}'
+                              child: Image.network(
+                                'https://paybox.jzmaxx.com/${widget.avatarpath!}',
+                                fit: BoxFit.cover,
+                              ),
                             ),
+                          ),
+                          SizedBox(
+                            height: 10,
                           ),
                           SizedBox(
                             // height: 35,
@@ -75,7 +81,7 @@ class _MyLoyalityCardState extends State<MyLoyalityCard> {
                                     color: Color(0xff000000))),
                           ),
                           Row(
-                            // mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Icon(
                                 Icons.location_on,
@@ -96,12 +102,12 @@ class _MyLoyalityCardState extends State<MyLoyalityCard> {
               ],
             ),
             Positioned(
-              right: 75,
-              bottom: 90,
+              right: 70,
+              bottom: 93,
               child: CircleAvatar(
                 // height: 56,
                 // width: 56,
-                radius: 15,
+                radius: 17.5,
                 backgroundImage: NetworkImage(
                     'https://paybox.jzmaxx.com/${widget.mainpctrpath!}'),
               ),
