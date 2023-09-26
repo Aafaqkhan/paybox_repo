@@ -15,6 +15,7 @@ class User extends Model {
   String? confirmpassword;
   String? code;
   Media? avatar;
+  String? imageName;
   String? apiToken;
   String? deviceToken;
   // String? phoneNumber;
@@ -25,7 +26,7 @@ class User extends Model {
   String? address;
   String? bio;
 
-  bool? auth;
+  bool auth = true;
 
   User(
       {this.name,
@@ -42,12 +43,14 @@ class User extends Model {
       this.verificationId,
       this.address,
       this.bio,
-      this.avatar});
+      this.avatar,
+      this.imageName});
 
   User.fromJson(Map<String, dynamic> json) {
     apiToken = json['token'];
     name = json['data']['name'];
     email = json['data']['email'];
+    imageName = json['data']['media']?['name'] ?? '';
     // avatar = json['data']['image'];
     // name = stringFromJson(json, 'name');
     // email = stringFromJson(json, 'email');
@@ -56,6 +59,7 @@ class User extends Model {
     // phoneNumber = stringFromJson(json, 'phone_number');
     // verifiedPhone = boolFromJson(json, 'phone_verified_at');
     avatar = mediaFromJson(json, 'avatar');
+    // avatar = json['data']['media']['name'];
     // avatar = mediaFromJson(json, 'avatar');
     // auth = boolFromJson(json, 'auth');
     // try {

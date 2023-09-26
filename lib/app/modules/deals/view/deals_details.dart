@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:paybox/app/modules/deals/controller/deals_controller.dart';
 import 'package:paybox/app/services/colors/custom_colors.dart';
 import 'package:paybox/app/services/global_payment_details.dart';
+import 'package:paybox/app/services/global_stripe.dart';
 import 'package:paybox/commonWidget/block_button_widget.dart';
 
 class DealsDetails extends StatelessWidget {
@@ -42,6 +45,8 @@ class DealsDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final DealsController dealsController = DealsController();
+
     print(buisnessName);
     return Scaffold(
       appBar: AppBar(
@@ -252,22 +257,47 @@ class DealsDetails extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
-                    Center(
-                      child: SizedBox(
-                        width: 330,
-                        height: 40,
-                        child: BlockButtonWidget(
-                          color: const Color(0xff3242F6),
-                          text: const Text(
-                            'Purchase',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          onPressed: () {
-                            _showPaymentDetailsDialog(context);
-                          },
+                    Obx(() {
+                      return Center(
+                        child: SizedBox(
+                          width: 330,
+                          height: 40,
+                          child: dealsController.isPaymentSheetLoading.value ==
+                                  false
+                              ? BlockButtonWidget(
+                                  color: const Color(0xff3242F6),
+                                  text: Text(
+                                    'Purchase',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  onPressed: () async {
+                                    dealsController
+                                        .isPaymentSheetLoading.value = true;
+                                    await StripePaymentController().makePayment(
+                                        amount: '5000',
+                                        currency: 'GBP',
+                                        context: context);
+                                    // dealsController.purchaseDeal();
+
+                                    dealsController
+                                        .isPaymentSheetLoading.value = false;
+
+                                    // _showPaymentDetailsDialog(context);
+                                  },
+                                )
+                              : const Align(
+                                  alignment: Alignment
+                                      .center, // Center the CircularProgressIndicator
+                                  child: SizedBox(
+                                    width:
+                                        30, // Adjust the width to your desired value
+                                    height: 40,
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                ),
                         ),
-                      ),
-                    )
+                      );
+                    })
                   ],
                 ),
               ),

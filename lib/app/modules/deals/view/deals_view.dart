@@ -2,12 +2,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:paybox/app/models/category_model.dart';
 import 'package:paybox/app/modules/deals/controller/deals_controller.dart';
 import 'package:paybox/app/modules/deals/view/deals_details.dart';
+import 'package:paybox/app/providers/laravel_provider.dart';
+import 'package:paybox/app/services/deal_by_category_card.dart';
 import 'package:paybox/app/services/global_deals_details.dart';
 import 'package:paybox/app/services/global_deals_offer.dart';
 import 'package:paybox/app/services/global_deals_titles.dart';
+import 'package:paybox/app/services/global_filter.dart';
 import 'package:paybox/app/services/global_shimmer_card.dart';
+import 'package:paybox/app/services/global_trending.dart';
 
 class DealsView extends GetView<DealsController> {
   const DealsView({super.key});
@@ -15,8 +20,10 @@ class DealsView extends GetView<DealsController> {
   @override
   Widget build(BuildContext context) {
     print('get categories in deals view ');
-    // controller.getCategories();
-    // controller.getAllDeals();
+    controller.getCategories();
+    controller.getAllDeals();
+    // controller.dealsByCategory('5');
+
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(
@@ -38,331 +45,457 @@ class DealsView extends GetView<DealsController> {
             decoration: BoxDecoration(
                 color: const Color(0xffFFFFFF),
                 borderRadius: BorderRadius.circular(24)),
-            child: const TextField(
+            child: TextField(
               decoration: InputDecoration(
-                  focusedBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  hintText: 'Search by item, brand or location',
-                  hintStyle: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xff49454F),
-                    fontFamily: "Montserrat",
-                  ),
-                  suffixIcon: Icon(
-                    Icons.search,
-                    color: Color(0xff49454F),
-                  ),
-                  prefixIcon: Icon(
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                hintText: 'Search by item, brand or location',
+                hintStyle: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff49454F),
+                  fontFamily: "Montserrat",
+                ),
+                suffixIcon: Icon(
+                  Icons.search,
+                  color: Color(0xff49454F),
+                ),
+                prefixIcon: InkWell(
+                  onTap: () {
+                    Get.log('Location Icon Tapped');
+                    // controller.setFilterAppliedSelected();
+                    Get.log(controller.filterApplied.value.toString());
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return MyFilterDialog(
+                            // onPressedApply: () async {
+                            //   await controller.filterDeals('', '');
+                            //   await controller.setFilterAppliedSelectedTrue();
+                            //   Get.log(controller.filterApplied.value.toString());
+                            //   Navigator.pop(context);
+                            // },
+                            // onPressedReset: () async {
+                            //   await controller.setFilterAppliedSelectedFalse();
+                            //   Get.log(controller.filterApplied.value.toString());
+                            //   Navigator.pop(context);
+                            // },
+                            );
+                      },
+                    );
+                  },
+                  child: const Icon(
                     Icons.location_on,
                     color: Color(0xff000000),
-                  )),
+                  ),
+                ),
+              ),
             ),
           ),
         ),
         centerTitle: true,
         automaticallyImplyLeading: false,
       ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 16, left: 15),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: SizedBox(
-                height: 100,
-                child: Obx(() {
-                  return controller.categories.isEmpty
-                      ? Row(
-                          children: const [
-                            ShimmerList(),
-                          ],
-                        )
-                      : Row(
-                          children: controller.categories
-                              .map((e) => MyDealsOffer(
-                                  avatarpath: e.image, title: e.name))
-                              .toList(),
-                        );
-                }),
-              ),
-            ),
-          ),
-          Obx(() {
-            return controller.allDeals.isEmpty
-                ? const ShimmerList()
-                : Column(
-                    children: controller.allDeals.map((businessWithDeals) {
-                      return Column(
-                        children: [
-                          MyGlobalDealTitles(
-                            avatarpath: businessWithDeals.logo,
-                            title: businessWithDeals.businessTitle,
-                            subtitle: businessWithDeals.address,
-                          ),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: businessWithDeals.deals!.map((deal) {
-                                return InkWell(
-                                  onTap: () async {
-                                    await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => DealsDetails(
-                                                  image: deal.businessLogo,
-                                                  buisnessName:
-                                                      deal.businessName,
-                                                  address: deal.address,
-                                                  saleValue: '10%',
-                                                  subHeading: deal.address,
-                                                  endDate: deal.endDate,
-                                                  startPrice: deal.startPrice,
-                                                  dealPrice: deal.dealPrice,
-                                                  description: deal.description,
-                                                  about: deal.about,
-                                                )));
-                                  },
-                                  child: MyGlobalDealsDetails(
-                                    avatarpath: deal.businessLogo,
-                                    title: deal.businessName,
-                                    subtitle: deal.endDate,
-                                    newprice: deal.dealPrice,
-                                    oldprice: deal.startPrice,
-                                    salevalue: "25% OFF",
-                                  ),
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                        ],
-                      );
-                    }).toList(),
-                  );
-            // Column(
-            //     children: [
-            //       ...controller.allDeals
-            //           .map((e) => Column(
-            //                 children: [
-            //                   MyGlobalDealTitles(
-            //                     avatarpath: e.logo,
-            //                     title: e.businessTitle,
-            //                     subtitle: e.address,
-            //                   ),
-            //                   SingleChildScrollView(
-            //                     scrollDirection: Axis.horizontal,
-            //                     child: Row(
-            //                       children: [
-            //                         ...controller.allDeals
-            //                             .map((e) => InkWell(
-            //                                   onTap: () {
-            //                                     Navigator.push(
-            //                                         context,
-            //                                         MaterialPageRoute(
-            //                                             builder: (context) =>
-            //                                                 DealsDetails(
-            //                                                   image: e.logo,
-            //                                                   buisnessName:
-            //                                                       e.businessTitle,
-            //                                                   address:
-            //                                                       e.address,
-            //                                                   saleValue:
-            //                                                       '10%',
-            //                                                   subHeading:
-            //                                                       e.address,
-            //                                                   endDate:
-            //                                                       '12-12-2024',
-            //                                                   startPrice:
-            //                                                       '123',
-            //                                                   dealPrice:
-            //                                                       '120',
-            //                                                   description:
-            //                                                       'description',
-            //                                                   about:
-            //                                                       'about',
-            //                                                 )));
-            //                                   },
-            //                                   child: MyGlobalDealsDetails(
-            //                                     avatarpath: e.logo,
-            //                                     title: e.businessTitle,
-            //                                     subtitle:
-            //                                         "Ends on 13-Jun-2023 11:00",
-            //                                     newprice: "£ 39",
-            //                                     oldprice: "£ 52",
-            //                                     salevalue: "25% OFF",
-            //                                   ),
-            //                                 ))
-            //                             .toList(),
-            //                       ],
-            //                     ),
-            //                   )
-            //                 ],
-            //               ))
-            //           .toList(),
-            //       // ...controller.allDeals
-            //       //     .map((e) => Row(
-            //       //           children: [
-            //       //             MyGlobalDealTitles(
-            //       //               avatarpath: e.logo,
-            //       //               title: e.businessTitle,
-            //       //               subtitle: e.address,
-            //       //             ),
-            //       //           ],
-            //       //         ))
-            //       //     .toList(),
-            //       MyGlobalDealTitles(
-            //         title: "Range Desserts",
-            //         subtitle:
-            //             "66c Beech Rd, Chorlton-cum-Hardy, Manchester M21 EG",
-            //         avatarpath: "assets/images/Range Dessert.png",
-            //       ),
-            //       SingleChildScrollView(
-            //         scrollDirection: Axis.horizontal,
-            //         child: Padding(
-            //           padding: EdgeInsets.only(
-            //             top: 16,
-            //             left: 16,
-            //           ),
-            //           child: Row(
-            //             children: [
-            //               MyGlobalDealsDetails(
-            //                 avatarpath: "assets/images/deals view.png",
-            //                 title: "After Noon Tea for 2",
-            //                 subtitle: "Ends on 13-Jun-2023 11:00",
-            //                 newprice: "£ 39",
-            //                 oldprice: "£ 52",
-            //                 salevalue: "25% OFF",
-            //               ),
-            //               // MyGlobalDealsDetails(
-            //               //   avatarpath: "assets/images/deals view (6).png",
-            //               //   title: "Chocolate cake",
-            //               //   subtitle: "Ends on 13-Jun-2023 11:00",
-            //               //   newprice: "£ 39",
-            //               //   oldprice: "£ 52",
-            //               //   salevalue: "25% OFF",
-            //               // ),
-            //               // MyGlobalDealsDetails(
-            //               //   avatarpath: "assets/images/deals view (7).png",
-            //               //   title: "Round cake with cheese",
-            //               //   subtitle: "Ends on 14-Jun-2023 12:00",
-            //               //   newprice: "£ 50",
-            //               //   oldprice: "£ 100",
-            //               //   salevalue: "50% OFF",
-            //               // ),
-            //               // MyGlobalDealsDetails(
-            //               //   avatarpath: "assets/images/deals view (9).png",
-            //               //   title: "Round cake with cheese",
-            //               //   subtitle: "Ends on 14-Jun-2023 12:00",
-            //               //   newprice: "£ 20",
-            //               //   oldprice: "£ 30",
-            //               //   salevalue: "10% OFF",
-            //               // ),
-            //             ],
-            //           ),
-            //         ),
-            //       ),
-            //     ],
-            //   );
-          }),
-          // const MyGlobalDealTitles(
-          //   title: "SCOOP ANCOATS",
-          //   subtitle: "58 Oldham Rd, Ancats, Manchester M4 5EE",
-          //   avatarpath: "assets/images/Scoop.png",
-          // ),
-          // const SingleChildScrollView(
-          //   scrollDirection: Axis.horizontal,
-          //   child: Padding(
-          //     padding: EdgeInsets.only(
-          //       top: 16,
-          //       left: 16,
-          //     ),
-          //     child: Row(
-          //       children: [
-          //         MyGlobalDealsDetails(
-          //           avatarpath: "assets/images/deals view (10).png",
-          //           title: "Scoop Ice Cream",
-          //           subtitle: "Ends on 13-Jun-2023 11:00",
-          //           newprice: "£ 10",
-          //           oldprice: "£ 20",
-          //           salevalue: "50% OFF",
-          //         ),
-          //         MyGlobalDealsDetails(
-          //           avatarpath: "assets/images/deals view (11).png",
-          //           title: "Ice Cream Sandwich",
-          //           subtitle: "Ends on 13-Jun-2023 11:00",
-          //           newprice: "£ 30",
-          //           oldprice: "£ 45",
-          //           salevalue: "25% OFF",
-          //         ),
-          //         MyGlobalDealsDetails(
-          //           avatarpath: "assets/images/deals view (12).png",
-          //           title: "Milky Bar Milkshake",
-          //           subtitle: "Ends on 13-Jun-2023 11:00",
-          //           newprice: "£ 40",
-          //           oldprice: "£ 52",
-          //           salevalue: "30% OFF",
-          //         ),
-          //         MyGlobalDealsDetails(
-          //           avatarpath: "assets/images/deals view (1).png",
-          //           title: "Eton Yes Bubble Waffel",
-          //           subtitle: "Ends on 13-Jun-2023 11:00",
-          //           newprice: "£ 39",
-          //           oldprice: "£ 52",
-          //           salevalue: "25% OFF",
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ),
-          // const MyGlobalDealTitles(
-          //   title: "YAFFA KNAFEH",
-          //   subtitle: "442 Coventry Rd, Small Heath, Birmingham B10 OUG, UK",
-          //   avatarpath: "assets/images/Vector (8).png",
-          // ),
-          // const SingleChildScrollView(
-          //   scrollDirection: Axis.horizontal,
-          //   child: Padding(
-          //     padding: EdgeInsets.only(top: 16, left: 16, bottom: 26),
-          //     child: Row(
-          //       children: [
-          //         MyGlobalDealsDetails(
-          //           avatarpath: "assets/images/deals view (2).png",
-          //           title: "Yaffa Knafeh Table",
-          //           subtitle: "Ends on 18-Jun-2023 11:00",
-          //           newprice: "£ 100",
-          //           oldprice: "£ 200",
-          //           salevalue: "50% OFF",
-          //         ),
-          //         MyGlobalDealsDetails(
-          //           avatarpath: "assets/images/deals view (3).png",
-          //           title: "Baklava six with ice cream",
-          //           subtitle: "Ends on 13-Jun-2023 11:00",
-          //           newprice: "£ 30",
-          //           oldprice: "£ 45",
-          //           salevalue: "25% OFF",
-          //         ),
-          //         MyGlobalDealsDetails(
-          //           avatarpath: "assets/images/deals view (4).png",
-          //           title: "Turkish Baklava",
-          //           subtitle: "Ends on 13-Jun-2023 11:00",
-          //           newprice: "£ 40",
-          //           oldprice: "£ 52",
-          //           salevalue: "30% OFF",
-          //         ),
-          //         MyGlobalDealsDetails(
-          //           avatarpath: "assets/images/deals view (5).png",
-          //           title: "Trletasha Cake",
-          //           subtitle: "Ends on 13-Jun-2023 11:00",
-          //           newprice: "£ 39",
-          //           oldprice: "£ 52",
-          //           salevalue: "25% OFF",
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ),
-        ]),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          Get.find<LaravelApiClient>().forceRefresh();
+          controller.refreshDeals(showMessage: true);
+          // Get.find<LaravelApiClient>().unForceRefresh();
+        },
+        child: GetBuilder<DealsController>(builder: (cont) {
+          return SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: controller.filterApplied.value == true
+                ? Obx(() {
+                    return controller.dealsByFilter.isEmpty
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 15),
+                            child: ShimmerList(),
+                            // const Text('No Deals in this Category'),
+                          )
+                        : Column(
+                            children: controller.dealsByFilter
+                                .map((e) => Padding(
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: InkWell(
+                                        onTap: () {
+                                          print('nav');
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      DealsDetails(
+                                                        image: e.dealImage,
+                                                        buisnessName:
+                                                            e.businessName,
+                                                        address: e.address,
+                                                        saleValue: e.dealPrice,
+                                                        subHeading:
+                                                            e.subHeading,
+                                                        endDate: e.endDate,
+                                                        startPrice:
+                                                            e.startPrice,
+                                                        dealPrice: e.dealPrice,
+                                                        description:
+                                                            e.description,
+                                                        about: e.about,
+                                                      )));
+                                        },
+                                        child: DealByCategory(
+                                          avatarpath: e.businessLogo,
+                                          title: e.businessName,
+                                          subtitle: e.endDate,
+                                          newprice: e.dealPrice,
+                                          oldprice: e.startPrice,
+                                          salevalue: "25% OFF",
+                                        ),
+                                      ),
+                                    ))
+                                .toList(),
+                          );
+                  })
+                : Column(children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16, left: 15),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: SizedBox(
+                          height: 100,
+                          child: Obx(() {
+                            return controller.categories.isEmpty
+                                ? Row(
+                                    children: const [
+                                      ShimmerList(),
+                                    ],
+                                  )
+                                : GetBuilder<DealsController>(builder: (cont) {
+                                    return SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        children: [
+                                          // MyStaticDealOffer(
+                                          //   color: Colors.white,
+                                          //   avatarpath: 'assets/images/abc (1).png',
+                                          //   // avatarpath: 'category.image',
+                                          //   title: 'Near Me',
+                                          // ),
+                                          Container(
+                                            height: 200,
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            child: ListView.builder(
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount:
+                                                  controller.categories.length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                final category = controller
+                                                    .categories[index];
+
+                                                if (index == 0) {
+                                                  return Obx(() {
+                                                    return InkWell(
+                                                      onTap: () async {
+                                                        // cont.nearMeSelected.value =
+                                                        //     !cont.nearMeSelected.value;
+                                                        controller
+                                                            .setNearMeSelected();
+
+                                                        if (cont.nearMeSelected ==
+                                                            true) {
+                                                          controller
+                                                                  .selectCategory =
+                                                              null;
+                                                          await controller
+                                                              .nearestDeals(
+                                                                  '33.6957',
+                                                                  '72.969');
+                                                        }
+
+                                                        Get.log(
+                                                            '${cont.nearMeSelected.value}');
+                                                      },
+                                                      child: MyStaticDealOffer(
+                                                        color:
+                                                            cont.nearMeSelected
+                                                                        .value ==
+                                                                    true
+                                                                ? Colors.grey
+                                                                : Colors.white,
+                                                        avatarpath:
+                                                            'assets/images/abc (1).png',
+                                                        // avatarpath: 'category.image',
+                                                        title: 'Near Me',
+                                                      ),
+                                                    );
+                                                  });
+                                                }
+
+                                                return Row(
+                                                  children: [
+                                                    InkWell(
+                                                      onTap: () {
+                                                        if (controller
+                                                                    .categorySelected !=
+                                                                null &&
+                                                            controller
+                                                                    .categorySelected!
+                                                                    .id ==
+                                                                category.id) {
+                                                          // It's a double tap on the same category, clear the selection
+                                                          controller
+                                                                  .selectCategory =
+                                                              null;
+                                                          Get.log('All deals');
+                                                        } else {
+                                                          // It's a single tap, select the category
+                                                          controller
+                                                                  .selectCategory =
+                                                              category;
+                                                          controller
+                                                              .nearMeSelected
+                                                              .value = false;
+                                                          controller
+                                                              .dealsByCategory(
+                                                                  category.id
+                                                                      .toString());
+                                                        }
+
+                                                        // Working Code
+                                                        // controller.selectCategory = category;
+                                                        // controller.dealsByCategory(
+                                                        //     category.id.toString());
+                                                      },
+                                                      child:
+                                                          //  Obx(() {  return
+                                                          MyDealsOffer(
+                                                        color: category.id ==
+                                                                (cont.categorySelected
+                                                                        ?.id ??
+                                                                    '')
+                                                            ? Colors.grey
+                                                            : Colors.white,
+                                                        avatarpath:
+                                                            category.image,
+                                                        title: category.name,
+                                                      ),
+                                                      // }),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  });
+                          }),
+                        ),
+                      ),
+                    ),
+                    GetBuilder<DealsController>(builder: (cont) {
+                      return cont.categorySelected == null &&
+                              cont.nearMeSelected.value == false
+                          ? Obx(() {
+                              return controller.allDeals.isEmpty
+                                  ? const ShimmerList()
+                                  : Column(
+                                      children: controller.allDeals
+                                          .map((businessWithDeals) {
+                                        return Column(
+                                          children: [
+                                            MyGlobalDealTitles(
+                                              avatarpath:
+                                                  businessWithDeals.logo,
+                                              title: businessWithDeals
+                                                  .businessTitle,
+                                              subtitle:
+                                                  businessWithDeals.address,
+                                            ),
+                                            SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Row(
+                                                children: businessWithDeals
+                                                    .deals!
+                                                    .map((deal) {
+                                                  return InkWell(
+                                                    onTap: () async {
+                                                      await Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder:
+                                                                  (context) =>
+                                                                      DealsDetails(
+                                                                        image: deal
+                                                                            .businessLogo,
+                                                                        buisnessName:
+                                                                            deal.businessName,
+                                                                        address:
+                                                                            deal.address,
+                                                                        saleValue:
+                                                                            '10%',
+                                                                        subHeading:
+                                                                            deal.address,
+                                                                        endDate:
+                                                                            deal.endDate,
+                                                                        startPrice:
+                                                                            deal.startPrice,
+                                                                        dealPrice:
+                                                                            deal.dealPrice,
+                                                                        description:
+                                                                            deal.description,
+                                                                        about: deal
+                                                                            .about,
+                                                                      )));
+                                                    },
+                                                    child: MyGlobalDealsDetails(
+                                                      avatarpath:
+                                                          deal.businessLogo,
+                                                      title: deal.businessName,
+                                                      subtitle: deal.endDate,
+                                                      newprice: deal.dealPrice,
+                                                      oldprice: deal.startPrice,
+                                                      salevalue: "25% OFF",
+                                                    ),
+                                                  );
+                                                }).toList(),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      }).toList(),
+                                    );
+                            })
+                          : cont.categorySelected != null &&
+                                  cont.nearMeSelected.value == false
+                              ? Obx(() {
+                                  return controller.dealByCategory.isEmpty
+                                      ? Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 15),
+                                          child: ShimmerList(),
+                                          // const Text('No Deals in this Category'),
+                                        )
+                                      : Column(
+                                          children: controller.dealByCategory
+                                              .map((e) => Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            12.0),
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        print('nav');
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        DealsDetails(
+                                                                          image:
+                                                                              e.dealImage,
+                                                                          buisnessName:
+                                                                              e.businessName,
+                                                                          address:
+                                                                              e.address,
+                                                                          saleValue:
+                                                                              e.dealPrice,
+                                                                          subHeading:
+                                                                              e.subHeading,
+                                                                          endDate:
+                                                                              e.endDate,
+                                                                          startPrice:
+                                                                              e.startPrice,
+                                                                          dealPrice:
+                                                                              e.dealPrice,
+                                                                          description:
+                                                                              e.description,
+                                                                          about:
+                                                                              e.about,
+                                                                        )));
+                                                      },
+                                                      child: DealByCategory(
+                                                        avatarpath:
+                                                            e.businessLogo,
+                                                        title: e.businessName,
+                                                        subtitle: e.endDate,
+                                                        newprice: e.dealPrice,
+                                                        oldprice: e.startPrice,
+                                                        salevalue: "25% OFF",
+                                                      ),
+                                                    ),
+                                                  ))
+                                              .toList(),
+                                        );
+                                })
+                              : cont.nearMeSelected.value == true
+                                  // &&
+                                  //         cont.categorySelected == null
+                                  ? Obx(() {
+                                      return controller.nearestDealsList.isEmpty
+                                          ? Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 15),
+                                              child: ShimmerList(),
+                                              // const Text('No Deals in this Category'),
+                                            )
+                                          : Column(
+                                              children: controller
+                                                  .nearestDealsList
+                                                  .map((e) => Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(12.0),
+                                                        child: InkWell(
+                                                          onTap: () {
+                                                            print('nav');
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            DealsDetails(
+                                                                              image: e.dealImage,
+                                                                              buisnessName: e.businessName,
+                                                                              address: e.address,
+                                                                              saleValue: e.dealPrice,
+                                                                              subHeading: e.subHeading,
+                                                                              endDate: e.endDate,
+                                                                              startPrice: e.startPrice,
+                                                                              dealPrice: e.dealPrice,
+                                                                              description: e.description,
+                                                                              about: e.about,
+                                                                            )));
+                                                          },
+                                                          child: DealByCategory(
+                                                            avatarpath:
+                                                                e.businessLogo,
+                                                            title:
+                                                                e.businessName,
+                                                            subtitle: e.endDate,
+                                                            newprice:
+                                                                e.dealPrice,
+                                                            oldprice:
+                                                                e.startPrice,
+                                                            salevalue:
+                                                                "25% OFF",
+                                                          ),
+                                                        ),
+                                                      ))
+                                                  .toList(),
+                                            );
+                                    })
+                                  : Container(
+                                      child: Text('No Deals'),
+                                    );
+                    }),
+
+                    // }),
+                  ]),
+          );
+        }),
       ),
     );
   }

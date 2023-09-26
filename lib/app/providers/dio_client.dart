@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:dio_http_cache/dio_http_cache.dart';
+// import 'package:dio_http_cache/dio_http_cache.dart';
 
 import '../../commonWidget/custom_trace.dart';
 import '../exceptions/network_exceptions.dart';
@@ -50,14 +50,14 @@ class DioClient {
     }
     optionsNetwork = Options(headers: _dio!.options.headers);
     optionsCache = Options(headers: _dio!.options.headers);
-    if (!kIsWeb && !kDebugMode) {
-      optionsNetwork = buildCacheOptions(const Duration(days: 3),
-          forceRefresh: true, options: optionsNetwork);
-      optionsCache = buildCacheOptions(const Duration(minutes: 10),
-          forceRefresh: false, options: optionsCache);
-      _dio!.interceptors
-          .add(DioCacheManager(CacheConfig(baseUrl: baseUrl)).interceptor);
-    }
+    // if (!kIsWeb && !kDebugMode) {
+    //   optionsNetwork = buildCacheOptions(const Duration(days: 3),
+    //       forceRefresh: true, options: optionsNetwork);
+    //   optionsCache = buildCacheOptions(const Duration(minutes: 10),
+    //       forceRefresh: false, options: optionsCache);
+    //   _dio!.interceptors
+    //       .add(DioCacheManager(CacheConfig(baseUrl: baseUrl)).interceptor);
+    // }
   }
 
   Future<dynamic> get(

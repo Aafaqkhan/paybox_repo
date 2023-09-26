@@ -7,7 +7,7 @@ import '../../../../commonWidget/ui.dart';
 class LoyaltyController extends GetxController {
   RxBool collectPointsPanel = false.obs;
 
-  final loyalties = <Data>[].obs;
+  List<Data> loyalties = <Data>[].obs;
 
   LoyaltyRepository? _loyaltyRepository;
 
@@ -28,6 +28,19 @@ class LoyaltyController extends GetxController {
       print(loyalties[0].name);
     } catch (e) {
       Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+    }
+  }
+
+  Future refreshLoyalty({bool showMessage = false}) async {
+    // await getSlider();
+    await getLoyalties();
+    // await getAllDeals();
+    // await getFeatured();
+    // await getRecommendedSalons();
+    // Get.find<RootController>().getNotificationsCount();
+    if (showMessage) {
+      Get.showSnackbar(
+          Ui.SuccessSnackBar(message: "Home page refreshed successfully"));
     }
   }
 

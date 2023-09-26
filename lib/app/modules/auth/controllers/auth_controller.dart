@@ -14,6 +14,7 @@ import 'dart:io';
 
 class AuthController extends GetxController {
   final Rx<User>? currentUser = Get.find<AuthService>().user;
+  final user = User().obs;
   GlobalKey<FormState>? registerFormKey;
   GlobalKey<FormState>? loginFormKey;
   // GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
@@ -59,6 +60,12 @@ class AuthController extends GetxController {
     Platform.isAndroid ? platForm = 'andriod' : platForm = 'ios';
   }
 
+  @override
+  void dispose() {
+    Get.delete<AuthController>();
+    super.dispose();
+  }
+
   // void saveToken(String token) {
   //   _localStorage.write('token', token);
   // }
@@ -85,7 +92,7 @@ class AuthController extends GetxController {
         print('After went to home page');
       } catch (e) {
         print(e.toString());
-        Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+        // Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
         print('snaaaaaaaaak bar');
       } finally {
         signupLoading.value = false;
@@ -106,13 +113,16 @@ class AuthController extends GetxController {
         // final token = await _userRepository!.login(currentUser!.value);
         // saveToken(token); // Save the token
         await _userRepository!.login(currentUser!.value);
+        Get.log("LOOOOOOOOOOOOOOGIN DONE");
         loginLoading.value = false;
+        user.value.auth = true;
+        Get.log('auuuth in Auth con : ${user.value.auth}');
         print('before going to home page');
         // await getFcmTokenFirebase();
         Get.log("FCM Token: $fcmToken");
 
         // getFcmToken();
-        Get.toNamed(Routes.HOMEPAGE);
+        Get.offAllNamed(Routes.HOMEPAGE);
         print('After went to home page');
       } catch (e) {
         print(e.toString());

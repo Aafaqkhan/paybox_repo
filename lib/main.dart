@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:paybox/app/modules/home/controller/home_controller.dart';
@@ -31,6 +32,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await initServices();
+
+  Stripe.publishableKey = "pk_test_eetZczzyJ1R6VPPeUCyUpyQO007y0z9tom";
 
   // GetStorage? _box;
   // late final String? token;

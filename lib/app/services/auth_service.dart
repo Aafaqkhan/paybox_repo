@@ -41,8 +41,8 @@ class AuthService extends GetxService {
   //   await _usersRepo!.signOut();
   //   await _box!.remove('current_user');
   // }
-
-  bool? get isAuth => user.value.auth;
+  String get token => user.value.apiToken.toString();
+  bool get isAuth => user.value.auth;
 
   // String get apiToken => (user.value.auth) ? user.value.apiToken : '';
 }

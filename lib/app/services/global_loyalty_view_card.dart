@@ -81,17 +81,22 @@ class _MyLoyalityViewState extends State<MyLoyalityView> {
                         ]),
                   ),
                 ),
-                SizedBox(
-                  height: 93,
-                  width: 185,
-                  child: Image.network(
-                      'https://paybox.jzmaxx.com/${widget.avatarpath!}'),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: SizedBox(
+                    height: 93,
+                    width: 185,
+                    child: Image.network(
+                      'https://paybox.jzmaxx.com/${widget.avatarpath!}',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ],
             ),
             Positioned(
-              right: 137,
-              bottom: 17.5,
+              right: 153,
+              bottom: 23.5,
               child: CircleAvatar(
                 radius: 30,
                 // height: 64,

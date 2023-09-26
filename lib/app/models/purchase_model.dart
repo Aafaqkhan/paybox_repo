@@ -1,11 +1,11 @@
-class Loyalty {
+class PurchaseModel {
   bool? success;
   String? message;
   List<Data>? data;
 
-  Loyalty({this.success, this.message, this.data});
+  PurchaseModel({this.success, this.message, this.data});
 
-  Loyalty.fromJson(Map<String, dynamic> json) {
+  PurchaseModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     message = json['message'];
     if (json['data'] != null) {

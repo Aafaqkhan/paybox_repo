@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:paybox/app/services/colors/custom_colors.dart';
 import 'package:paybox/app/services/global_loyalityoints_img.dart';
 
-class CollectPointsPanel extends StatelessWidget {
-  final String? pinCode;
-  final String? description;
-  final int? userPoints;
-  final int? redeemPoints;
+import '../../../models/loyalty_model.dart';
 
-  const CollectPointsPanel(
-      {super.key,
-      this.pinCode,
-      this.userPoints,
-      this.description,
-      this.redeemPoints});
+class CollectPointsPanel extends StatelessWidget {
+  final Data? loyalty;
+
+  const CollectPointsPanel({
+    super.key,
+    this.loyalty,
+    // this.userPoints,
+    // this.description,
+    // this.redeemPoints,
+    // this.
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +58,7 @@ class CollectPointsPanel extends StatelessWidget {
               ],
             ),
             TextWidget(
-                text: '$pinCode',
+                text: '${loyalty?.pinCode}',
                 textStyle: const TextStyle(
                     fontSize: 28,
                     fontFamily: "Montserrat",
@@ -71,7 +72,7 @@ class CollectPointsPanel extends StatelessWidget {
                 child: Row(
                   children: [
                     TextWidget(
-                        text: '$userPoints points',
+                        text: '${loyalty?.userPoints} points',
                         textStyle: const TextStyle(
                             fontSize: 18,
                             fontFamily: "Montserrat",
@@ -104,30 +105,51 @@ class CollectPointsPanel extends StatelessWidget {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(left: 18, top: 18),
+            Padding(
+              padding: const EdgeInsets.only(left: 21, top: 0),
               child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    LoyalityPointsImages(
-                      avatarpath: "assets/images/delievery (1).png",
-                    ),
-                    LoyalityPointsImages(
-                      avatarpath: "assets/images/delievery (3).png",
-                    ),
-                    LoyalityPointsImages(
-                      avatarpath: "assets/images/delievery (4).png",
-                    ),
-                    LoyalityPointsImages(
-                      avatarpath: "assets/images/delievery (5).png",
-                    ),
-                    LoyalityPointsImages(
-                      avatarpath: "assets/images/delievery (2).png",
-                    ),
-                    SizedBox(
+                children: [
+                  SizedBox(
+                    height: 50,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: loyalty?.services?.length ?? 0,
+                        itemBuilder: (context, index) {
+                          Services services = loyalty!.services![index];
+                          return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              // crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                LoyalityPointsImages(
+                                  path: services.logo?.path,
+                                  avatarpath: services.logo?.name,
+                                  // path: 'storage/delivery-services/logo/',
+                                  // avatarpath:
+                                  //     "ar8TNLg0x33loEka2uuT7Syi8Bwl4GRsrM8jgrm4.png",
+                                ),
+
+                                // LoyalityPointsImages(
+                                //   avatarpath: "assets/images/delievery (3).png",
+                                // ),
+                                // LoyalityPointsImages(
+                                //   avatarpath: "assets/images/delievery (4).png",
+                                // ),
+                                // LoyalityPointsImages(
+                                //   avatarpath: "assets/images/delievery (5).png",
+                                // ),
+                                // LoyalityPointsImages(
+                                //   avatarpath: "assets/images/delievery (2).png",
+                                // ),
+                              ]);
+                        }),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 8.0),
+                    child: SizedBox(
                       height: 15,
-                      width: 145,
+                      width: 150,
                       child: TextWidget(
                           text: 'Collect points on delivery orders ',
                           textStyle: TextStyle(
@@ -135,62 +157,73 @@ class CollectPointsPanel extends StatelessWidget {
                               fontWeight: FontWeight.w400,
                               fontFamily: "Mukta",
                               color: Color(0xff000000))),
-                    )
-                  ]),
+                    ),
+                  ),
+                ],
+              ),
             ),
+
             Padding(
               padding: const EdgeInsets.only(top: 14, left: 20),
               child: Container(
-                child: Row(
-                  children: [
-                    TextWidget(
-                        text: '$redeemPoints points = ',
-                        textStyle: const TextStyle(
-                            fontSize: 10,
-                            fontFamily: "Montserrat",
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xff000000))),
-                    const TextWidget(
-                        text: 'Free Coffee  ',
-                        textStyle: TextStyle(
-                            fontSize: 10,
-                            fontFamily: "Montserrat",
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xff000000))),
-                  ],
-                ),
-              ),
+                  child: ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: loyalty?.loyaltyRedeemRules?.length ?? 0,
+                itemBuilder: (context, index) {
+                  LoyaltyRedeemRules offer =
+                      loyalty!.loyaltyRedeemRules![index];
+                  return Row(
+                    children: [
+                      TextWidget(
+                          text: '${offer.points} points = ',
+                          textStyle: const TextStyle(
+                              fontSize: 10,
+                              fontFamily: "Montserrat",
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xff000000))),
+                      TextWidget(
+                          text: '${offer.name}',
+                          textStyle: const TextStyle(
+                              fontSize: 10,
+                              fontFamily: "Montserrat",
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xff000000))),
+                    ],
+                  );
+                },
+              )),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: Container(
-                child: const Row(
-                  children: [
-                    TextWidget(
-                        text: '100 points = ',
-                        textStyle: TextStyle(
-                            fontSize: 10,
-                            fontFamily: "Montserrat",
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xff000000))),
-                    TextWidget(
-                        text: 'Free Sandwich, Burrito or Smoothie  ',
-                        textStyle: TextStyle(
-                            fontSize: 10,
-                            fontFamily: "Montserrat",
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xff000000))),
-                  ],
-                ),
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 20),
+            //   child: Container(
+            //     child: const Row(
+            //       children: [
+            //         TextWidget(
+            //             text: '100 points = ',
+            //             textStyle: TextStyle(
+            //                 fontSize: 10,
+            //                 fontFamily: "Montserrat",
+            //                 fontWeight: FontWeight.w700,
+            //                 color: Color(0xff000000))),
+            //         TextWidget(
+            //             text: 'Free Sandwich, Burrito or Smoothie  ',
+            //             textStyle: TextStyle(
+            //                 fontSize: 10,
+            //                 fontFamily: "Montserrat",
+            //                 fontWeight: FontWeight.w700,
+            //                 color: Color(0xff000000))),
+            //       ],
+            //     ),
+            //   ),
+            // ),
             Padding(
               padding: const EdgeInsets.only(top: 5, right: 24),
               child: SizedBox(
                 height: 30,
                 width: 265,
                 child: TextWidget(
-                    text: '$description',
+                    text: '${loyalty?.description ?? ''}',
                     textStyle: const TextStyle(
                         fontSize: 10,
                         fontFamily: "Mukta",

@@ -1,9 +1,11 @@
+import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:paybox/app/modules/auth/bindings/auth_binding.dart';
 import 'package:paybox/app/modules/auth/views/login_view.dart';
 import 'package:paybox/app/modules/deals/view/deals_details.dart';
 import 'package:paybox/app/modules/home/bindings/home_binding.dart';
+import 'package:paybox/app/services/auth_service.dart';
 import 'package:paybox/app/services/onboarding_screen.dart';
 
 import '../modules/auth/views/sign_up_view.dart';
@@ -24,18 +26,26 @@ class Theme1AppPages {
     token = _box!.read('token');
   }
 
+  final authService = Get.find<AuthService>();
+
+  static String get INITIAL {
+    final authService = Get.find<AuthService>();
+    Get.log('  auuuth ${authService.user.value.auth}');
+    return authService.user.value.auth == true ? Routes.HOMEPAGE : Routes.LOGIN;
+    // return token == null ? Routes.ONBORDING : Routes.HOMEPAGE;
+  }
   // static Future<String> getInitialRoute() async {
   //   final _box = GetStorage();
   //   final token = await _box.read('token');
   //   return token == null ? Routes.ONBORDING : Routes.LOGIN;
   // }
 
-  static const INITIAL = Routes.LOGIN;
+  // static const INITIAL = authService.isAuth ? Routes.HOMEPAGE : Routes.LOGIN;
   static final routes = [
     GetPage(name: Routes.ONBORDING, page: () => OnboardingScreen()),
     GetPage(
       name: Routes.LOGIN,
-      page: () => const LoginView(),
+      page: () => LoginView(),
       binding: AuthBinding(),
     ),
     GetPage(

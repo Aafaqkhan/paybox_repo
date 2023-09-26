@@ -15,6 +15,8 @@ import 'package:get_storage/get_storage.dart';
 class ProfileController extends GetxController {
   final Rx<User>? currentUser = Get.find<AuthService>().user;
 
+  var editProfileLoading = false.obs;
+
   ProfileRepository? _profileRepository;
   // var userProfile = Rx<User?>;
   // final userProfile = <User>[].obs;
@@ -47,14 +49,14 @@ class ProfileController extends GetxController {
     getUserProfile();
   }
 
-  Future<void> fetchUserProfile() async {
-    try {
-      final user = await getUserProfile();
-      userProfile.value = user;
-    } catch (error) {
-      print('Error fetching user profile: $error');
-    }
-  }
+  // Future<void> fetchUserProfile() async {
+  //   try {
+  //     final user = await getUserProfile();
+  //     userProfile.value = user;
+  //   } catch (error) {
+  //     print('Error fetching user profile: $error');
+  //   }
+  // }
 
   Future getUserProfile() async {
     print('$_profileRepository');
@@ -170,21 +172,21 @@ class ProfileController extends GetxController {
     }
   }
 
-  void updateProfilePicture(File? profileImage) async {
+  Future updateProfilePicture(File? profileImage) async {
     Get.focusScope!.unfocus();
     if (1 == 1
         // loading.value == false
         // loginFormKey!.currentState!.validate()
         ) {
       // loginFormKey!.currentState!.save();
-      // loading.value = true;
+      editProfileLoading.value = true;
       // print("login here please");
       print('ready to call updateProfile API');
       try {
         // final token = await _userRepository!.login(currentUser!.value);
         // saveToken(token); // Save the token
         await _profileRepository!.updateProfilePicture(profileImage);
-        // loading.value = false;
+        editProfileLoading.value = false;
         // print('before going to home page');
         // Get.toNamed(Routes.HOMEPAGE);
         // print('After went to home page');
@@ -193,7 +195,7 @@ class ProfileController extends GetxController {
         Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
         print('snaaaaaaaaak bar');
       } finally {
-        // loading.value = false;
+        editProfileLoading.value = false;
       }
     }
   }
@@ -250,6 +252,8 @@ class ProfileController extends GetxController {
       // Get.log('333 .. $user');
 
       profileFormKey!.currentState!.save();
+      editProfileLoading.value = true;
+
       // loginFormKey!.currentState!.save();
       // loading.value = true;
       // print("login here please");
@@ -259,7 +263,7 @@ class ProfileController extends GetxController {
         // saveToken(token); // Save the token
         if (_profileRepository == null) Get.log('_profileRepository is null');
         await _profileRepository!.updateUser(currentUser!.value);
-        // loading.value = false;
+        editProfileLoading.value = false;
         // print('before going to home page');
         // Get.toNamed(Routes.HOMEPAGE);
         // print('After went to home page');
@@ -268,8 +272,21 @@ class ProfileController extends GetxController {
         Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
         print('snaaaaaaaaak bar');
       } finally {
-        // loading.value = false;
+        editProfileLoading.value = false;
       }
+    }
+  }
+
+  Future refreshProfileScreen({bool showMessage = false}) async {
+    // await getSlider();
+    await getUserProfile();
+    // await getuse();
+    // await getFeatured();
+    // await getRecommendedSalons();
+    // Get.find<RootController>().getNotificationsCount();
+    if (showMessage) {
+      Get.showSnackbar(
+          Ui.SuccessSnackBar(message: "Home page refreshed successfully"));
     }
   }
 

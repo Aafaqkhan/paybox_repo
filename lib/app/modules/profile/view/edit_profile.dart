@@ -195,36 +195,51 @@ class EditProf extends GetView<ProfileController> {
                     //     // ),
                     //   ),
                     // ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 24, left: 7),
-                      child: SizedBox(
-                        width: 330,
-                        height: 44,
-                        // alignment: Alignment.center,
-                        // decoration: BoxDecoration(
-                        //     color: const Color(0xff1025E4),
-                        //     borderRadius: BorderRadius.circular(4)),
-                        child: BlockButtonWidget(
-                          onPressed: () async {
-                            await controller.updateUser();
-                            Get.log(
-                                controller.pickedImage.value!.path.toString());
+                    Obx(() {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 24, left: 7),
+                        child: SizedBox(
+                          width: 330,
+                          height: 44,
+                          // alignment: Alignment.center,
+                          // decoration: BoxDecoration(
+                          //     color: const Color(0xff1025E4),
+                          //     borderRadius: BorderRadius.circular(4)),
+                          child: controller.editProfileLoading == false
+                              ? BlockButtonWidget(
+                                  onPressed: () async {
+                                    await controller.updateUser();
+                                    Get.log(controller.pickedImage.value!.path
+                                        .toString());
 
-                            // await controller.updateProfileImage();
+                                    // await controller.updateProfileImage();
 
-                            controller.updateProfilePicture(
-                                controller.pickedImage.value);
-                          },
-                          color: const Color(0xff3242F6),
-                          text: const Text('Save',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontFamily: "Montserrat",
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xffFFFFFF))),
+                                    await controller.updateProfilePicture(
+                                        controller.pickedImage.value);
+                                    await controller.getUserProfile();
+                                    Navigator.pop(context);
+                                  },
+                                  color: const Color(0xff3242F6),
+                                  text: const Text('Save',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontFamily: "Montserrat",
+                                          fontWeight: FontWeight.w600,
+                                          color: Color(0xffFFFFFF))),
+                                )
+                              : const Align(
+                                  alignment: Alignment
+                                      .center, // Center the CircularProgressIndicator
+                                  child: SizedBox(
+                                    width:
+                                        30, // Adjust the width to your desired value
+                                    height: 40,
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                ),
                         ),
-                      ),
-                    ),
+                      );
+                    }),
                   ],
                 ))
           ],
