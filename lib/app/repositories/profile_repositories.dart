@@ -52,4 +52,18 @@ class ProfileRepository {
 
     return _laravelApiClient!.updateUser(user);
   }
+
+  Future<void> changePassword(String password) {
+    _laravelApiClient = Get.find<LaravelApiClient>();
+
+    return _laravelApiClient!.changePassword(password);
+  }
+
+  Future<void> fileComplain(
+      {String email = '', String phone = '', String message = ''}) {
+    _laravelApiClient = Get.find<LaravelApiClient>();
+
+    return _laravelApiClient!
+        .fileComplain(email: email, phone: phone, message: message);
+  }
 }

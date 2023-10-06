@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:paybox/app/modules/auth/controllers/auth_controller.dart';
 import 'package:paybox/app/routes/app_routes.dart';
 
@@ -143,12 +144,16 @@ class SignUpView extends GetView<AuthController> {
                                       return TextFieldWidget(
                                         labelText: "Password".tr,
                                         hintText: "••••••••••••".tr,
-                                        initialValue: controller
-                                            .currentUser!.value.password,
-                                        onSaved: (input) => controller
-                                            .currentUser!
-                                            .value
-                                            .password = input!,
+                                        // initialValue: controller
+                                        //     .currentUser!.value.password,
+                                        onSaved: (input) async {
+                                          controller.currentUser!.value
+                                              .password = input!;
+                                        },
+                                        onChanged: (value) {
+                                          controller.newPasswordMatch.value =
+                                              value;
+                                        },
                                         validator: (input) => input!.length < 6
                                             ? "Should be more than 6 characters"
                                                 .tr
@@ -181,16 +186,23 @@ class SignUpView extends GetView<AuthController> {
                                         // key: UniqueKey(),
                                         hintText: "••••••••••",
                                         labelText: "Re-Enter Password",
-                                        initialValue: controller
-                                            .currentUser!.value.password,
-                                        onSaved: (input) => controller
-                                            .currentUser!
-                                            .value
-                                            .password = input!,
-                                        validator: (input) => input!.length < 6
-                                            ? "Should be more than 6 characters"
-                                                .tr
-                                            : null,
+                                        // initialValue: controller
+                                        //     .currentUser!.value.password,
+                                        // onSaved: (input) => controller
+                                        //     .currentUser!
+                                        //     .value
+                                        //     .password = input!,
+                                        validator: (input) {
+                                          return input!.length < 6
+                                              ? "Should be more than 6 characters"
+                                                  .tr
+                                              : (input !=
+                                                      controller
+                                                          .newPasswordMatch
+                                                          .value
+                                                  ? 'Password does not match'
+                                                  : null);
+                                        },
                                         obscureText: controller
                                             .hideConfirmPassword.value,
                                         iconData: Icons.lock_outline,
@@ -222,33 +234,37 @@ class SignUpView extends GetView<AuthController> {
                                 height: 20,
                               ),
                               Obx(() {
-                                return controller.signupLoading == false
-                                    ? BlockButtonWidget(
-                                        onPressed: () {
-                                          print('1');
-                                          Get.log('11');
-                                          controller.register();
-                                        },
-                                        color: AppColors.maincolor,
-                                        text: Text(
-                                          "Continue".tr,
-                                          style: Get.textTheme.titleMedium!
-                                              .merge(const TextStyle(
-                                                  color: Colors.white,
-                                                  fontFamily: "Montserrat",
-                                                  fontWeight: FontWeight.w600)),
-                                        ),
-                                      )
-                                    : const Align(
-                                        alignment: Alignment
-                                            .center, // Center the CircularProgressIndicator
-                                        child: SizedBox(
-                                          width:
-                                              30, // Adjust the width to your desired value
-                                          height: 40,
-                                          child: CircularProgressIndicator(),
-                                        ),
-                                      );
+                                return BlockButtonWidget(
+                                    onPressed: controller.signupLoading == false
+                                        ? () {
+                                            Get.log(
+                                                'New Password ::: ${controller.newPasswordMatch.value}');
+                                            Get.log('11');
+                                            controller.register();
+                                          }
+                                        : null,
+                                    color: AppColors.maincolor,
+                                    text: controller.signupLoading == false
+                                        ? Text(
+                                            "Continue".tr,
+                                            style: Get.textTheme.titleMedium!
+                                                .merge(const TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: "Montserrat",
+                                                    fontWeight:
+                                                        FontWeight.w600)),
+                                          )
+                                        : const Align(
+                                            alignment: Alignment
+                                                .center, // Center the CircularProgressIndicator
+                                            child: SizedBox(
+                                              width:
+                                                  30, // Adjust the width to your desired value
+                                              height: 30,
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            ),
+                                          ));
                               }),
                               const SizedBox(
                                 height: 32,

@@ -28,17 +28,17 @@ class Theme1AppPages {
 
   final authService = Get.find<AuthService>();
 
-  static String get INITIAL {
-    final authService = Get.find<AuthService>();
-    Get.log('  auuuth ${authService.user.value.auth}');
-    return authService.user.value.auth == true ? Routes.HOMEPAGE : Routes.LOGIN;
-    // return token == null ? Routes.ONBORDING : Routes.HOMEPAGE;
-  }
-  // static Future<String> getInitialRoute() async {
-  //   final _box = GetStorage();
-  //   final token = await _box.read('token');
-  //   return token == null ? Routes.ONBORDING : Routes.LOGIN;
+  // static String get INITIAL {
+  //   final authService = Get.find<AuthService>();
+  //   Get.log('  auuuth ${authService.user.value.auth}');
+  //   return authService.user.value.auth == true ? Routes.HOMEPAGE : Routes.LOGIN;
+  //   // return token == null ? Routes.ONBORDING : Routes.HOMEPAGE;
   // }
+  static String get INITIAL {
+    final _box = GetStorage();
+    final token = _box.read('token');
+    return token == null ? Routes.ONBORDING : Routes.HOMEPAGE;
+  }
 
   // static const INITIAL = authService.isAuth ? Routes.HOMEPAGE : Routes.LOGIN;
   static final routes = [

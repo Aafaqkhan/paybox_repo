@@ -7,11 +7,21 @@ import '../../../../commonWidget/ui.dart';
 class LoyaltyController extends GetxController {
   RxBool collectPointsPanel = false.obs;
 
-<<<<<<< HEAD
-  List<Data> loyalties = <Data>[].obs;
-=======
-  List<dynamic> loyalties = <Data>[].obs;
->>>>>>> c931483518b3abff07e356e13cda4a3dea0c28e8
+  RxList<Data> loyalties = <Data>[].obs;
+
+  RxBool isLoyaltyLoading = false.obs;
+
+  RxInt? targetIndex = 0.obs;
+  // RxList<Data> filteredLoyalties = <Data>[].obs;
+
+  // void filterLoyalties(String query) {
+  //   filteredLoyalties.value = loyalties
+  //       .where((loyalty) =>
+  //           loyalty.name!.toLowerCase().contains(query.toLowerCase()))
+  //       .toList();
+  // }
+
+  // late List<RxBool> isPanelVisibleList = [];
 
   LoyaltyRepository? _loyaltyRepository;
 
@@ -22,16 +32,23 @@ class LoyaltyController extends GetxController {
   @override
   Future onInit() async {
     super.onInit();
+    // filterLoyalties;
+
     await getLoyalties();
+    // isPanelVisibleList = loyalties.map((_) => false.obs).toList();
   }
 
   Future getLoyalties() async {
     if (_loyaltyRepository == null) Get.log('_loyaltyRepository is null');
     try {
+      isLoyaltyLoading.value = true;
       loyalties.assignAll(await _loyaltyRepository!.getLoyalties());
       print(loyalties[0].name);
+      isLoyaltyLoading.value = false;
     } catch (e) {
-      Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+      // Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+    } finally {
+      isLoyaltyLoading.value = false;
     }
   }
 
@@ -44,7 +61,7 @@ class LoyaltyController extends GetxController {
     // Get.find<RootController>().getNotificationsCount();
     if (showMessage) {
       Get.showSnackbar(
-          Ui.SuccessSnackBar(message: "Home page refreshed successfully"));
+          Ui.SuccessSnackBar(message: "Loyalty page refreshed successfully"));
     }
   }
 

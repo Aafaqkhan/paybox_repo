@@ -29,149 +29,132 @@ class PurchaseModel {
 
 class Data {
   int? id;
-  int? userId;
-  String? name;
-  String? address;
-  String? city;
-  String? postalCode;
-  String? shortInfo;
+  String? businessName;
+  int? vendorId;
+  String? webAddress;
+  String? subHeading;
   String? description;
-  String? latitude;
-  String? longitude;
+  String? about;
+  String? finePrint;
+  int? termsConditions;
   int? categoryId;
+  String? address;
+  double? latitude;
+  double? longitude;
+  String? startPrice;
+  String? dealPrice;
+  Null? dealNotes;
   String? status;
+  int? userId;
+  String? endDate;
+  int? isFeatured;
   String? tags;
+  int? isApproved;
+  int? purchasedCount;
+  int? isTrending;
+  String? createdAt;
+  String? updatedAt;
   String? mediaId;
-  String? deliveryId;
-  String? distance;
-  String? pinCode;
-  int? userPoints;
-  List<Services>? services;
   Logo? logo;
   Logo? banner;
-  List<LoyaltyRedeemRules>? loyaltyRedeemRules;
 
   Data(
       {this.id,
-      this.userId,
-      this.name,
-      this.address,
-      this.city,
-      this.postalCode,
-      this.shortInfo,
+      this.businessName,
+      this.vendorId,
+      this.webAddress,
+      this.subHeading,
       this.description,
+      this.about,
+      this.finePrint,
+      this.termsConditions,
+      this.categoryId,
+      this.address,
       this.latitude,
       this.longitude,
-      this.categoryId,
+      this.startPrice,
+      this.dealPrice,
+      this.dealNotes,
       this.status,
+      this.userId,
+      this.endDate,
+      this.isFeatured,
       this.tags,
+      this.isApproved,
+      this.purchasedCount,
+      this.isTrending,
+      this.createdAt,
+      this.updatedAt,
       this.mediaId,
-      this.deliveryId,
-      this.distance,
-      this.pinCode,
-      this.userPoints,
-      this.services,
       this.logo,
-      this.banner,
-      this.loyaltyRedeemRules});
+      this.banner});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    userId = json['user_id'];
-    name = json['name'];
-    address = json['address'];
-    city = json['city'];
-    postalCode = json['postal_code'];
-    shortInfo = json['short_info'];
+    businessName = json['business_name'];
+    vendorId = json['vendor_id'];
+    webAddress = json['web_address'];
+    subHeading = json['sub_heading'];
     description = json['description'];
+    about = json['about'];
+    finePrint = json['fine_print'];
+    termsConditions = json['terms_conditions'];
+    categoryId = json['category_id'];
+    address = json['address'];
     latitude = json['latitude'];
     longitude = json['longitude'];
-    categoryId = json['category_id'];
+    startPrice = json['start_price'];
+    dealPrice = json['deal_price'];
+    dealNotes = json['deal_notes'];
     status = json['status'];
+    userId = json['user_id'];
+    endDate = json['end_date'];
+    isFeatured = json['is_featured'];
     tags = json['tags'];
+    isApproved = json['is_approved'];
+    purchasedCount = json['purchased_count'];
+    isTrending = json['is_trending'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
     mediaId = json['media_id'];
-    deliveryId = json['delivery_id'];
-    distance = json['distance'];
-    pinCode = json['pin_code'];
-    userPoints = json['user_points'];
-    if (json['services'] != null) {
-      services = <Services>[];
-      json['services'].forEach((v) {
-        services!.add(Services.fromJson(v));
-      });
-    }
     logo = json['logo'] != null ? Logo.fromJson(json['logo']) : null;
     banner = json['banner'] != null ? Logo.fromJson(json['banner']) : null;
-    if (json['loyalty_redeem_rules'] != null) {
-      loyaltyRedeemRules = <LoyaltyRedeemRules>[];
-      json['loyalty_redeem_rules'].forEach((v) {
-        loyaltyRedeemRules!.add(LoyaltyRedeemRules.fromJson(v));
-      });
-    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
-    data['user_id'] = userId;
-    data['name'] = name;
-    data['address'] = address;
-    data['city'] = city;
-    data['postal_code'] = postalCode;
-    data['short_info'] = shortInfo;
+    data['business_name'] = businessName;
+    data['vendor_id'] = vendorId;
+    data['web_address'] = webAddress;
+    data['sub_heading'] = subHeading;
     data['description'] = description;
+    data['about'] = about;
+    data['fine_print'] = finePrint;
+    data['terms_conditions'] = termsConditions;
+    data['category_id'] = categoryId;
+    data['address'] = address;
     data['latitude'] = latitude;
     data['longitude'] = longitude;
-    data['category_id'] = categoryId;
+    data['start_price'] = startPrice;
+    data['deal_price'] = dealPrice;
+    data['deal_notes'] = dealNotes;
     data['status'] = status;
+    data['user_id'] = userId;
+    data['end_date'] = endDate;
+    data['is_featured'] = isFeatured;
     data['tags'] = tags;
+    data['is_approved'] = isApproved;
+    data['purchased_count'] = purchasedCount;
+    data['is_trending'] = isTrending;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     data['media_id'] = mediaId;
-    data['delivery_id'] = deliveryId;
-    data['distance'] = distance;
-    data['pin_code'] = pinCode;
-    data['user_points'] = userPoints;
-    if (services != null) {
-      data['services'] = services!.map((v) => v.toJson()).toList();
-    }
     if (logo != null) {
       data['logo'] = logo!.toJson();
     }
     if (banner != null) {
       data['banner'] = banner!.toJson();
-    }
-    if (loyaltyRedeemRules != null) {
-      data['loyalty_redeem_rules'] =
-          loyaltyRedeemRules!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class Services {
-  int? id;
-  int? mediaId;
-  String? name;
-  int? isActive;
-  Logo? logo;
-
-  Services({this.id, this.mediaId, this.name, this.isActive, this.logo});
-
-  Services.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    mediaId = json['media_id'];
-    name = json['name'];
-    isActive = json['is_active'];
-    logo = json['logo'] != null ? Logo.fromJson(json['logo']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['media_id'] = mediaId;
-    data['name'] = name;
-    data['is_active'] = isActive;
-    if (logo != null) {
-      data['logo'] = logo!.toJson();
     }
     return data;
   }
@@ -222,35 +205,6 @@ class Logo {
     data['file_hash'] = fileHash;
     data['size'] = size;
     data['file_type'] = fileType;
-    return data;
-  }
-}
-
-class LoyaltyRedeemRules {
-  int? id;
-  int? userId;
-  int? storeId;
-  String? name;
-  int? points;
-
-  LoyaltyRedeemRules(
-      {this.id, this.userId, this.storeId, this.name, this.points});
-
-  LoyaltyRedeemRules.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    userId = json['user_id'];
-    storeId = json['store_id'];
-    name = json['name'];
-    points = json['points'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['user_id'] = userId;
-    data['store_id'] = storeId;
-    data['name'] = name;
-    data['points'] = points;
     return data;
   }
 }

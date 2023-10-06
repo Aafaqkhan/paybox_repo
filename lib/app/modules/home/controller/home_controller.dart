@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:paybox/app/models/deals_model.dart';
+import 'package:paybox/app/modules/deals/controller/deals_controller.dart';
 import 'package:paybox/app/modules/loyalty/controller/loyalty_controller.dart';
 import 'package:paybox/app/modules/purchases/controller/purchase_controller.dart';
 import 'package:paybox/app/repositories/home_repositories.dart';
@@ -12,10 +13,29 @@ import '../../../../commonWidget/ui.dart';
 class HomeController extends GetxController {
   HomeRepository? _homeRepository;
 
-  final trendingDeals = <TrendingDealsModel>[].obs;
+  final trendingDeals = <TrendingDeals>[].obs;
+
+  RxBool isTrendingDealsLoading = false.obs;
 
   LoyaltyController loyaltyController = LoyaltyController();
   PurchasesController purchasesController = PurchasesController();
+  final DealsController dealsController = Get.put(DealsController());
+
+  // RxDouble saleValue = RxDouble(0.0);
+
+  int? calculateSaleValue(String startPrice, String dealPrice) {
+    // Calculate the difference between start price and deal price
+    int priceDifference = int.tryParse(startPrice)! - int.tryParse(dealPrice)!;
+
+    // Calculate the percentage of concession granted
+    int concessionPercentage =
+        // 123;
+        ((priceDifference / int.tryParse(startPrice)!) * 100).toInt();
+    Get.log('concessionPercentage :: ${concessionPercentage.toString()}');
+    return int.tryParse(concessionPercentage.toString());
+    // Update the saleValue variable with the result
+    // saleValue.value = concessionPercentage;
+  }
 
   HomeController() {
     _homeRepository = HomeRepository();
@@ -28,16 +48,22 @@ class HomeController extends GetxController {
     getTrendingDeals();
     loyaltyController.getLoyalties();
     purchasesController.getPurchases();
+    dealsController.getCategories();
+    dealsController.getAllDeals();
   }
 
   Future getTrendingDeals() async {
     if (_homeRepository == null) Get.log('_homeRepository is null');
     try {
+      isTrendingDealsLoading.value = true;
       trendingDeals.assignAll(await _homeRepository!.getTrendingDeals());
       Get.log('Treeeeeeeeeen');
       Get.log(trendingDeals.length.toString());
     } catch (e) {
-      Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+      isTrendingDealsLoading.value = false;
+      // Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+    } finally {
+      isTrendingDealsLoading.value = false;
     }
   }
 

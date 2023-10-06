@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paybox/app/modules/auth/controllers/auth_controller.dart';
+import 'package:paybox/app/modules/deals/controller/deals_controller.dart';
 import 'package:paybox/app/services/colors/custom_colors.dart';
 import 'package:paybox/commonWidget/text_field_widget.dart';
 
@@ -8,10 +9,13 @@ import '../../../../commonWidget/block_button_widget.dart';
 import '../../../routes/app_routes.dart';
 
 class LoginView extends GetView<AuthController> {
-  const LoginView({super.key});
+  LoginView({super.key});
+
+  final DealsController dealsController = Get.put(DealsController());
 
   @override
   Widget build(BuildContext context) {
+    final AuthController controller = Get.put(AuthController());
     // controller.getFcmToken();
     controller.loginFormKey = GlobalKey<FormState>();
 
@@ -81,7 +85,8 @@ class LoginView extends GetView<AuthController> {
                               TextFieldWidget(
                                 hintText: "johndoe@gmail.com",
                                 labelText: "Email Address",
-                                // initialValue: controller.currentUser!.value.email,
+                                initialValue:
+                                    controller.currentUser!.value.email,
                                 onSaved: (input) => controller
                                     .currentUser!.value.email = input!,
                                 validator: (input) => !input!.contains('@')
@@ -98,8 +103,8 @@ class LoginView extends GetView<AuthController> {
                                 return TextFieldWidget(
                                   hintText: "••••••••••",
                                   labelText: "Password",
-                                  // initialValue:
-                                  //     controller.currentUser!.value.password,
+                                  initialValue:
+                                      controller.currentUser!.value.password,
                                   onSaved: (input) => controller
                                       .currentUser!.value.password = input!,
                                   validator: (input) => input!.length < 6
@@ -154,32 +159,58 @@ class LoginView extends GetView<AuthController> {
                               // ),
 
                               Obx(() {
-                                return controller.loginLoading == false
-                                    ? BlockButtonWidget(
-                                        onPressed: () async {
-                                          await controller.login();
-                                        },
-                                        color: AppColors.maincolor,
-                                        text: Text(
-                                          "Continue".tr,
-                                          style: Get.textTheme.titleMedium!
-                                              .merge(const TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.normal,
-                                            fontFamily: "Montserrat",
-                                          )),
-                                        ),
-                                      ).paddingSymmetric(vertical: 5.0)
-                                    : const Align(
-                                        alignment: Alignment
-                                            .center, // Center the CircularProgressIndicator
-                                        child: SizedBox(
-                                          width:
-                                              30, // Adjust the width to your desired value
-                                          height: 40,
-                                          child: CircularProgressIndicator(),
-                                        ),
-                                      );
+                                return
+                                    // controller.loginLoading == false
+                                    //     ?
+                                    BlockButtonWidget(
+                                            onPressed: controller
+                                                        .loginLoading ==
+                                                    false
+                                                ? () async {
+                                                    await controller.login();
+                                                    Get.log('before Location');
+                                                    // await dealsController
+                                                    //     .getCurrentPosition(
+                                                    //         context);
+                                                    Get.log('After Location');
+                                                  }
+                                                : null,
+                                            color: AppColors.maincolor,
+                                            text: controller.loginLoading ==
+                                                    false
+                                                ? Text(
+                                                    "Continue".tr,
+                                                    style: Get
+                                                        .textTheme.titleMedium!
+                                                        .merge(const TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      fontFamily: "Montserrat",
+                                                    )),
+                                                  )
+                                                : const Align(
+                                                    alignment: Alignment
+                                                        .center, // Center the CircularProgressIndicator
+                                                    child: SizedBox(
+                                                      width:
+                                                          30, // Adjust the width to your desired value
+                                                      height: 30,
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    ),
+                                                  ))
+                                        .paddingSymmetric(vertical: 5.0);
+                                // : const Align(
+                                //     alignment: Alignment
+                                //         .center, // Center the CircularProgressIndicator
+                                //     child: SizedBox(
+                                //       width:
+                                //           30, // Adjust the width to your desired value
+                                //       height: 40,
+                                //       child: CircularProgressIndicator(),
+                                //     ),
+                                //   );
                               }),
                               const SizedBox(
                                 height: 16,
@@ -199,7 +230,6 @@ class LoginView extends GetView<AuthController> {
                                       fontFamily: "Montserrat",
                                     ),
                                   ),
-<<<<<<< HEAD
                                   Container(
                                     height: 2.0,
                                     width: 50,
@@ -220,107 +250,6 @@ class LoginView extends GetView<AuthController> {
                                   style: Get.textTheme.titleMedium!
                                       .merge(const TextStyle(
                                     color: Colors.white,
-=======
-                                )
-                              ],
-                            ),
-                            // Row(
-                            //   children: [
-                            //     Checkbox(
-                            //       value: true,
-                            //       onChanged: (value) {},
-                            //     ),
-                            //     const Text(
-                            //       "Keep me signed in",
-                            //       style: TextStyle(
-                            //         fontWeight: FontWeight.normal,
-                            //         fontFamily: "Montserrat",
-                            //       ),
-                            //     ),
-                            //   ],
-                            // ),
-
-                            Obx(() {
-                              return controller.loginLoading == false
-                                  ? BlockButtonWidget(
-                                      onPressed: () async {
-                                        await controller.login();
-                                      },
-                                      color: AppColors.maincolor,
-                                      text: Text(
-                                        "Continue".tr,
-                                        style: Get.textTheme.titleMedium!
-                                            .merge(const TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.normal,
-                                          fontFamily: "Montserrat",
-                                        )),
-                                      ),
-                                    ).paddingSymmetric(vertical: 5.0)
-                                  : const Align(
-                                      alignment: Alignment
-                                          .center, // Center the CircularProgressIndicator
-                                      child: SizedBox(
-                                        width:
-                                            30, // Adjust the width to your desired value
-                                        height: 40,
-                                        child: CircularProgressIndicator(),
-                                      ),
-                                    );
-                            }),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  height: 2.0,
-                                  width: 50,
-                                  color: Colors.grey,
-                                ),
-                                const Text(
-                                  "   or   ",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontFamily: "Montserrat",
-                                  ),
-                                ),
-                                Container(
-                                  height: 2.0,
-                                  width: 50,
-                                  color: Colors.grey,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            BlockButtonWidget(
-                              onPressed: () {
-                                Get.toNamed(Routes.HOMEPAGE);
-                              },
-                              color: AppColors.buttoncolr,
-                              text: Text(
-                                "Continue as Guest".tr,
-                                style: Get.textTheme.titleMedium!
-                                    .merge(const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.normal,
-                                  fontFamily: "Montserrat",
-                                )),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                const Text(
-                                  "Don't have an Account? ",
-                                  style: TextStyle(
->>>>>>> c931483518b3abff07e356e13cda4a3dea0c28e8
                                     fontWeight: FontWeight.normal,
                                     fontFamily: "Montserrat",
                                   )),

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:paybox/app/modules/loyalty/view/collect_points_panel.dart';
 import 'package:paybox/app/providers/laravel_provider.dart';
+import 'package:paybox/app/routes/app_routes.dart';
 import 'package:paybox/app/services/global_filter.dart';
 import 'package:paybox/app/services/global_loyalityoints_img.dart';
 import 'package:paybox/app/services/global_loyalty_view_card.dart';
@@ -12,11 +13,26 @@ import '../../../services/colors/custom_colors.dart';
 import '../controller/loyalty_controller.dart';
 
 class LoyaltyView extends GetView<LoyaltyController> {
-  const LoyaltyView({super.key});
+  final ScrollController scrollController = ScrollController();
+  // final int initialScrollOffset;
+
+  LoyaltyView({
+    super.key,
+    //  required this.scrollController,
+    // this.initialScrollOffset = 8 * 100,
+  });
+
+  TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    controller.getLoyalties();
+    // controller.getLoyalties();
+    // controller.targetIndex.value = 0;
+
+    GetStorage? _box = GetStorage();
+
+    var token = _box!.read('token');
+    // controller.filterLoyalties('');
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -40,6 +56,12 @@ class LoyaltyView extends GetView<LoyaltyController> {
                 color: const Color(0xffFFFFFF),
                 borderRadius: BorderRadius.circular(24)),
             child: TextField(
+              readOnly: true,
+              // controller: searchController,
+              // onChanged: (value) {
+              //   controller.filterLoyalties(value);
+              //   // Get.log(controller.filteredLoyalties.toString());
+              // },
               decoration: InputDecoration(
                 focusedBorder: InputBorder.none,
                 enabledBorder: InputBorder.none,
@@ -49,9 +71,25 @@ class LoyaltyView extends GetView<LoyaltyController> {
                     fontFamily: "Montserrat",
                     fontWeight: FontWeight.w400,
                     color: Color(0xff49454F)),
-                suffixIcon: const Icon(
-                  Icons.search,
-                  color: Color(0xff49454F),
+                suffixIcon: InkWell(
+                  onTap: () async {
+                    Get.log('Location Icon Tapped');
+
+                    // Get.log('Latitude ::: ${controller.latitude.value}');
+                    // Get.log('Longitude ::: ${controller.longitude.value}');
+
+                    // Get.log(controller.filterApplied.value.toString());
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return MyFilterDialog();
+                      },
+                    );
+                  },
+                  child: const Icon(
+                    Icons.search,
+                    color: Color(0xff49454F),
+                  ),
                 ),
                 prefixIcon: InkWell(
                   onTap: () {
@@ -74,176 +112,168 @@ class LoyaltyView extends GetView<LoyaltyController> {
         ),
         centerTitle: true,
       ),
-<<<<<<< HEAD
       body: RefreshIndicator(
         onRefresh: () async {
           Get.find<LaravelApiClient>().forceRefresh();
           controller.refreshLoyalty(showMessage: true);
           // Get.find<LaravelApiClient>().unForceRefresh();
         },
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 12, top: 16),
-                child: Obx(() {
-                  return controller.loyalties.isEmpty
-                      ? const SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
+        child: token == null
+            ? Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Please ",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontFamily: "Montserrat",
+                          fontSize: 12),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Get.offAllNamed(Routes.LOGIN);
+                      },
+                      child: Text(
+                        "Login here",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: "Montserrat",
+                            color: AppColors.greencolr,
+                            fontSize: 13),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ///   Searched Loayalties
+
+                    // Obx(
+                    //   () {
+                    //     return controller.filteredLoyalties.isEmpty
+                    //         ? Text('No Loyalties Found')
+                    //         : SizedBox(
+                    //             height: 200,
+                    //             child: ListView.builder(
+                    //               itemCount: controller.filteredLoyalties.length,
+                    //               itemBuilder: (context, index) {
+                    //                 final loyalty =
+                    //                     controller.filteredLoyalties[index];
+                    //                 Get.log(loyalty.name.toString());
+                    //                 return ListTile(
+                    //                   title: Text(loyalty.name.toString()),
+                    //                   // Add other loyalty information as needed
+                    //                 );
+                    //               },
+                    //             ),
+                    //           );
+                    //   },
+                    // ),
+
+                    ///   Searched Loayalties
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12, top: 16),
+                      child: Obx(() {
+                        if (controller.isLoyaltyLoading.value == true) {
+                          return const Row(
                             children: [
                               ShimmerList(),
                             ],
-                          ),
-                        )
-                      : Container(
-                          height: 560,
-                          child: ListView.builder(
-                            itemCount: controller.loyalties.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              final loyalty = controller.loyalties[index];
+                          );
+                        }
+                        if (controller.loyalties.isEmpty) {
+                          // Return a loading indicator or any other placeholder
+                          return const Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text('No Loyalties to show'),
+                            ),
+                          );
+                          // Replace with your loading widget
+                        } else {
+                          return Container(
+                            height: 560,
+                            child: ListView.builder(
+                              controller: scrollController,
+                              itemCount: controller.loyalties.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                final loyalty = controller.loyalties[index];
 
-                              List<RxBool> isPanelVisibleList = controller
-                                  .loyalties
-                                  .map((_) => false.obs)
-                                  .toList();
+                                List<RxBool> isPanelVisibleList = controller
+                                    .loyalties
+                                    .map((_) => false.obs)
+                                    .toList();
 
-                              return Column(
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      isPanelVisibleList[index].value =
-                                          !isPanelVisibleList[index].value;
-                                      Get.log(isPanelVisibleList.toString());
-                                    },
-                                    child: MyLoyalityView(
-                                      avatarpath:
-                                          "${loyalty.banner!.path}/${loyalty.banner!.name}",
-                                      title: loyalty.name,
-                                      subtitle: loyalty.shortInfo,
-                                      location: loyalty.distance,
-                                      mainpctrpath:
-                                          "${loyalty.logo!.path}/${loyalty.logo!.name}",
-                                    ),
-                                  ),
-                                  // The additional container that is visible when isPanelVisible is true
-                                  Obx(() {
-                                    return Visibility(
-                                      visible: isPanelVisibleList[index].value,
-                                      child: Container(
-                                          // Customize the appearance of the additional container as needed
-                                          padding: const EdgeInsets.all(16),
-                                          // color: Colors.grey,
-                                          child: CollectPointsPanel(
-                                            loyalty: loyalty,
-                                            // pinCode: loyalty.pinCode,
-                                            // userPoints: loyalty.userPoints,
-                                            // description: loyalty.description,
-                                            // // redeemPoints: loyalty
-                                            // //     .loyaltyRedeemRules![subIndex]
-                                            // // .points,
-                                            // redeemPoints: rule.points ?? '000',
-                                            // name: rule.name ?? 'ASD',
-                                          )),
+                                // Check if the current index matches the target index
+                                if (index == controller.targetIndex!.value) {
+                                  // Scroll to this index
+                                  WidgetsBinding.instance
+                                      ?.addPostFrameCallback((_) {
+                                    scrollController.animateTo(
+                                      index *
+                                          90, // Adjust itemHeight according to your item size
+                                      duration:
+                                          const Duration(milliseconds: 500),
+                                      curve: Curves.easeInOut,
                                     );
-                                  }),
-                                ],
-                              );
-                            },
-                          ),
-                        );
-                }),
-              ),
-            ],
-          ),
-=======
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 12, top: 16),
-              child: Obx(() {
-                return controller.loyalties.isEmpty
-                    ? const SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            ShimmerList(),
-                          ],
-                        ),
-                      )
-                    : Container(
-                        height: 560,
-                        child: ListView.builder(
-                          itemCount: controller.loyalties.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            final loyalty = controller.loyalties[index];
+                                  });
+                                }
 
-                            List<RxBool> isPanelVisibleList = controller
-                                .loyalties
-                                .map((_) => false.obs)
-                                .toList();
-
-                            return Column(
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    isPanelVisibleList[index].value =
-                                        !isPanelVisibleList[index].value;
-                                    Get.log(isPanelVisibleList.toString());
-                                  },
-                                  child: MyLoyalityView(
-                                    avatarpath:
-                                        "${loyalty.banner!.path}/${loyalty.banner!.name}",
-                                    title: loyalty.name,
-                                    subtitle: loyalty.shortInfo,
-                                    location: loyalty.distance,
-                                    mainpctrpath:
-                                        "${loyalty.logo!.path}/${loyalty.logo!.name}",
-                                  ),
-                                ),
-                                // The additional container that is visible when isPanelVisible is true
-                                Obx(() {
-                                  return Visibility(
-                                    visible: isPanelVisibleList[index].value,
-                                    child: Container(
-                                      // Customize the appearance of the additional container as needed
-                                      padding: const EdgeInsets.all(16),
-                                      color: Colors.grey,
-                                      child: ListView.builder(
-                                        shrinkWrap: true,
-                                        itemCount:
-                                            loyalty.loyaltyRedeemRules.length,
-                                        // itemCount: loyalty.length,
-                                        itemBuilder: (BuildContext context,
-                                            int subIndex) {
-                                          final rule = loyalty
-                                              .loyaltyRedeemRules[subIndex];
-                                          return CollectPointsPanel(
-                                            pinCode: loyalty.pinCode,
-                                            userPoints: loyalty.userPoints,
-                                            description: loyalty.description,
-                                            // redeemPoints: loyalty
-                                            //     .loyaltyRedeemRules![subIndex]
-                                            // .points,
-                                            redeemPoints: rule.points ?? '000',
-                                            name: rule.name ?? 'ASD',
-                                          );
-                                        },
+                                return Column(
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        isPanelVisibleList[index].value =
+                                            !isPanelVisibleList[index].value;
+                                        Get.log(isPanelVisibleList.toString());
+                                      },
+                                      child: MyLoyalityView(
+                                        avatarpath:
+                                            "${loyalty.banner!.path}/${loyalty.banner!.name}",
+                                        title: loyalty.name,
+                                        subtitle: loyalty.shortInfo,
+                                        location: loyalty.distance,
+                                        mainpctrpath:
+                                            "${loyalty.logo!.path}/${loyalty.logo!.name}",
                                       ),
                                     ),
-                                  );
-                                }),
-                              ],
-                            );
-                          },
-                        ),
-                      );
-              }),
-            ),
-          ],
->>>>>>> c931483518b3abff07e356e13cda4a3dea0c28e8
-        ),
+                                    // The additional container that is visible when isPanelVisible is true
+                                    Obx(() {
+                                      return Visibility(
+                                        visible:
+                                            isPanelVisibleList[index].value,
+                                        child: Container(
+                                            // Customize the appearance of the additional container as needed
+                                            padding: const EdgeInsets.all(16),
+                                            // color: Colors.grey,
+                                            child: CollectPointsPanel(
+                                              loyalty: loyalty,
+                                              // pinCode: loyalty.pinCode,
+                                              // userPoints: loyalty.userPoints,
+                                              // description: loyalty.description,
+                                              // // redeemPoints: loyalty
+                                              // //     .loyaltyRedeemRules![subIndex]
+                                              // // .points,
+                                              // redeemPoints: rule.points ?? '000',
+                                              // name: rule.name ?? 'ASD',
+                                            )),
+                                      );
+                                    }),
+                                  ],
+                                );
+                              },
+                            ),
+                          );
+                        }
+                      }),
+                    ),
+                  ],
+                ),
+              ),
       ),
     );
   }

@@ -11,7 +11,7 @@ class ShimmerList extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
-        children: List.generate(5, (index) {
+        children: List.generate(3, (index) {
           return Shimmer.fromColors(
             baseColor: Colors.grey,
             highlightColor: Colors.white,

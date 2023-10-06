@@ -11,15 +11,15 @@ class NearDeals {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(new Data.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['success'] = success;
-    data['message'] = message;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['success'] = this.success;
+    data['message'] = this.message;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -45,8 +45,6 @@ class Data {
   String? dealPrice;
   Null? dealNotes;
   String? status;
-  String? businessLogo;
-  String? dealImage;
   int? userId;
   String? endDate;
   int? isFeatured;
@@ -56,7 +54,10 @@ class Data {
   int? isTrending;
   String? createdAt;
   String? updatedAt;
+  String? mediaId;
   double? distance;
+  Logo? logo;
+  Logo? banner;
 
   Data(
       {this.id,
@@ -76,8 +77,6 @@ class Data {
       this.dealPrice,
       this.dealNotes,
       this.status,
-      this.businessLogo,
-      this.dealImage,
       this.userId,
       this.endDate,
       this.isFeatured,
@@ -87,7 +86,10 @@ class Data {
       this.isTrending,
       this.createdAt,
       this.updatedAt,
-      this.distance});
+      this.mediaId,
+      this.distance,
+      this.logo,
+      this.banner});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -107,8 +109,6 @@ class Data {
     dealPrice = json['deal_price'];
     dealNotes = json['deal_notes'];
     status = json['status'];
-    businessLogo = json['business_logo'];
-    dealImage = json['deal_image'];
     userId = json['user_id'];
     endDate = json['end_date'];
     isFeatured = json['is_featured'];
@@ -118,40 +118,97 @@ class Data {
     isTrending = json['is_trending'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    mediaId = json['media_id'];
     distance = json['distance'];
+    logo = json['logo'] != null ? new Logo.fromJson(json['logo']) : null;
+    banner = json['banner'] != null ? new Logo.fromJson(json['banner']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['business_name'] = businessName;
-    data['vendor_id'] = vendorId;
-    data['web_address'] = webAddress;
-    data['sub_heading'] = subHeading;
-    data['description'] = description;
-    data['about'] = about;
-    data['fine_print'] = finePrint;
-    data['terms_conditions'] = termsConditions;
-    data['category_id'] = categoryId;
-    data['address'] = address;
-    data['latitude'] = latitude;
-    data['longitude'] = longitude;
-    data['start_price'] = startPrice;
-    data['deal_price'] = dealPrice;
-    data['deal_notes'] = dealNotes;
-    data['status'] = status;
-    data['business_logo'] = businessLogo;
-    data['deal_image'] = dealImage;
-    data['user_id'] = userId;
-    data['end_date'] = endDate;
-    data['is_featured'] = isFeatured;
-    data['tags'] = tags;
-    data['is_approved'] = isApproved;
-    data['purchased_count'] = purchasedCount;
-    data['is_trending'] = isTrending;
-    data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
-    data['distance'] = distance;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['business_name'] = this.businessName;
+    data['vendor_id'] = this.vendorId;
+    data['web_address'] = this.webAddress;
+    data['sub_heading'] = this.subHeading;
+    data['description'] = this.description;
+    data['about'] = this.about;
+    data['fine_print'] = this.finePrint;
+    data['terms_conditions'] = this.termsConditions;
+    data['category_id'] = this.categoryId;
+    data['address'] = this.address;
+    data['latitude'] = this.latitude;
+    data['longitude'] = this.longitude;
+    data['start_price'] = this.startPrice;
+    data['deal_price'] = this.dealPrice;
+    data['deal_notes'] = this.dealNotes;
+    data['status'] = this.status;
+    data['user_id'] = this.userId;
+    data['end_date'] = this.endDate;
+    data['is_featured'] = this.isFeatured;
+    data['tags'] = this.tags;
+    data['is_approved'] = this.isApproved;
+    data['purchased_count'] = this.purchasedCount;
+    data['is_trending'] = this.isTrending;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['media_id'] = this.mediaId;
+    data['distance'] = this.distance;
+    if (this.logo != null) {
+      data['logo'] = this.logo!.toJson();
+    }
+    if (this.banner != null) {
+      data['banner'] = this.banner!.toJson();
+    }
+    return data;
+  }
+}
+
+class Logo {
+  int? id;
+  String? name;
+  String? fileName;
+  String? mimeType;
+  String? path;
+  String? disk;
+  String? fileHash;
+  int? size;
+  String? fileType;
+
+  Logo(
+      {this.id,
+      this.name,
+      this.fileName,
+      this.mimeType,
+      this.path,
+      this.disk,
+      this.fileHash,
+      this.size,
+      this.fileType});
+
+  Logo.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    fileName = json['file_name'];
+    mimeType = json['mime_type'];
+    path = json['path'];
+    disk = json['disk'];
+    fileHash = json['file_hash'];
+    size = json['size'];
+    fileType = json['file_type'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['file_name'] = this.fileName;
+    data['mime_type'] = this.mimeType;
+    data['path'] = this.path;
+    data['disk'] = this.disk;
+    data['file_hash'] = this.fileHash;
+    data['size'] = this.size;
+    data['file_type'] = this.fileType;
     return data;
   }
 }

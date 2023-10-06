@@ -39,7 +39,7 @@ class _DealByCategoryState extends State<DealByCategory> {
                     height: 150,
                     width: double.infinity,
                     child: Image.network(
-                      "https://paybox.jzmaxx.com/${widget.avatarpath!}",
+                      "https://paybox.jzmaxx.com/storage/stores/banner/${widget.avatarpath!}",
                       fit: BoxFit.cover,
                     )),
               ),

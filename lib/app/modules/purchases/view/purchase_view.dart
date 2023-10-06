@@ -1,22 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:paybox/app/modules/deals/view/deals_details.dart';
+import 'package:paybox/app/modules/home/controller/home_controller.dart';
 import 'package:paybox/app/modules/purchases/controller/purchase_controller.dart';
 import 'package:paybox/app/providers/laravel_provider.dart';
+import 'package:paybox/app/services/colors/custom_colors.dart';
 import 'package:paybox/app/services/global_card.dart';
-<<<<<<< HEAD
 import 'package:paybox/app/services/global_filter.dart';
-=======
->>>>>>> c931483518b3abff07e356e13cda4a3dea0c28e8
 import 'package:paybox/app/services/global_shimmer_card.dart';
+import 'package:paybox/commonWidget/custom_bottom_navbar.dart';
 
 class PurchasesView extends GetView<PurchasesController> {
-  const PurchasesView({super.key});
+  PurchasesView({super.key});
+
+  // TextEditingController searchController = TextEditingController();
+  final HomeController homeController = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
-    controller.getPurchases();
+    // controller.getPurchases();
+
+    GetStorage? _box = GetStorage();
+
+    var token = _box!.read('token');
+    // controller.filterPurchases('');
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -40,6 +49,12 @@ class PurchasesView extends GetView<PurchasesController> {
                 color: const Color(0xffFFFFFF),
                 borderRadius: BorderRadius.circular(24)),
             child: TextField(
+              readOnly: true,
+              // controller: searchController,
+              // onChanged: (value) {
+              //   controller.filterPurchases(value);
+              //   Get.log(controller.filteredPurchases.toString());
+              // },
               decoration: InputDecoration(
                 focusedBorder: InputBorder.none,
                 enabledBorder: InputBorder.none,
@@ -49,9 +64,25 @@ class PurchasesView extends GetView<PurchasesController> {
                     fontFamily: "Montserrat",
                     fontWeight: FontWeight.w400,
                     color: Color(0xff49454F)),
-                suffixIcon: const Icon(
-                  Icons.search,
-                  color: Color(0xff49454F),
+                suffixIcon: InkWell(
+                  onTap: () async {
+                    Get.log('Location Icon Tapped');
+
+                    // Get.log('Latitude ::: ${controller.latitude.value}');
+                    // Get.log('Longitude ::: ${controller.longitude.value}');
+
+                    // Get.log(controller.filterApplied.value.toString());
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return MyFilterDialog();
+                      },
+                    );
+                  },
+                  child: const Icon(
+                    Icons.search,
+                    color: Color(0xff49454F),
+                  ),
                 ),
                 prefixIcon: InkWell(
                   onTap: () {
@@ -74,209 +105,105 @@ class PurchasesView extends GetView<PurchasesController> {
         ),
         centerTitle: true,
       ),
-<<<<<<< HEAD
       body: RefreshIndicator(
         onRefresh: () async {
           Get.find<LaravelApiClient>().forceRefresh();
           controller.refreshPurchases(showMessage: true);
           // Get.find<LaravelApiClient>().unForceRefresh();
         },
-        child: Padding(
-          padding: const EdgeInsets.only(top: 0, left: 0),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 0, top: 0, right: 0),
-              child: Obx(() {
-                if (controller.purchases.isEmpty) {
-                  // Return a loading indicator or any other placeholder
-                  return const Column(
-                    children: [
-                      ShimmerList(),
-                    ],
-                  ); // Replace with your loading widget
-                } else {
-                  return Column(
-                    children: controller.purchases
-                        .map((e) => InkWell(
-                              onTap: () {
-                                print('nav');
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => DealsDetails(
-                                              image:
-                                                  "${e.banner!.path}/${e.banner!.name}",
-                                              buisnessName: e.name,
-                                              address: e.address,
-                                              saleValue: '25% ',
-                                              subHeading: e.shortInfo,
-                                              endDate: '11/11/11',
-                                              startPrice: "£ 52",
-                                              dealPrice: "£ 42",
-                                              description: e.description,
-                                              about: e.description,
-                                            )));
-                              },
-                              child: MyPurchases(
-                                mainpctrpath:
-                                    "${e.banner!.path}/${e.banner!.name}",
-                                title: e.name,
-                                avatarpath: "${e.logo!.path}/${e.logo!.name}",
-                                subtitle: e.address,
-                                openingtime: "After Noon Tea for 2",
-                                oldprize: "£ 52",
-                                newprize: "£ 39",
-                                salevalue: "25% off",
-                              ),
-                            ))
-                        .toList(),
-                  );
-                }
-              }),
-            ),
-=======
-      body: Padding(
-        padding: const EdgeInsets.only(top: 0, left: 0),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 0, top: 0, right: 0),
-            child: Obx(() {
-              if (controller.purchases.isEmpty) {
-                // Return a loading indicator or any other placeholder
-                return const Column(
-                  children: [
-                    ShimmerList(),
-                  ],
-                ); // Replace with your loading widget
-              } else {
-                return Column(
-                  children: controller.purchases
-                      .map((e) => InkWell(
-                            onTap: () {
-                              print('nav');
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => DealsDetails(
-                                            image:
-                                                "${e.banner!.path}/${e.banner!.name}",
-                                            buisnessName: e.name,
-                                            address: e.address,
-                                            saleValue: '25% ',
-                                            subHeading: e.shortInfo,
-                                            endDate: '11/11/11',
-                                            startPrice: "£ 52",
-                                            dealPrice: "£ 42",
-                                            description: e.description,
-                                            about: e.description,
-                                          )));
-                            },
-                            child: MyPurchases(
-                              mainpctrpath:
-                                  "${e.banner!.path}/${e.banner!.name}",
-                              title: e.name,
-                              avatarpath: "${e.logo!.path}/${e.logo!.name}",
-                              subtitle: e.address,
-                              openingtime: "After Noon Tea for 2",
-                              oldprize: "£ 52",
-                              newprize: "£ 39",
-                              salevalue: "25% off",
-                            ),
-                          ))
-                      .toList(),
-                );
-              }
-            }),
->>>>>>> c931483518b3abff07e356e13cda4a3dea0c28e8
-          ),
-        ),
+        child: token == null
+            ? const Padding(
+                padding: EdgeInsets.only(left: 14),
+                child: TextWidget(
+                    text:
+                        'Nothing to see here yet! Start searching deals, once you purchase, they will be here ready to redeem!',
+                    textStyle: TextStyle(
+                      fontSize: 14,
+                      fontFamily: "Mukta",
+                      fontWeight: FontWeight.w600,
+                      // color: Color(0xff1025E4)
+                    )),
+              )
+            : Padding(
+                padding: const EdgeInsets.only(top: 0, left: 0),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 0, top: 0, right: 0),
+                    child: Obx(() {
+                      if (controller.isPurchasesLoading.value == true) {
+                        return const Column(
+                          children: [
+                            ShimmerList(),
+                          ],
+                        );
+                      } else if (controller.purchases.isEmpty) {
+                        // Return a loading indicator or any other placeholder
+                        return const Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text(
+                                'Nothing to see here yet! Start searching deals, once you purchase, they will be here ready to redeem!',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: "Mukta",
+                                  fontWeight: FontWeight.w600,
+                                  // color: Color(0xff1025E4)
+                                )),
+                          ),
+                        );
+                        // return const Column(
+                        //   children: [
+                        //     ShimmerList(),
+                        //   ],
+                        // ); // Replace with your loading widget
+                      } else {
+                        return Column(
+                          children: controller.purchases
+                              .map((e) => InkWell(
+                                    onTap: () {
+                                      print('nav');
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  DealsDetails(
+                                                    image: "${e.banner!.name}",
+                                                    buisnessName:
+                                                        e.businessName,
+                                                    address: e.address,
+                                                    saleValue:
+                                                        '${homeController.calculateSaleValue(e.startPrice!, e.dealPrice!).toString()}',
+                                                    subHeading: e.subHeading,
+                                                    endDate: e.endDate,
+                                                    startPrice: e.startPrice,
+                                                    dealPrice: e.dealPrice,
+                                                    description: e.description,
+                                                    about: e.about,
+                                                  )));
+                                    },
+                                    child: MyPurchases(
+                                      mainpctrpath:
+                                          "${e.banner!.path}/${e.banner!.name}",
+                                      title: e.businessName,
+                                      avatarpath:
+                                          "${e.logo!.path}/${e.logo!.name}",
+                                      subtitle: e.address,
+                                      openingtime: e.subHeading,
+                                      oldprize: e.startPrice,
+                                      newprize: e.dealPrice,
+                                      salevalue:
+                                          '${homeController.calculateSaleValue(e.startPrice!, e.dealPrice!).toString()}% off',
+                                    ),
+                                  ))
+                              .toList(),
+                        );
+                      }
+                    }),
+                  ),
+                ),
+              ),
       ),
-      // const SingleChildScrollView(
-      //   child: Column(
-      //     children: [
-      //       Padding(
-      //         padding: EdgeInsets.only(left: 6),
-      //         child: MyPurchases(
-      //           avatarpath: "assets/images/Range Dessert.png",
-      //           title: "Range Desserts",
-      //           subtitle: "66c Beech Rd, Chorlton-cum-Hardy, Manchester M21 EG",
-      //           openingtime: "After Noon Tea for 2",
-      //           oldprize: "£ 52",
-      //           newprize: "£ 39",
-      //           mainpctrpath: "assets/images/Rectangle 15 (1).png",
-      //           salevalue: "25% off",
-      //         ),
-      //       ),
-      //       Padding(
-      //         padding: EdgeInsets.only(left: 6, top: 16),
-      //         child: MyPurchases(
-      //           avatarpath: "assets/images/purch title.png",
-      //           title: "Dolly and Dimples",
-      //           subtitle: "2 Copson Street, Manchester M20 3HE",
-      //           openingtime: "Hot Stone Massage ",
-      //           oldprize: "£ 52",
-      //           newprize: "£ 35",
-      //           mainpctrpath: "assets/images/purch view (5).png",
-      //           salevalue: "25% off",
-      //         ),
-      //       ),
-      //       Padding(
-      //         padding: EdgeInsets.only(left: 6, top: 16),
-      //         child: MyPurchases(
-      //           avatarpath: "assets/images/purch title (1).png",
-      //           title: "Withington Barbers Shop ",
-      //           subtitle: "468 Wilmslow Road, Withington, Manchester M20 3BG",
-      //           openingtime: "Full service ",
-      //           oldprize: "£ 35",
-      //           newprize: "£ 22",
-      //           mainpctrpath: "assets/images/purch view (4).png",
-      //           salevalue: "37% off",
-      //         ),
-      //       ),
-      //       Padding(
-      //         padding: EdgeInsets.only(left: 6, top: 16),
-      //         child: MyPurchases(
-      //           avatarpath: "assets/images/purch title (3).png",
-      //           title: "The Olympus Projects",
-      //           subtitle: "109- 113 Corporation Street, Manchester M4 4DX",
-      //           openingtime: "Kettlebell Class ",
-      //           oldprize: "£ 15",
-      //           newprize: "£ 7",
-      //           mainpctrpath: "assets/images/purch view (3).png",
-      //           salevalue: "50% off",
-      //         ),
-      //       ),
-      //       Padding(
-      //         padding: EdgeInsets.only(left: 6, top: 16),
-      //         child: MyPurchases(
-      //           avatarpath: "assets/images/purch title (2).png",
-      //           title: "Cibo",
-      //           subtitle: "109- 113 Corporation Street, Manchester M4 4DX",
-      //           openingtime: "2 Course Italian meal for 2 ",
-      //           oldprize: "£ 62",
-      //           newprize: "£ 33",
-      //           mainpctrpath: "assets/images/purch view (2).png",
-      //           salevalue: "46% off",
-      //         ),
-      //       ),
-      //       Padding(
-      //         padding: EdgeInsets.only(left: 6, top: 16),
-      //         child: MyPurchases(
-      //           avatarpath: "assets/images/Group 216.png",
-      //           title: "The Glow Up Studio ",
-      //           subtitle: "34 John Dalton Street, Manchester M2 6LE",
-      //           openingtime: "Russian Lashes",
-      //           oldprize: "£ 75",
-      //           newprize: "£ 50",
-      //           mainpctrpath: "assets/images/purch view (1).png",
-      //           salevalue: "33% off",
-      //         ),
-      //       ),
-      //     ],
-      //   ),
-      // ),
     );
   }
 }

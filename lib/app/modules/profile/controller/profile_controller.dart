@@ -15,6 +15,13 @@ import 'package:get_storage/get_storage.dart';
 class ProfileController extends GetxController {
   final Rx<User>? currentUser = Get.find<AuthService>().user;
 
+  RxString newPassword = ''.obs;
+  RxString confirmNewPassword = ''.obs;
+  RxBool changePasswordLoading = false.obs;
+  RxBool obsecureNewPassword = true.obs;
+  RxBool obsecureconfirmNewPassword = true.obs;
+  RxString complain = ''.obs;
+
   var editProfileLoading = false.obs;
 
   ProfileRepository? _profileRepository;
@@ -22,6 +29,9 @@ class ProfileController extends GetxController {
   // final userProfile = <User>[].obs;
   var userProfile = User().obs;
   GlobalKey<FormState>? profileFormKey;
+  GlobalKey<FormState>? changePasswordFormKey;
+  GlobalKey<FormState>? complaintKey;
+
   AuthController authController = AuthController();
 
   Rx<File?> pickedImage = Rx<File?>(null); // Observable to store picked image
@@ -78,7 +88,7 @@ class ProfileController extends GetxController {
       // print('After went to home page');
     } catch (e) {
       print(e.toString());
-      Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+      // Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
       print('snaaaaaaaaak bar');
     } finally {
       // loading.value = false;
@@ -277,6 +287,83 @@ class ProfileController extends GetxController {
     }
   }
 
+  Future changePassword() async {
+    // final User user = authController.currentUser!.value;
+    // Get.log('222 .. $user');
+    Get.focusScope!.unfocus();
+    if (
+        // 1 == 1
+        changePasswordLoading.value == false &&
+            changePasswordFormKey!.currentState!.validate()) {
+      // Get.log('333 .. $user');
+
+      changePasswordFormKey!.currentState!.save();
+      changePasswordLoading.value = true;
+
+      // loginFormKey!.currentState!.save();
+      // loading.value = true;
+      // print("login here please");
+      Get.log('ready to call Change Password API');
+      try {
+        // final token = await _userRepository!.login(currentUser!.value);
+        // saveToken(token); // Save the token
+        if (_profileRepository == null) Get.log('_profileRepository is null');
+        await _profileRepository!.changePassword(newPassword.value);
+        changePasswordLoading.value = false;
+        // print('before going to home page');
+        // Get.toNamed(Routes.HOMEPAGE);
+        // print('After went to home page');
+      } catch (e) {
+        print(e.toString());
+        Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+        print('snaaaaaaaaak bar');
+      } finally {
+        changePasswordLoading.value = false;
+      }
+    }
+  }
+
+  Future fileComplain(
+      {String email = '', String phone = '', String message = ''}) async {
+    // final User user = authController.currentUser!.value;
+    // Get.log('222 .. $user');
+    Get.focusScope!.unfocus();
+    if (
+        // 1 == 1
+        changePasswordLoading.value == false &&
+            complaintKey!.currentState!.validate()) {
+      // Get.log('333 .. $user');
+
+      complaintKey!.currentState!.save();
+      changePasswordLoading.value = true;
+
+      // loginFormKey!.currentState!.save();
+      // loading.value = true;
+      // print("login here please");
+      Get.log('ready to call Change Password API');
+      try {
+        // final token = await _userRepository!.login(currentUser!.value);
+        // saveToken(token); // Save the token
+        if (_profileRepository == null) Get.log('_profileRepository is null');
+        await _profileRepository!.fileComplain(
+          email: email,
+          phone: phone,
+          message: message,
+        );
+        changePasswordLoading.value = false;
+        // print('before going to home page');
+        // Get.toNamed(Routes.HOMEPAGE);
+        // print('After went to home page');
+      } catch (e) {
+        print(e.toString());
+        Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+        print('snaaaaaaaaak bar');
+      } finally {
+        changePasswordLoading.value = false;
+      }
+    }
+  }
+
   Future refreshProfileScreen({bool showMessage = false}) async {
     // await getSlider();
     await getUserProfile();
@@ -286,7 +373,7 @@ class ProfileController extends GetxController {
     // Get.find<RootController>().getNotificationsCount();
     if (showMessage) {
       Get.showSnackbar(
-          Ui.SuccessSnackBar(message: "Home page refreshed successfully"));
+          Ui.SuccessSnackBar(message: "Profile refreshed successfully"));
     }
   }
 

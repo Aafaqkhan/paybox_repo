@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:paybox/app/services/colors/custom_colors.dart';
 import 'package:paybox/app/services/global_loyalityoints_img.dart';
 
-<<<<<<< HEAD
 import '../../../models/loyalty_model.dart';
 
 class CollectPointsPanel extends StatelessWidget {
@@ -16,22 +15,6 @@ class CollectPointsPanel extends StatelessWidget {
     // this.redeemPoints,
     // this.
   });
-=======
-class CollectPointsPanel extends StatelessWidget {
-  final String? pinCode;
-  final String? description;
-  final String? name;
-  final int? userPoints;
-  final int? redeemPoints;
-
-  const CollectPointsPanel(
-      {super.key,
-      this.pinCode,
-      this.userPoints,
-      this.description,
-      this.redeemPoints,
-      this.name});
->>>>>>> c931483518b3abff07e356e13cda4a3dea0c28e8
 
   @override
   Widget build(BuildContext context) {
@@ -183,7 +166,6 @@ class CollectPointsPanel extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 14, left: 20),
               child: Container(
-<<<<<<< HEAD
                   child: ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
@@ -211,50 +193,6 @@ class CollectPointsPanel extends StatelessWidget {
                   );
                 },
               )),
-=======
-                child: Row(
-                  children: [
-                    TextWidget(
-                        text: '$redeemPoints points = ',
-                        textStyle: const TextStyle(
-                            fontSize: 10,
-                            fontFamily: "Montserrat",
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xff000000))),
-                    TextWidget(
-                        text: '$name',
-                        textStyle: TextStyle(
-                            fontSize: 10,
-                            fontFamily: "Montserrat",
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xff000000))),
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: Container(
-                child: const Row(
-                  children: [
-                    TextWidget(
-                        text: '100 points = ',
-                        textStyle: TextStyle(
-                            fontSize: 10,
-                            fontFamily: "Montserrat",
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xff000000))),
-                    TextWidget(
-                        text: 'Free Sandwich, Burrito or Smoothie  ',
-                        textStyle: TextStyle(
-                            fontSize: 10,
-                            fontFamily: "Montserrat",
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xff000000))),
-                  ],
-                ),
-              ),
->>>>>>> c931483518b3abff07e356e13cda4a3dea0c28e8
             ),
             // Padding(
             //   padding: const EdgeInsets.only(left: 20),

@@ -58,6 +58,8 @@ dependencies:
   flutter_html: 3.0.0-alpha.3
   url_launcher: 6.1.6
   flutter_native_splash: 2.2.11  
+  geolocator: ^10.1.0
+  geocoding: ^2.1.0
   flutter:
     sdk: flutter
   

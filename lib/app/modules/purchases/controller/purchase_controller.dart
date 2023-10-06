@@ -6,7 +6,18 @@ import 'package:paybox/commonWidget/ui.dart';
 class PurchasesController extends GetxController {
   PurchaseRepository? _purchaseRepository;
 
-  final purchases = <Data>[].obs;
+  RxList<Data> purchases = <Data>[].obs;
+
+  RxBool isPurchasesLoading = false.obs;
+
+  // RxList<Data> filteredPurchases = <Data>[].obs;
+
+  // void filterPurchases(String query) {
+  //   filteredPurchases.value = purchases
+  //       .where((purchase) =>
+  //           purchase.name!.toLowerCase().contains(query.toLowerCase()))
+  //       .toList();
+  // }
 
   PurchasesController() {
     _purchaseRepository = PurchaseRepository();
@@ -15,19 +26,22 @@ class PurchasesController extends GetxController {
   @override
   Future onInit() async {
     super.onInit();
-    // await getPurchases();
+    await getPurchases();
   }
 
   Future getPurchases() async {
+    isPurchasesLoading.value = true;
     if (_purchaseRepository == null) Get.log('_purchaseRepository is null');
     try {
       purchases.assignAll(await _purchaseRepository!.getPurchases());
-      // print(loyalties[0].name);
+      Get.log(purchases[0].businessName.toString());
+      isPurchasesLoading.value = false;
     } catch (e) {
-      Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+      // Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+    } finally {
+      isPurchasesLoading.value = false;
     }
   }
-<<<<<<< HEAD
 
   Future refreshPurchases({bool showMessage = false}) async {
     // await getSlider();
@@ -38,9 +52,7 @@ class PurchasesController extends GetxController {
     // Get.find<RootController>().getNotificationsCount();
     if (showMessage) {
       Get.showSnackbar(
-          Ui.SuccessSnackBar(message: "Home page refreshed successfully"));
+          Ui.SuccessSnackBar(message: "Purchases refreshed successfully"));
     }
   }
-=======
->>>>>>> c931483518b3abff07e356e13cda4a3dea0c28e8
 }

@@ -29,7 +29,7 @@ class AllDeals {
 
 class Data {
   String? businessTitle;
-  String? logo;
+  Logo? logo;
   String? address;
   List<Deals>? deals;
 
@@ -37,7 +37,7 @@ class Data {
 
   Data.fromJson(Map<String, dynamic> json) {
     businessTitle = json['business_title'];
-    logo = json['logo'];
+    logo = json['logo'] != null ? Logo.fromJson(json['logo']) : null;
     address = json['address'];
     if (json['deals'] != null) {
       deals = <Deals>[];
@@ -50,11 +50,62 @@ class Data {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['business_title'] = businessTitle;
-    data['logo'] = logo;
+    if (logo != null) {
+      data['logo'] = logo!.toJson();
+    }
     data['address'] = address;
     if (deals != null) {
       data['deals'] = deals!.map((v) => v.toJson()).toList();
     }
+    return data;
+  }
+}
+
+class Logo {
+  int? id;
+  String? name;
+  String? fileName;
+  String? mimeType;
+  String? path;
+  String? disk;
+  String? fileHash;
+  int? size;
+  String? fileType;
+
+  Logo(
+      {this.id,
+      this.name,
+      this.fileName,
+      this.mimeType,
+      this.path,
+      this.disk,
+      this.fileHash,
+      this.size,
+      this.fileType});
+
+  Logo.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    fileName = json['file_name'];
+    mimeType = json['mime_type'];
+    path = json['path'];
+    disk = json['disk'];
+    fileHash = json['file_hash'];
+    size = json['size'];
+    fileType = json['file_type'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['file_name'] = fileName;
+    data['mime_type'] = mimeType;
+    data['path'] = path;
+    data['disk'] = disk;
+    data['file_hash'] = fileHash;
+    data['size'] = size;
+    data['file_type'] = fileType;
     return data;
   }
 }
@@ -75,10 +126,8 @@ class Deals {
   double? longitude;
   String? startPrice;
   String? dealPrice;
-  String? dealNotes;
+  Null? dealNotes;
   String? status;
-  String? businessLogo;
-  String? dealImage;
   int? userId;
   String? endDate;
   int? isFeatured;
@@ -88,6 +137,9 @@ class Deals {
   int? isTrending;
   String? createdAt;
   String? updatedAt;
+  String? mediaId;
+  Logo? logo;
+  Logo? banner;
 
   Deals(
       {this.id,
@@ -107,8 +159,6 @@ class Deals {
       this.dealPrice,
       this.dealNotes,
       this.status,
-      this.businessLogo,
-      this.dealImage,
       this.userId,
       this.endDate,
       this.isFeatured,
@@ -117,7 +167,10 @@ class Deals {
       this.purchasedCount,
       this.isTrending,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt,
+      this.mediaId,
+      this.logo,
+      this.banner});
 
   Deals.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -137,8 +190,6 @@ class Deals {
     dealPrice = json['deal_price'];
     dealNotes = json['deal_notes'];
     status = json['status'];
-    businessLogo = json['business_logo'];
-    dealImage = json['deal_image'];
     userId = json['user_id'];
     endDate = json['end_date'];
     isFeatured = json['is_featured'];
@@ -148,6 +199,9 @@ class Deals {
     isTrending = json['is_trending'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    mediaId = json['media_id'];
+    logo = json['logo'] != null ? Logo.fromJson(json['logo']) : null;
+    banner = json['banner'] != null ? Logo.fromJson(json['banner']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -169,8 +223,6 @@ class Deals {
     data['deal_price'] = dealPrice;
     data['deal_notes'] = dealNotes;
     data['status'] = status;
-    data['business_logo'] = businessLogo;
-    data['deal_image'] = dealImage;
     data['user_id'] = userId;
     data['end_date'] = endDate;
     data['is_featured'] = isFeatured;
@@ -180,6 +232,13 @@ class Deals {
     data['is_trending'] = isTrending;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
+    data['media_id'] = mediaId;
+    if (logo != null) {
+      data['logo'] = logo!.toJson();
+    }
+    if (banner != null) {
+      data['banner'] = banner!.toJson();
+    }
     return data;
   }
 }

@@ -25,6 +25,7 @@ class AuthController extends GetxController {
   final hidePassword = true.obs;
   final hideConfirmPassword = true.obs;
   final loginHidePassword = true.obs;
+  RxString newPasswordMatch = ''.obs;
   // bool isIOS = Platform.isIOS;
   String platForm = 'andriod';
   final _box = GetStorage();
@@ -114,6 +115,7 @@ class AuthController extends GetxController {
         // saveToken(token); // Save the token
         await _userRepository!.login(currentUser!.value);
         Get.log("LOOOOOOOOOOOOOOGIN DONE");
+
         loginLoading.value = false;
         user.value.auth = true;
         Get.log('auuuth in Auth con : ${user.value.auth}');
@@ -123,10 +125,11 @@ class AuthController extends GetxController {
 
         // getFcmToken();
         Get.offAllNamed(Routes.HOMEPAGE);
+
         print('After went to home page');
       } catch (e) {
         print(e.toString());
-        Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+        // Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
         print('snaaaaaaaaak bar');
       } finally {
         loginLoading.value = false;

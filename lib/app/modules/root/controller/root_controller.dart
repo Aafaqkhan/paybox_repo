@@ -14,12 +14,14 @@ import '../../loyalty/view/loyalty_view.dart';
 import '../../purchases/view/purchase_view.dart';
 
 class RootController extends GetxController {
+  final ScrollController scrollController = ScrollController();
+  final int initialScrollOffset = 7 * 90;
   final currentIndex = 0.obs;
   List<Widget> pages = [
     HomeView(),
-    const LoyaltyView(),
-    const DealsView(),
-    const PurchasesView(),
+    LoyaltyView(),
+    DealsView(),
+    PurchasesView(),
     ProfileView()
   ];
 

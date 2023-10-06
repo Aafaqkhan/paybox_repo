@@ -43,7 +43,6 @@ class _MyDealsOfferState extends State<MyDealsOffer> {
                     fit: BoxFit.cover,
                   )),
             ),
-<<<<<<< HEAD
             Padding(
               padding: const EdgeInsets.all(0.0),
               child: SizedBox(
@@ -107,8 +106,6 @@ class _MyStaticDealOfferState extends State<MyStaticDealOffer> {
                     fit: BoxFit.cover,
                   )),
             ),
-=======
->>>>>>> c931483518b3abff07e356e13cda4a3dea0c28e8
             Padding(
               padding: const EdgeInsets.all(0.0),
               child: SizedBox(

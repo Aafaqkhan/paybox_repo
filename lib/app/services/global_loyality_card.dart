@@ -26,14 +26,14 @@ class _MyLoyalityCardState extends State<MyLoyalityCard> {
   Widget build(BuildContext context) {
     return Card(
       child: SizedBox(
-        height: 135,
+        height: 150,
         width: 120,
         child: Stack(
           children: [
             Row(
               children: [
                 SizedBox(
-                  height: 130,
+                  height: 150,
                   width: 120,
                   child: Padding(
                     padding: const EdgeInsets.only(
@@ -103,7 +103,7 @@ class _MyLoyalityCardState extends State<MyLoyalityCard> {
             ),
             Positioned(
               right: 70,
-              bottom: 93,
+              bottom: 110,
               child: CircleAvatar(
                 // height: 56,
                 // width: 56,

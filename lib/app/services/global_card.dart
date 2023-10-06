@@ -34,11 +34,11 @@ class _MyPurchasesState extends State<MyPurchases> {
         borderRadius: BorderRadius.circular(12),
         child: SizedBox(
             width: 370,
-            height: 93,
+            height: 100,
             child: Row(
               children: [
                 SizedBox(
-                    height: 93,
+                    height: 100,
                     width: 220,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -84,16 +84,19 @@ class _MyPurchasesState extends State<MyPurchases> {
                           ],
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 8.88, right: 4),
+                          padding: const EdgeInsets.only(
+                            left: 8.88,
+                            right: 4,
+                          ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               SizedBox(
-                                width: 120,
+                                width: 145,
                                 child: TextWidget(
                                     text: widget.openingtime!,
                                     textStyle: const TextStyle(
-                                        fontSize: 10,
+                                        fontSize: 9,
                                         fontFamily: "Montserrat",
                                         fontWeight: FontWeight.w700,
                                         color: Color(0xff000000))),
@@ -140,7 +143,7 @@ class _MyPurchasesState extends State<MyPurchases> {
                           padding: const EdgeInsets.only(left: 70.5, top: 16),
                           child: Container(
                             height: 18,
-                            width: 70,
+                            width: 100,
                             decoration: const BoxDecoration(
                                 color: Color(0xff3242F6),
                                 borderRadius: BorderRadius.only(

@@ -9,7 +9,7 @@ class HomeRepository {
     _laravelApiClient = LaravelApiClient();
   }
 
-  Future<List<TrendingDealsModel>> getTrendingDeals() {
+  Future<List<TrendingDeals>> getTrendingDeals() {
     return _laravelApiClient!.getTrendingDeals();
   }
 

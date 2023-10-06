@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paybox/app/modules/deals/controller/deals_controller.dart';
+import 'package:paybox/app/modules/deals/view/deals_view.dart';
+import 'package:paybox/app/modules/root/controller/root_controller.dart';
 import 'package:paybox/app/services/colors/custom_colors.dart';
 import 'package:paybox/commonWidget/text_field_widget.dart';
 
@@ -166,6 +168,26 @@ class MyFilterDialog extends StatelessWidget {
                     //     ),
                     //   );
                     // }),
+                    // Obx(() {
+                    //   return Text(
+                    //     'Lat: ${dealsController.latitude}', // Observe changes
+                    //     style: const TextStyle(
+                    //       fontWeight: FontWeight.bold,
+                    //       fontSize: 16,
+                    //       color: Colors.black,
+                    //     ),
+                    //   );
+                    // }),
+                    // Obx(() {
+                    //   return Text(
+                    //     'long: ${dealsController.longitude}', // Observe changes
+                    //     style: const TextStyle(
+                    //       fontWeight: FontWeight.bold,
+                    //       fontSize: 16,
+                    //       color: Colors.black,
+                    //     ),
+                    //   );
+                    // }),
                     Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -205,6 +227,9 @@ class MyFilterDialog extends StatelessWidget {
                         await dealsController.setFilterAppliedSelectedFalse();
                         Get.log(dealsController.filterApplied.value.toString());
                         Navigator.pop(context);
+                        RootController rootController = Get.find<
+                            RootController>(); // Get the existing instance
+                        rootController.currentIndex.value = 2;
                       },
                     ),
                     const SizedBox(
@@ -230,23 +255,41 @@ class MyFilterDialog extends StatelessWidget {
                         color: AppColors.maincolor,
                         onPressed:
                             // onPressedApply,
-                            () async {
-                          await dealsController.filterDeals(
-                            filter: optionController.filterSelected.value,
-                            categoryIds: optionController.selectedCategories,
-                            sort: optionController.selectedOption.value
-                                .toString(),
-                            location: optionController.locationEntered.value
-                                .toString(),
-                            radius: optionController.radius.value,
-                            lat: '',
-                            lng: '',
-                          );
-                          await dealsController.setFilterAppliedSelectedTrue();
-                          Get.log(
-                              dealsController.filterApplied.value.toString());
-                          Navigator.pop(context);
-                        },
+
+                            dealsController.isFilterLoading.value == false
+                                ? () async {
+                                    await dealsController
+                                        .getCurrentPosition(context);
+                                    await dealsController.filterDeals(
+                                      filter:
+                                          optionController.filterSelected.value,
+                                      categoryIds:
+                                          optionController.selectedCategories,
+                                      sort: optionController
+                                          .selectedOption.value
+                                          .toString(),
+                                      location: optionController
+                                          .locationEntered.value
+                                          .toString(),
+                                      radius: optionController.radius.value,
+                                      lat: dealsController.latitude.value,
+                                      lng: dealsController.longitude.value,
+                                    );
+                                    await dealsController
+                                        .setFilterAppliedSelectedTrue();
+                                    Get.log(dealsController.filterApplied.value
+                                        .toString());
+                                    Navigator.pop(context);
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) => DealsView()));
+
+                                    RootController rootController = Get.find<
+                                        RootController>(); // Get the existing instance
+                                    rootController.currentIndex.value = 2;
+                                  }
+                                : null,
                       );
                     }),
                   ],
@@ -417,9 +460,11 @@ final List<String> _categoryNames = [
 
 class FilterButton extends StatelessWidget {
   final Color? color;
+  final Color? disableColor;
   final Widget? text;
   final VoidCallback? onPressed;
-  const FilterButton({super.key, this.color, this.text, this.onPressed});
+  const FilterButton(
+      {super.key, this.color, this.text, this.onPressed, this.disableColor});
 
   @override
   Widget build(BuildContext context) {
@@ -434,6 +479,7 @@ class FilterButton extends StatelessWidget {
         width: 90,
         height: 40,
         child: MaterialButton(
+          disabledColor: Colors.grey,
           color: color,
           onPressed: onPressed,
           child: text,

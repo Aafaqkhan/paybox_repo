@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:paybox/app/modules/deals/controller/deals_controller.dart';
+import 'package:paybox/app/routes/app_routes.dart';
 import 'package:paybox/app/services/colors/custom_colors.dart';
 import 'package:paybox/app/services/global_payment_details.dart';
 import 'package:paybox/app/services/global_stripe.dart';
@@ -47,6 +49,10 @@ class DealsDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final DealsController dealsController = DealsController();
 
+    GetStorage? _box = GetStorage();
+
+    var token = _box!.read('token');
+
     print(buisnessName);
     return Scaffold(
       appBar: AppBar(
@@ -72,7 +78,7 @@ class DealsDetails extends StatelessWidget {
                         child: Opacity(
                           opacity: 0.5,
                           child: Image.network(
-                            "https://paybox.jzmaxx.com/${image!}",
+                            "https://paybox.jzmaxx.com/storage/stores/banner/${image!}",
                             fit: BoxFit.cover,
                           ),
                           //               Image.network(
@@ -94,7 +100,7 @@ class DealsDetails extends StatelessWidget {
                                   topLeft: Radius.circular(12),
                                   bottomLeft: Radius.circular(12))),
                           child: TextWidget(
-                              text: '$saleValue off',
+                              text: '$saleValue% off',
                               textStyle: const TextStyle(
                                   fontSize: 12,
                                   fontFamily: "Montserrat",
@@ -262,39 +268,93 @@ class DealsDetails extends StatelessWidget {
                         child: SizedBox(
                           width: 330,
                           height: 40,
-                          child: dealsController.isPaymentSheetLoading.value ==
-                                  false
-                              ? BlockButtonWidget(
-                                  color: const Color(0xff3242F6),
-                                  text: Text(
+                          child: BlockButtonWidget(
+                            color: const Color(0xff3242F6),
+                            text: dealsController.isPaymentSheetLoading.value ==
+                                    false
+                                ? const Text(
                                     'Purchase',
                                     style: TextStyle(color: Colors.white),
+                                  )
+                                : const Align(
+                                    alignment: Alignment
+                                        .center, // Center the CircularProgressIndicator
+                                    child: SizedBox(
+                                      width:
+                                          30, // Adjust the width to your desired value
+                                      height: 30,
+                                      child: CircularProgressIndicator(),
+                                    ),
                                   ),
-                                  onPressed: () async {
-                                    dealsController
-                                        .isPaymentSheetLoading.value = true;
-                                    await StripePaymentController().makePayment(
-                                        amount: '5000',
-                                        currency: 'GBP',
-                                        context: context);
-                                    // dealsController.purchaseDeal();
+                            onPressed: dealsController
+                                        .isPaymentSheetLoading.value ==
+                                    false
+                                ? () async {
+                                    if (token == null) {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              content: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    const Text(
+                                                      "Please ",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          fontFamily:
+                                                              "Montserrat",
+                                                          fontSize: 12),
+                                                    ),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        Get.offAllNamed(
+                                                            Routes.LOGIN);
+                                                      },
+                                                      child: Text(
+                                                        "Login here",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontFamily:
+                                                                "Montserrat",
+                                                            color: AppColors
+                                                                .greencolr,
+                                                            fontSize: 13),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          });
+                                    }
 
-                                    dealsController
-                                        .isPaymentSheetLoading.value = false;
+                                    if (token != null) {
+                                      dealsController
+                                          .isPaymentSheetLoading.value = true;
+                                      Get.log('before payment sheet');
+                                      await StripePaymentController()
+                                          .makePayment(
+                                              amount: dealPrice!,
+                                              currency: 'GBP',
+                                              context: context);
+                                      Get.log('After payment sheet');
+                                      // dealsController.purchaseDeal();
 
-                                    // _showPaymentDetailsDialog(context);
-                                  },
-                                )
-                              : const Align(
-                                  alignment: Alignment
-                                      .center, // Center the CircularProgressIndicator
-                                  child: SizedBox(
-                                    width:
-                                        30, // Adjust the width to your desired value
-                                    height: 40,
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                ),
+                                      dealsController
+                                          .isPaymentSheetLoading.value = false;
+
+                                      // _showPaymentDetailsDialog(context);
+                                    }
+                                  }
+                                : null,
+                          ),
                         ),
                       );
                     })
