@@ -2,7 +2,10 @@ import 'package:paybox/app/models/category_model.dart' as categorydata;
 import 'package:paybox/app/models/allDeals_model.dart' as alldealsdata;
 import 'package:paybox/app/models/deal_by_category_model.dart'
     as dealByCategorydata;
+<<<<<<< HEAD
 import 'package:paybox/app/models/nearest_deals_model.dart' as nearestdeals;
+=======
+>>>>>>> c931483518b3abff07e356e13cda4a3dea0c28e8
 import 'package:paybox/app/providers/laravel_provider.dart';
 import 'package:paybox/app/models/filter_deals_model.dart' as filterdeals;
 
@@ -34,6 +37,7 @@ class DealsRepository {
 
     return _laravelApiClient!.dealsByCategory(id); // user
   }
+<<<<<<< HEAD
 
   Future<List<nearestdeals.Data>> nearestDeals(String lat, String lng) {
     // User user
@@ -50,4 +54,6 @@ class DealsRepository {
     return _laravelApiClient!.filterDeals(
         filter, categoryIds, sort, radius, lat, lng, location); // user
   }
+=======
+>>>>>>> c931483518b3abff07e356e13cda4a3dea0c28e8
 }

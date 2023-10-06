@@ -5,7 +5,10 @@ import 'package:paybox/app/modules/deals/view/deals_details.dart';
 import 'package:paybox/app/modules/purchases/controller/purchase_controller.dart';
 import 'package:paybox/app/providers/laravel_provider.dart';
 import 'package:paybox/app/services/global_card.dart';
+<<<<<<< HEAD
 import 'package:paybox/app/services/global_filter.dart';
+=======
+>>>>>>> c931483518b3abff07e356e13cda4a3dea0c28e8
 import 'package:paybox/app/services/global_shimmer_card.dart';
 
 class PurchasesView extends GetView<PurchasesController> {
@@ -71,6 +74,7 @@ class PurchasesView extends GetView<PurchasesController> {
         ),
         centerTitle: true,
       ),
+<<<<<<< HEAD
       body: RefreshIndicator(
         onRefresh: () async {
           Get.find<LaravelApiClient>().forceRefresh();
@@ -131,6 +135,61 @@ class PurchasesView extends GetView<PurchasesController> {
                 }
               }),
             ),
+=======
+      body: Padding(
+        padding: const EdgeInsets.only(top: 0, left: 0),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 0, top: 0, right: 0),
+            child: Obx(() {
+              if (controller.purchases.isEmpty) {
+                // Return a loading indicator or any other placeholder
+                return const Column(
+                  children: [
+                    ShimmerList(),
+                  ],
+                ); // Replace with your loading widget
+              } else {
+                return Column(
+                  children: controller.purchases
+                      .map((e) => InkWell(
+                            onTap: () {
+                              print('nav');
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => DealsDetails(
+                                            image:
+                                                "${e.banner!.path}/${e.banner!.name}",
+                                            buisnessName: e.name,
+                                            address: e.address,
+                                            saleValue: '25% ',
+                                            subHeading: e.shortInfo,
+                                            endDate: '11/11/11',
+                                            startPrice: "£ 52",
+                                            dealPrice: "£ 42",
+                                            description: e.description,
+                                            about: e.description,
+                                          )));
+                            },
+                            child: MyPurchases(
+                              mainpctrpath:
+                                  "${e.banner!.path}/${e.banner!.name}",
+                              title: e.name,
+                              avatarpath: "${e.logo!.path}/${e.logo!.name}",
+                              subtitle: e.address,
+                              openingtime: "After Noon Tea for 2",
+                              oldprize: "£ 52",
+                              newprize: "£ 39",
+                              salevalue: "25% off",
+                            ),
+                          ))
+                      .toList(),
+                );
+              }
+            }),
+>>>>>>> c931483518b3abff07e356e13cda4a3dea0c28e8
           ),
         ),
       ),

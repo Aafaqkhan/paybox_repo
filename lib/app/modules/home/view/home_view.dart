@@ -33,8 +33,13 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     // final LoyaltyController loyaltyController = LoyaltyController();
     // final PurchasesController purchasesController = PurchasesController();
+=======
+    final LoyaltyController loyaltyController = LoyaltyController();
+    final PurchasesController purchasesController = PurchasesController();
+>>>>>>> c931483518b3abff07e356e13cda4a3dea0c28e8
     GetStorage? _box = GetStorage();
 
     var token = _box!.read('token');
@@ -197,7 +202,11 @@ class HomeView extends GetView<HomeController> {
                   //     'Nothing to see here yet! Start searching deals, once you purchase, they will be here ready to redeem!'),
                 ),
 
+<<<<<<< HEAD
                 Padding(
+=======
+                const Padding(
+>>>>>>> c931483518b3abff07e356e13cda4a3dea0c28e8
                   padding: EdgeInsets.only(top: 31, left: 14),
                   child: SizedBox(
                     width: 350,

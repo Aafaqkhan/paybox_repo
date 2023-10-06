@@ -4,7 +4,10 @@ import 'package:paybox/app/models/allDeals_model.dart' as alldealsdata;
 import 'package:paybox/app/models/category_model.dart' as categorydata;
 import 'package:paybox/app/models/deal_by_category_model.dart'
     as dealByCategorydata;
+<<<<<<< HEAD
 import 'package:paybox/app/models/nearest_deals_model.dart' as nearestdeals;
+=======
+>>>>>>> c931483518b3abff07e356e13cda4a3dea0c28e8
 
 import 'package:paybox/app/repositories/deals_repositories.dart';
 import 'package:paybox/commonWidget/ui.dart';
@@ -15,6 +18,7 @@ class DealsController extends GetxController {
   final categories = <categorydata.Data>[].obs;
   final allDeals = <alldealsdata.Data>[].obs;
   final dealByCategory = <dealByCategorydata.Data>[].obs;
+<<<<<<< HEAD
   final nearestDealsList = <nearestdeals.Data>[].obs;
   final dealsByFilter = <filterdeals.Data>[].obs;
 
@@ -74,6 +78,15 @@ class DealsController extends GetxController {
     update();
   }
   // Rx<bool> categorySelected = false.obs;
+=======
+
+  // RxBool categorySelected = false.obs;
+  // RxBool categorySelected = false.obs;
+
+  RxList<bool> categorySelectedList = <bool>[].obs;
+
+  Rx<bool> categorySelected = false.obs;
+>>>>>>> c931483518b3abff07e356e13cda4a3dea0c28e8
 
   // List<bool> categorySelectedList =
   //     List.generate(categories.length, (_) => false);
@@ -90,9 +103,15 @@ class DealsController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
+<<<<<<< HEAD
     // categorySelectedList.assignAll(List.generate(5, (_) => false));
     await getCategories();
     await getAllDeals();
+=======
+    categorySelectedList.assignAll(List.generate(5, (_) => false));
+    getCategories();
+    getAllDeals();
+>>>>>>> c931483518b3abff07e356e13cda4a3dea0c28e8
   }
 
   Future getCategories() async {
@@ -186,6 +205,7 @@ class DealsController extends GetxController {
     }
   }
 
+<<<<<<< HEAD
   Future nearestDeals(String lat, String lng) async {
     // final User user = authController.currentUser!.value;
     // Get.log('222 .. $user');
@@ -270,6 +290,8 @@ class DealsController extends GetxController {
     }
   }
 
+=======
+>>>>>>> c931483518b3abff07e356e13cda4a3dea0c28e8
   Future refreshDeals({bool showMessage = false}) async {
     // await getSlider();
     await getCategories();

@@ -199,6 +199,7 @@ class LoginView extends GetView<AuthController> {
                                       fontFamily: "Montserrat",
                                     ),
                                   ),
+<<<<<<< HEAD
                                   Container(
                                     height: 2.0,
                                     width: 50,
@@ -219,6 +220,107 @@ class LoginView extends GetView<AuthController> {
                                   style: Get.textTheme.titleMedium!
                                       .merge(const TextStyle(
                                     color: Colors.white,
+=======
+                                )
+                              ],
+                            ),
+                            // Row(
+                            //   children: [
+                            //     Checkbox(
+                            //       value: true,
+                            //       onChanged: (value) {},
+                            //     ),
+                            //     const Text(
+                            //       "Keep me signed in",
+                            //       style: TextStyle(
+                            //         fontWeight: FontWeight.normal,
+                            //         fontFamily: "Montserrat",
+                            //       ),
+                            //     ),
+                            //   ],
+                            // ),
+
+                            Obx(() {
+                              return controller.loginLoading == false
+                                  ? BlockButtonWidget(
+                                      onPressed: () async {
+                                        await controller.login();
+                                      },
+                                      color: AppColors.maincolor,
+                                      text: Text(
+                                        "Continue".tr,
+                                        style: Get.textTheme.titleMedium!
+                                            .merge(const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.normal,
+                                          fontFamily: "Montserrat",
+                                        )),
+                                      ),
+                                    ).paddingSymmetric(vertical: 5.0)
+                                  : const Align(
+                                      alignment: Alignment
+                                          .center, // Center the CircularProgressIndicator
+                                      child: SizedBox(
+                                        width:
+                                            30, // Adjust the width to your desired value
+                                        height: 40,
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                    );
+                            }),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  height: 2.0,
+                                  width: 50,
+                                  color: Colors.grey,
+                                ),
+                                const Text(
+                                  "   or   ",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontFamily: "Montserrat",
+                                  ),
+                                ),
+                                Container(
+                                  height: 2.0,
+                                  width: 50,
+                                  color: Colors.grey,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            BlockButtonWidget(
+                              onPressed: () {
+                                Get.toNamed(Routes.HOMEPAGE);
+                              },
+                              color: AppColors.buttoncolr,
+                              text: Text(
+                                "Continue as Guest".tr,
+                                style: Get.textTheme.titleMedium!
+                                    .merge(const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.normal,
+                                  fontFamily: "Montserrat",
+                                )),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                const Text(
+                                  "Don't have an Account? ",
+                                  style: TextStyle(
+>>>>>>> c931483518b3abff07e356e13cda4a3dea0c28e8
                                     fontWeight: FontWeight.normal,
                                     fontFamily: "Montserrat",
                                   )),

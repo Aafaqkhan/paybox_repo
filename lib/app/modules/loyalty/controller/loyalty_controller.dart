@@ -7,7 +7,11 @@ import '../../../../commonWidget/ui.dart';
 class LoyaltyController extends GetxController {
   RxBool collectPointsPanel = false.obs;
 
+<<<<<<< HEAD
   List<Data> loyalties = <Data>[].obs;
+=======
+  List<dynamic> loyalties = <Data>[].obs;
+>>>>>>> c931483518b3abff07e356e13cda4a3dea0c28e8
 
   LoyaltyRepository? _loyaltyRepository;
 

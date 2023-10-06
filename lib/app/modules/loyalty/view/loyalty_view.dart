@@ -74,6 +74,7 @@ class LoyaltyView extends GetView<LoyaltyController> {
         ),
         centerTitle: true,
       ),
+<<<<<<< HEAD
       body: RefreshIndicator(
         onRefresh: () async {
           Get.find<LaravelApiClient>().forceRefresh();
@@ -155,6 +156,93 @@ class LoyaltyView extends GetView<LoyaltyController> {
               ),
             ],
           ),
+=======
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 12, top: 16),
+              child: Obx(() {
+                return controller.loyalties.isEmpty
+                    ? const SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            ShimmerList(),
+                          ],
+                        ),
+                      )
+                    : Container(
+                        height: 560,
+                        child: ListView.builder(
+                          itemCount: controller.loyalties.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final loyalty = controller.loyalties[index];
+
+                            List<RxBool> isPanelVisibleList = controller
+                                .loyalties
+                                .map((_) => false.obs)
+                                .toList();
+
+                            return Column(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    isPanelVisibleList[index].value =
+                                        !isPanelVisibleList[index].value;
+                                    Get.log(isPanelVisibleList.toString());
+                                  },
+                                  child: MyLoyalityView(
+                                    avatarpath:
+                                        "${loyalty.banner!.path}/${loyalty.banner!.name}",
+                                    title: loyalty.name,
+                                    subtitle: loyalty.shortInfo,
+                                    location: loyalty.distance,
+                                    mainpctrpath:
+                                        "${loyalty.logo!.path}/${loyalty.logo!.name}",
+                                  ),
+                                ),
+                                // The additional container that is visible when isPanelVisible is true
+                                Obx(() {
+                                  return Visibility(
+                                    visible: isPanelVisibleList[index].value,
+                                    child: Container(
+                                      // Customize the appearance of the additional container as needed
+                                      padding: const EdgeInsets.all(16),
+                                      color: Colors.grey,
+                                      child: ListView.builder(
+                                        shrinkWrap: true,
+                                        itemCount:
+                                            loyalty.loyaltyRedeemRules.length,
+                                        // itemCount: loyalty.length,
+                                        itemBuilder: (BuildContext context,
+                                            int subIndex) {
+                                          final rule = loyalty
+                                              .loyaltyRedeemRules[subIndex];
+                                          return CollectPointsPanel(
+                                            pinCode: loyalty.pinCode,
+                                            userPoints: loyalty.userPoints,
+                                            description: loyalty.description,
+                                            // redeemPoints: loyalty
+                                            //     .loyaltyRedeemRules![subIndex]
+                                            // .points,
+                                            redeemPoints: rule.points ?? '000',
+                                            name: rule.name ?? 'ASD',
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  );
+                                }),
+                              ],
+                            );
+                          },
+                        ),
+                      );
+              }),
+            ),
+          ],
+>>>>>>> c931483518b3abff07e356e13cda4a3dea0c28e8
         ),
       ),
     );

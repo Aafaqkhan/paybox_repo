@@ -15,7 +15,10 @@ import 'package:paybox/app/models/loyalty_model.dart' as loyaltydata;
 import 'package:paybox/app/models/purchase_model.dart' as purchasedata;
 import 'package:paybox/app/models/deal_by_category_model.dart'
     as dealByCategorydata;
+<<<<<<< HEAD
 import 'package:paybox/app/models/nearest_deals_model.dart' as nearestdeals;
+=======
+>>>>>>> c931483518b3abff07e356e13cda4a3dea0c28e8
 
 import 'package:paybox/app/models/deals_model.dart';
 import 'package:paybox/app/providers/api_provider.dart';
@@ -835,9 +838,52 @@ class LaravelApiClient extends GetxService with ApiClient {
       // List data = responsedata['data'];
       // List redeempoints = data[0]["loyalty_redeem_rules"];
       // var point = redeempoints[0]["points"];
+<<<<<<< HEAD
+=======
 
       return responsedata['data']
           .map<loyaltydata.Data>((obj) => loyaltydata.Data.fromJson(obj))
+          .toList();
+    } else {
+      throw Exception(response.data['message']);
+    }
+  }
+
+  Future<List<purchasedata.Data>> getPurchases() async {
+    var token = _box!.read('token');
+    Get.log('token in getPurchases ::: $token');
+    // const _queryParameters = {
+    //   'parent': 'true',
+    //   'orderBy': 'order',
+    //   'sortBy': 'asc',
+    // };
+    Uri uri = getDealsApiBaseUri("get-my-purchases");
+
+    var headers = {'Authorization': 'Bearer $token'};
+    Get.log('Headers ::: $headers');
+    // .replace(queryParameters: _queryParameters);
+    Get.log(uri.toString());
+    var response = await _httpClient!.getUri(
+      uri,
+      options: Options(
+        method: 'GET',
+        headers: headers,
+      ),
+    );
+    Get.log('responseeeeee ready');
+
+    var responsedata = json.decode(response.data);
+    print(responsedata);
+
+    if (responsedata['success'] == true) {
+      Get.log('responseeeeee success');
+      List data = responsedata['data'];
+      List redeempoints = data[0]["loyalty_redeem_rules"];
+      var point = redeempoints[0]["points"];
+>>>>>>> c931483518b3abff07e356e13cda4a3dea0c28e8
+
+      return responsedata['data']
+          .map<purchasedata.Data>((obj) => purchasedata.Data.fromJson(obj))
           .toList();
     } else {
       throw Exception(response.data['message']);
@@ -940,6 +986,7 @@ class LaravelApiClient extends GetxService with ApiClient {
       throw Exception(response.data['message']);
     }
   }
+<<<<<<< HEAD
 
   Future<List<nearestdeals.Data>> nearestDeals(String lat, String lng) async {
     var headers = {'Content-Type': 'application/json'};
@@ -1017,4 +1064,6 @@ class LaravelApiClient extends GetxService with ApiClient {
       throw Exception(response.data['message']);
     }
   }
+=======
+>>>>>>> c931483518b3abff07e356e13cda4a3dea0c28e8
 }

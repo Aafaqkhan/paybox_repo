@@ -27,6 +27,7 @@ class PurchasesController extends GetxController {
       Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
     }
   }
+<<<<<<< HEAD
 
   Future refreshPurchases({bool showMessage = false}) async {
     // await getSlider();
@@ -40,4 +41,6 @@ class PurchasesController extends GetxController {
           Ui.SuccessSnackBar(message: "Home page refreshed successfully"));
     }
   }
+=======
+>>>>>>> c931483518b3abff07e356e13cda4a3dea0c28e8
 }
