@@ -7,7 +7,6 @@ import 'package:paybox/app/modules/deals/view/deals_details.dart';
 import 'package:paybox/app/modules/home/bindings/home_binding.dart';
 import 'package:paybox/app/services/auth_service.dart';
 import 'package:paybox/app/services/onboarding_screen.dart';
-
 import '../modules/auth/views/sign_up_view.dart';
 import '../modules/profile/binding/profile_binding.dart';
 import '../modules/profile/view/about_us.dart';

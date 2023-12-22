@@ -3,7 +3,6 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:paybox/app/modules/home/controller/home_controller.dart';
-
 import 'app/providers/laravel_provider.dart';
 import 'app/routes/theme1_app_pages.dart';
 import 'app/services/auth_service.dart';
